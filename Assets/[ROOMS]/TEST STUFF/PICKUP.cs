@@ -24,7 +24,7 @@ public class PICKUP : MonoBehaviour, IINTERACTABLE
 
         if (inventory.AddItem(item))
         {
-            Debug.Log($"{item._name} añadido. Descripción: {item._description}");
+            Debug.Log($"{item._name} añadido.");
             Destroy(gameObject);
         }
         else
