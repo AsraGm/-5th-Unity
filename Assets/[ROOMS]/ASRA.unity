@@ -1465,6 +1465,7 @@ GameObject:
   - component: {fileID: 1221504827}
   - component: {fileID: 1221504829}
   - component: {fileID: 1221504830}
+  - component: {fileID: 1221504831}
   m_Layer: 6
   m_Name: PLAYER
   m_TagString: Player
@@ -1558,6 +1559,27 @@ MonoBehaviour:
   _inventario: []
   maxCapacity: 16
   indiceActual: 0
+--- !u!114 &1221504831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221504826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda530bcc8baa4c4890f57cada2322a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewKey: 9
+  confirmKey: 323
+  maxDistance: 10
+  validLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  previewPrefab: {fileID: 1236599889160303469, guid: 950741d6635f57745b15a7884e114bf3, type: 3}
+  previewColor: {r: 1, g: 0.75347257, b: 0, a: 1}
+  showRangeInGame: 1
 --- !u!1 &1327620771
 GameObject:
   m_ObjectHideFlags: 0
