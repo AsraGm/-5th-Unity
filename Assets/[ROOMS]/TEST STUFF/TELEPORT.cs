@@ -16,6 +16,11 @@ public class TELEPORT : MonoBehaviour
     public bool showRangeInGame = true; // Mostrar línea de rango en el juego
     private LineRenderer rangeLine; // Línea para mostrar el rango
 
+    [Header("Feedback Visual")]
+    public Color validColor = Color.cyan;    // Color cuando el punto es válido
+    public Color invalidColor = Color.red;   // Color cuando está fuera de rango
+    public bool hidePreviewIfInvalid = true; // Si queremos ocultar la previsualización al exceder el rango
+
     private GameObject currentPreview;
     private Vector3 targetPosition;
     private bool isPreviewing = false;
@@ -73,17 +78,57 @@ public class TELEPORT : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+        bool isHit = Physics.Raycast(ray, out hit, Mathf.Infinity, validLayers); // Ahora sin límite de distancia
 
-        if (Physics.Raycast(ray, out hit, maxDistance, validLayers))
+        if (isHit)
         {
-            targetPosition = hit.point;
-            currentPreview.transform.position = targetPosition + Vector3.up * 0.1f;
+            // Mover el prefab SIEMPRE a la posición del mouse (aunque esté lejos)
+            currentPreview.transform.position = hit.point + Vector3.up * 0.1f;
 
-            // Actualizar línea de rango (desde el jugador hasta el objetivo)
+            // Calcular distancia desde el jugador al punto de impacto
+            float distanceToHit = Vector3.Distance(transform.position, hit.point);
+            bool isValid = distanceToHit <= maxDistance;
+
+            // Cambiar color según si está en rango o no
+            Renderer previewRenderer = currentPreview.GetComponent<Renderer>();
+            if (previewRenderer != null)
+            {
+                if (isValid)
+                {
+                    previewRenderer.material.color = validColor; // Color normal si es válido
+                }
+                else
+                {
+                    // Parpadeo entre rojo y negro (opcional: usar "Color.Lerp" para suavidad)
+                    float blinkSpeed = 5f; // Velocidad del parpadeo
+                    float lerpValue = Mathf.PingPong(Time.time * blinkSpeed, 1);
+                    previewRenderer.material.color = Color.Lerp(invalidColor, Color.black, lerpValue);
+                }
+            }
+
+            // Guardar posición objetivo (aunque esté fuera de rango)
+            targetPosition = hit.point;
+
+            // Actualizar línea de rango (mostrar hasta donde llega el rango válido)
             if (rangeLine != null)
             {
+                rangeLine.enabled = true;
                 rangeLine.SetPosition(0, transform.position);
-                rangeLine.SetPosition(1, targetPosition);
+
+                if (isValid)
+                {
+                    // Dentro de rango: línea hasta el objetivo
+                    rangeLine.SetPosition(1, targetPosition);
+                    rangeLine.material.color = validColor;
+                }
+                else
+                {
+                    // Fuera de rango: línea hasta el borde del rango
+                    Vector3 direction = (hit.point - transform.position).normalized;
+                    Vector3 edgePosition = transform.position + direction * maxDistance;
+                    rangeLine.SetPosition(1, edgePosition);
+                    rangeLine.material.color = invalidColor;
+                }
             }
         }
     }
@@ -101,8 +146,18 @@ public class TELEPORT : MonoBehaviour
 
     void Teleport()
     {
-        transform.position = targetPosition;
-        CancelPreview();
+        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+        if (distanceToTarget <= maxDistance)
+        {
+            transform.position = targetPosition;
+            CancelPreview();
+        }
+        else
+        {
+            Debug.Log("¡No puedes teletransportarte tan lejos!");
+            // Opcional: Sonido de error / vibración / UI de advertencia
+        }
     }
 
     // Dibujar Gizmo en el Editor (solo visible en Scene View)
