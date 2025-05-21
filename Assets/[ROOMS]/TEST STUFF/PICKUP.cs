@@ -11,7 +11,7 @@ public class PICKUP : MonoBehaviour, IINTERACTABLE
 
     private void Start()
     {
-        inventory = FindObjectOfType<INVENTORYHANDLER>();
+        inventory = FindFirstObjectByType<INVENTORYHANDLER>();
     }
 
     public void Interact()

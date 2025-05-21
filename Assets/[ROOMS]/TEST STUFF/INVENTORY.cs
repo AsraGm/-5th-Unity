@@ -25,7 +25,7 @@ public class INVENTORY : MonoBehaviour
 
     private void Awake()
     {
-        inventory = FindObjectOfType<INVENTORYHANDLER>();
+        inventory = FindFirstObjectByType<INVENTORYHANDLER>();
         uiItems = new GameObject[inventory.maxCapacity];
 
         // Configurar botones

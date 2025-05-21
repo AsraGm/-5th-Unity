@@ -34,9 +34,9 @@ public class MOVEPLAYER : MonoBehaviour
     public bool controlActivo = true;
 
 
-    // Para simular gravedad manualmente
-    private float gravity = -9.81f;
-    private float verticalVelocity = 0f;
+    //// Para simular gravedad manualmente
+    //private float gravity = -9.81f;
+    //private float verticalVelocity = 0f;
 
     private void Start()
     {

@@ -12,7 +12,7 @@ public class INVENTORYUIHANDLER : MonoBehaviour
 
     private void Start()
     {
-        inventory = FindObjectOfType<INVENTORYHANDLER>();
+        inventory = FindFirstObjectByType<INVENTORYHANDLER>();
         uiItems = new GameObject[inventory.maxCapacity];
         InitializeUI();
         CloseInventory();
