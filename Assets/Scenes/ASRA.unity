@@ -2658,12 +2658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b3452d82b4f5bf4285b8516b1142d85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 719743453}
-  uiItemPrefab: {fileID: 6452590588205492486, guid: 2cf89179e280b7243a8d2371e084236a, type: 3}
-  itemsContainer: {fileID: 1625926293}
-  uiItems: []
-  inventory: {fileID: 0}
-  currentPage: 0
 --- !u!4 &2008038004 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7122835593284620472, guid: 3362ee3e329317140801a06fff17a721, type: 3}
