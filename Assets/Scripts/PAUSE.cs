@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MenuPausa : MonoBehaviour
@@ -8,11 +8,15 @@ public class MenuPausa : MonoBehaviour
     [SerializeField] MOVEPLAYER control;
     public bool posible = true;
     private bool activo;
+    [Header("Keybind")]
+    [Tooltip("Tecla para activar el 'PAUSA'")]
+    public KeyCode pauseKey = KeyCode.P;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && posible)
+        if (Input.GetKeyDown(pauseKey) && posible)
         {
+            Debug.Log("Tecla de pausa presionada");
             if (activo == false)
             {
                 Pausa();
@@ -28,7 +32,7 @@ public class MenuPausa : MonoBehaviour
     private void Pausa()
     {
         activo = true;
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
         menu.SetActive(true);
         camara.enabled = false;
         control.controlActivo = false;
@@ -38,7 +42,7 @@ public class MenuPausa : MonoBehaviour
     public void Continuar()
     {
         activo = false;
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         camara.enabled = true;
         control.controlActivo = true;
         Cursor.lockState = CursorLockMode.Locked;

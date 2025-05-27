@@ -66,8 +66,7 @@ public class TELEPORT : MonoBehaviour
 
     void Update()
     {
-        // Si está en cooldown, ignora toda la lógica de teletransporte.
-        if (IsOnCooldown()) return;
+        if (Time.timeScale == 0f || IsOnCooldown()) return;
 
         if (isDecisionActive)
         {
