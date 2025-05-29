@@ -2459,14 +2459,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5818673357291378010, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
-      propertyPath: m_Depth
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6475703964654079497, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9019171829106294214, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_Name
       value: CAMERA HOLDER
