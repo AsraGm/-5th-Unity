@@ -214,8 +214,8 @@ GameObject:
   - component: {fileID: 7769007116827757253}
   - component: {fileID: 3445958794102894033}
   - component: {fileID: 7702911613487039735}
-  - component: {fileID: 4738668989437252570}
-  - component: {fileID: 344060524972585642}
+  - component: {fileID: 6154038643962487787}
+  - component: {fileID: 8144691518492834759}
   m_Layer: 6
   m_Name: PLAYER
   m_TagString: Player
@@ -294,7 +294,7 @@ MonoBehaviour:
     m_Bits: 8
   orientation: {fileID: 7122835593284620472}
   controlActivo: 1
---- !u!114 &4738668989437252570
+--- !u!114 &6154038643962487787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -303,22 +303,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7569105071916199744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bb34b95c18c9114ca25ee41e287b65b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inventario: []
-  maxCapacity: 16
-  indiceActual: 0
---- !u!114 &344060524972585642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7569105071916199744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cda530bcc8baa4c4890f57cada2322a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a127ac687ece6849ab0c83c651aefe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   previewKey: 9
@@ -327,9 +312,27 @@ MonoBehaviour:
   validLayers:
     serializedVersion: 2
     m_Bits: 8
-  previewPrefab: {fileID: 1236599889160303469, guid: 950741d6635f57745b15a7884e114bf3, type: 3}
-  previewColor: {r: 1, g: 0.75347257, b: 0, a: 1}
+  cooldownTime: 2
+  visuals: {fileID: 8144691518492834759}
+--- !u!114 &8144691518492834759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7569105071916199744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb637ee4289f2f419a5b88ca1eaa941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewPrefab: {fileID: 608141571459872514, guid: 2406fc7649c3b294389b2c039d4c0aec, type: 3}
+  previewColor: {r: 0, g: 1, b: 1, a: 1}
+  validColor: {r: 0, g: 1, b: 0.04313922, a: 1}
+  invalidColor: {r: 1, g: 0, b: 0, a: 1}
   showRangeInGame: 1
-  validColor: {r: 0, g: 1, b: 1, a: 1}
-  invalidColor: {r: 1, g: 0, b: 0, a: 0.7921569}
   hidePreviewIfInvalid: 1
+  slowdownFactor: 0.2
+  slowdownTransitionTime: 0.3
+  speedupTransitionTime: 0.5
+  decisionTime: 3

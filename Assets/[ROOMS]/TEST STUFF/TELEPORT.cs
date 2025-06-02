@@ -5,23 +5,27 @@ public class TELEPORT : MonoBehaviour
 {
     [Header("Keybinds")]
     [Tooltip("Tecla para activar mecanica")]
-    public KeyCode previewKey = KeyCode.Space; // Tecla para previsualizar
+    public KeyCode previewKey = KeyCode.Space; 
     [Tooltip("Tecla para confirmar")]
-    public KeyCode confirmKey = KeyCode.Mouse0; // Clic izquierdo para confirmar
+    public KeyCode confirmKey = KeyCode.Mouse0; 
 
     [Header("Configuración")]
-    public float maxDistance = 10f; // Rango máximo de teletransporte
-    public LayerMask validLayers; // Capas válidas (suelo, etc.)
-    public GameObject previewPrefab; // Prefab para la previsualización
-    public Color previewColor = Color.cyan; // Color del visualizador de distancia
+     [Tooltip("Rango máximo de teletransporte")]
+    public float maxDistance = 10f;
+    [Tooltip("Capas válidas (suelo, etc.)")]
+    public LayerMask validLayers; 
+    [Tooltip("Prefab para la previsualización")]
+    public GameObject previewPrefab; 
+    [Tooltip("Color del visualizador de distancia")]
+    public Color previewColor = Color.cyan;
 
     [Header("Visualización (Debug)")]
-    public bool showRangeInGame = true; // Mostrar línea de rango en el juego
-    private LineRenderer rangeLine; // Línea para mostrar el rango
+    [Tooltip("Mostrar línea de rango en el juego")]
+    public bool showRangeInGame = true;
 
     [Header("Cooldown")]
     public float cooldownTime = 2f;
-    private float lastTeleportTime;
+    public float lastTeleportTime;
 
     [Header("Time Slowdown")]
     [Tooltip("Escala de tiempo durante la previsualización (0.1 = 10% de velocidad normal)")]
@@ -33,7 +37,7 @@ public class TELEPORT : MonoBehaviour
 
     [Header("Teleport Timer")]
     [Tooltip("Tiempo máximo para confirmar el teletransporte (en segundos)")]
-    public float decisionTime = 3f; // 3 segundos para decidir
+    public float decisionTime = 3f;
     private float decisionTimer;
     private bool isDecisionActive = false;
 
@@ -47,21 +51,11 @@ public class TELEPORT : MonoBehaviour
 
     private GameObject currentPreview;
     private Vector3 targetPosition;
-    private bool isPreviewing = false;
+    public bool isPreviewing = false;
 
     void Start()
     {
         originalFixedDeltaTime = Time.fixedDeltaTime;
-        // Configurar LineRenderer para mostrar el rango
-        if (showRangeInGame)
-        {
-            rangeLine = gameObject.AddComponent<LineRenderer>();
-            rangeLine.startWidth = 0.1f;
-            rangeLine.endWidth = 0.1f;
-            rangeLine.material = new Material(Shader.Find("Unlit/Color")) { color = previewColor };
-            rangeLine.positionCount = 2;
-            rangeLine.enabled = false; // Solo visible durante la previsualización
-        }
     }
 
     void Update()
@@ -112,12 +106,6 @@ public class TELEPORT : MonoBehaviour
         currentPreview = Instantiate(previewPrefab);
         SlowTime();
 
-
-        if (rangeLine != null) rangeLine.enabled = true;
-        {
-            rangeLine.enabled = true; // Mostrar línea de rango
-        }
-
         UpdatePreview();
     }
 
@@ -155,42 +143,15 @@ public class TELEPORT : MonoBehaviour
 
             // Guardar posición objetivo (aunque esté fuera de rango)
             targetPosition = hit.point;
-
-            // Actualizar línea de rango (mostrar hasta donde llega el rango válido)
-            if (rangeLine != null)
-            {
-                rangeLine.enabled = true;
-                rangeLine.SetPosition(0, transform.position);
-
-                if (isValid)
-                {
-                    // Dentro de rango: línea hasta el objetivo
-                    rangeLine.SetPosition(1, targetPosition);
-                    rangeLine.material.color = validColor;
-                }
-                else
-                {
-                    // Fuera de rango: línea hasta el borde del rango
-                    Vector3 direction = (hit.point - transform.position).normalized;
-                    Vector3 edgePosition = transform.position + direction * maxDistance;
-                    rangeLine.SetPosition(1, edgePosition);
-                    rangeLine.material.color = invalidColor;
-                }
-            }
         }
     }
 
-    void CancelPreview()
+    public void CancelPreview()
     {
         isPreviewing = false;
         isDecisionActive = false;
         Destroy(currentPreview);
         RestoreTime();
-
-        if (rangeLine != null) rangeLine.enabled = false;
-        {
-            rangeLine.enabled = false; // Ocultar línea
-        }
     }
 
     void Teleport()
