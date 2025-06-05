@@ -18,6 +18,7 @@ public class FlowStateMachine : MonoBehaviour
         ms_Instance = this;
 
         m_Channel.OnFlowStateRequested += SetFlowState;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
