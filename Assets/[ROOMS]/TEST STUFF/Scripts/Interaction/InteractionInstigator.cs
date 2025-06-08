@@ -14,8 +14,8 @@ public class InteractionInstigator : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"FlowStateMachine.Instance: {FlowStateMachine.Instance}"); // Verifica si es null
-        Debug.Log($"Nearby interactables: {m_NearbyInteractables.Count}"); // Verifica si hay NPCs cerca
+        //Debug.Log($"FlowStateMachine.Instance: {FlowStateMachine.Instance}"); // Verifica si es null
+        //Debug.Log($"Nearby interactables: {m_NearbyInteractables.Count}"); // Verifica si hay NPCs cerca
         if (HasNearbyInteractables() && Input.GetKeyDown(interactionKey))
         {
             Debug.Log($"Tecla {interactionKey} presionada. ¿NPC cerca?: {HasNearbyInteractables()}");

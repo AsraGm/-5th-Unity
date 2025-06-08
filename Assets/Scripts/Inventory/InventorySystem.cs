@@ -10,6 +10,8 @@ public class InventorySystem : MonoBehaviour
     public Transform contentParent;
     public ItemLore itemLorePanel;
 
+
+    public int ItemCount => inventoryItems.Count;
     private List<ItemData> inventoryItems = new List<ItemData>();
     private bool isInventoryOpen = false;
 
@@ -50,7 +52,7 @@ public class InventorySystem : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            Time.timeScale = 1f; 
+            Time.timeScale = 1f;
         }
     }
 
@@ -59,6 +61,8 @@ public class InventorySystem : MonoBehaviour
         inventoryItems.Add(newItem);
         UpdateInventoryUI();
     }
+
+
 
     private void UpdateInventoryUI()
     {
@@ -72,9 +76,7 @@ public class InventorySystem : MonoBehaviour
         foreach (ItemData item in inventoryItems)
         {
             GameObject newItem = Instantiate(inventoryItemPrefab, contentParent);
-           // newItem.transform.localPosition = contentParent.localPosition; // Establece la posición local
             newItem.GetComponent<InventoryItem>().Setup(item);
-
         }
     }
 
