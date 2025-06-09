@@ -40,7 +40,7 @@ Material:
     - _Blur_Offset: 0
     - _Noise_Amount: 7
     - _Noise_Scale: 100
-    - _Scan_Lines: 235.1
+    - _Scan_Lines: 220
     - _Scan_Lines_Speed: -0.0032
     m_Colors:
     - _Color: {r: 2, g: 2, b: 2, a: 0}
