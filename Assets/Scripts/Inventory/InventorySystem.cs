@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class InventorySystem : MonoBehaviour
     public Transform contentParent;
     public ItemLore itemLorePanel;
 
+    [Header("Scroll Settings")]
+    public ScrollRect inventoryScrollRect;
+    [Range(0.1f, 50f)] public float scrollSensitivity = 1f;
 
     public int ItemCount => inventoryItems.Count;
     private List<ItemData> inventoryItems = new List<ItemData>();
@@ -26,6 +30,10 @@ public class InventorySystem : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+        if (inventoryScrollRect != null)
+        {
+            inventoryScrollRect.scrollSensitivity = scrollSensitivity;
         }
     }
 
