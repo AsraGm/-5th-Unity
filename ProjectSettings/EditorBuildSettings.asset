@@ -6,8 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/[ROOMS]/ASRA.unity
-    guid: 9295510a1034c3b408961449f0f6d5eb
+    path: Assets/Scenes/Game/MAIN MENU.unity
+    guid: e6dd0692cf0e2884d80996a62e80de4a
+  - enabled: 1
+    path: Assets/[ROOMS]/PARCIAL.unity
+    guid: 83193bf8fd002fd49a2760ca6e76a902
+  - enabled: 1
+    path: Assets/Scenes/Game/LEVELS.unity
+    guid: e22c08cefcce7454c9a35b544dc115cf
+  - enabled: 1
+    path: Assets/Scenes/Game/CREDITS.unity
+    guid: 0f9a018b64f59854780e5de748840284
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: f7f4e2c44cf0e944f88aa52fdcff650f, type: 2}

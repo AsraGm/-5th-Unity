@@ -6,7 +6,7 @@ public class InventorySystem : MonoBehaviour
 {
     public static InventorySystem Instance;
 
-    public GameObject inventoryPanel;
+    [SerializeField] private GameObject inventoryPanel;
     public GameObject inventoryItemPrefab;
     public Transform contentParent;
     public ItemLore itemLorePanel;

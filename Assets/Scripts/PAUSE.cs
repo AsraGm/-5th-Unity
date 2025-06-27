@@ -57,7 +57,7 @@ public class MenuPausa : MonoBehaviour
 
     public void Salir()
     {
-        Application.Quit();
+        SceneManager.LoadScene("CREDITS");
     }
 
 
