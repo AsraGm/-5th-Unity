@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ public class InventorySystem : MonoBehaviour
     private List<ItemData> inventoryItems = new List<ItemData>();
     private bool isInventoryOpen = false;
 
+    public static event Action<ItemData> OnItemAdded;
 
     private void Awake()
     {
@@ -68,6 +70,7 @@ public class InventorySystem : MonoBehaviour
     {
         inventoryItems.Add(newItem);
         UpdateInventoryUI();
+        OnItemAdded?.Invoke(newItem);
     }
 
 
