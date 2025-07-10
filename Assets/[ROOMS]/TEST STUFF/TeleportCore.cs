@@ -1,5 +1,6 @@
-using UnityEngine;
+using System;
 using System.Collections;
+using UnityEngine;
 
 public class TeleportCore : MonoBehaviour
 {
@@ -28,8 +29,10 @@ public class TeleportCore : MonoBehaviour
     public bool isPreviewing = false;
     private Vector3 targetPosition;
 
+    public static event Action<Vector3> OnPlayerTeleported;
     // Referencia al visualizador
     private TeleportVisuals visualizer;
+
 
     void Start()
     {
@@ -115,6 +118,7 @@ public class TeleportCore : MonoBehaviour
         if (distanceToTarget <= maxDistance && IsValidPosition(targetPosition))
         {
             transform.position = targetPosition;
+            OnPlayerTeleported?.Invoke(targetPosition); // Notifica a los enemigos
             CancelPreview();
             lastTeleportTime = Time.time;
         }

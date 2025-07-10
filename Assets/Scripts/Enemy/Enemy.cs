@@ -37,4 +37,9 @@ public class Enemy : MonoBehaviour
             yield return new WaitForFixedUpdate(); // Pausa la corrutina hasta el próximo FixedUpdate.
         }
     }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 1f); // Radio representativo
+    }
 }

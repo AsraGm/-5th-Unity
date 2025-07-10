@@ -8,13 +8,13 @@ public class DUPLICATE : MonoBehaviour
     public class SpawnTrigger
     {
         [Tooltip("El item requerido para que funcione")]
-        public ItemData requiredItem;
+        public ItemData item;
         [Tooltip("Prefab del enemigo a instanciar")]
-        public GameObject enemyPrefab;
+        public GameObject enemyPre;
         [Tooltip("Punto donde este aparecera")]
         public Transform spawnPoint;
         [Tooltip("Cantidad de prefabs a instanciar")]
-        public int char2Spawn = 1;
+        public int c2Spawn = 1;
         [HideInInspector] public int totalSpawned = 0; // Contador total de instancias
     }
 
@@ -45,7 +45,7 @@ public class DUPLICATE : MonoBehaviour
     {
         foreach (var trigger in spawnTriggers)
         {
-            if (trigger.requiredItem == newItem)
+            if (trigger.item == newItem)
             {
                 StartCoroutine(SpawnMultipleEnemies(trigger)); // Usamos una corrutina para spawnear múltiples enemigos
                 break;
@@ -55,7 +55,7 @@ public class DUPLICATE : MonoBehaviour
 
     private IEnumerator SpawnMultipleEnemies(SpawnTrigger trigger)
     {
-        for (int i = 0; i < trigger.char2Spawn; i++)
+        for (int i = 0; i < trigger.c2Spawn; i++)
         {
             SpawnEnemy(trigger);
             yield return new WaitForSeconds(delayBetweenSpawns); // Delay opcional entre spawns
@@ -64,9 +64,9 @@ public class DUPLICATE : MonoBehaviour
 
     private void SpawnEnemy(SpawnTrigger trigger)
     {
-        if (trigger.enemyPrefab == null || trigger.spawnPoint == null) return;
+        if (trigger.enemyPre == null || trigger.spawnPoint == null) return;
 
-        Instantiate(trigger.enemyPrefab, trigger.spawnPoint.position, trigger.spawnPoint.rotation);
-        Debug.Log($"Enemigo spawnedo por ítem: {trigger.requiredItem.itemName}");
+        Instantiate(trigger.enemyPre, trigger.spawnPoint.position, trigger.spawnPoint.rotation);
+        Debug.Log($"Enemigo spawnedo por ítem: {trigger.item.itemName}");
     }
 }
