@@ -42,7 +42,11 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Player Control")]
     [Tooltip("Arrastra los scripts de movimiento")]
-    [SerializeField] private MonoBehaviour[] playerMovementScripts; 
+    [SerializeField] private MOVEPLAYER playerMovement;
+
+    [Header("Camera Control")]
+    [SerializeField] private CAMERA cameraController;
+
     [Tooltip("Para congelar f�sica")]
     [SerializeField] private Rigidbody playerRigidbody; 
 
@@ -107,14 +111,8 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(DIALOGUENODE startNode)
     {
-        foreach (var script in playerMovementScripts)
-        {
-            script.enabled = false;
-        }
-        if (playerRigidbody != null)
-        {
-            playerRigidbody.linearVelocity = Vector3.zero; // Detener movimiento f�sico
-        }
+        cameraController.SwitchCameraStyle(CAMERA.CameraStyle.Dialogue); // Nueva línea
+        playerMovement.controlActivo = false;
 
         currentNode = startNode;
         dialoguePanel.SetActive(true);
@@ -238,11 +236,23 @@ public class DialogueManager : MonoBehaviour
     {
         dialoguePanel.SetActive(false);
         ClearSelection();
+
+        playerMovement.controlActivo = true;
+
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            playerRigidbody.linearVelocity = Vector3.zero;
+        }
+
         if (currentNode.onNodeEnd != null) currentNode.onNodeEnd.Invoke();
+        Debug.Log("Movimiento restaurado correctamente");
     }
 
     private void EndDialogue()
     {
+        cameraController.SwitchCameraStyle(CAMERA.CameraStyle.Basic);
         panelAnimator.SetTrigger("Disappear");
+        Invoke(nameof(OnDisappearEnd), 0.5f);
     }
 }

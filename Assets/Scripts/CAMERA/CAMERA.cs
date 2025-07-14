@@ -76,7 +76,7 @@ public class CAMERA : MonoBehaviour
         }
     }
 
-    private void SwitchCameraStyle(CameraStyle newStyle)
+    public void SwitchCameraStyle(CameraStyle newStyle)
     {
         dialogueCam.SetActive(false);
         thirdPersonCam.SetActive(false);

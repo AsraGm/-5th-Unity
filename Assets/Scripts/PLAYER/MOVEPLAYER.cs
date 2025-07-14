@@ -52,6 +52,7 @@ public class MOVEPLAYER : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log($"Control activo: {controlActivo}");
         if (!controlActivo) return;
         // Ground check usando CheckSphere (como en el segundo script)
         grounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, whatIsGround);
@@ -131,6 +132,12 @@ public class MOVEPLAYER : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    public void EnableControl()
+    {
+        controlActivo = true;
+        Debug.Log("Control activado manualmente");
     }
 
     private void OnDrawGizmosSelected()
