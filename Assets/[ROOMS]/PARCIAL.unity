@@ -2663,8 +2663,7 @@ MonoBehaviour:
   downKey: 274
   selectedColor: {r: 1, g: 0.247543, b: 0, a: 1}
   normalColor: {r: 0, g: 0, b: 0, a: 1}
-  playerMovementScripts:
-  - {fileID: 1221504829}
+  playerMovement: {fileID: 1221504829}
   cameraController: {fileID: 1908929392}
   playerRigidbody: {fileID: 1221504827}
 --- !u!1001 &1355986194
