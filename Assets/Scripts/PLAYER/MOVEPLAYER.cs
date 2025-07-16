@@ -33,6 +33,8 @@ public class MOVEPLAYER : MonoBehaviour
     Rigidbody rb;
     public bool controlActivo = true;
 
+    public static bool IsColliding { get; private set; } // Para saber si el jugador está en contacto
+
 
     //// Para simular gravedad manualmente
     //private float gravity = -9.81f;

@@ -35,7 +35,8 @@ public class LevelsManager : MonoBehaviour
     {
         // Verifica si el sistema de inventario está configurado y si hay niveles definidos para evitar errores.
         if (inventorySystem == null || levels.Count == 0) return; // 
-        if (currentLevelIndex < 0 || currentLevelIndex >= levels.Count) return;
+        if (currentLevelIndex < +
+            0 || currentLevelIndex >= levels.Count) return;
 
         LevelData level = levels[currentLevelIndex]; // Creo "LevelData level" para acceder a los datos del nivel actual.
 
