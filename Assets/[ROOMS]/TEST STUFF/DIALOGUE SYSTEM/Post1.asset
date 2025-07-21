@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
-  m_Name: NPC
+  m_Name: Post1
   m_EditorClassIdentifier: 
-  dialogueText: Hola me llamo gustave
+  dialogueText: Como esta el profe
   responses:
-  - responseText: 33
-    nextNode: {fileID: 11400000, guid: 489f4790638d48543abf236ddd749d5f, type: 2}
-  - responseText: 33?
-    nextNode: {fileID: 11400000, guid: 489f4790638d48543abf236ddd749d5f, type: 2}
+  - responseText: De pelos
+    nextNode: {fileID: 11400000, guid: 8e48963d2640efa4a86899d9f226ff8e, type: 2}
+  - responseText: bien peinado
+    nextNode: {fileID: 11400000, guid: 8e48963d2640efa4a86899d9f226ff8e, type: 2}
   isEndNode: 0
   onNodeStart:
     m_PersistentCalls:

@@ -800,15 +800,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels:
-  - levelName: Nivel 1
+  - levelName: LEVEL 1
     itemsRequired: 3
-    boss: {fileID: 176043785}
+    boss: {fileID: 1961438149}
     bossDefeated: 0
-  - levelName: Nivel 2
+  - levelName: LEVEL 2
     itemsRequired: 0
     boss: {fileID: 0}
     bossDefeated: 0
-  - levelName: Nivel 3
+  - levelName: LEVEL 3
     itemsRequired: 0
     boss: {fileID: 0}
     bossDefeated: 0
@@ -4019,11 +4019,13 @@ GameObject:
   - component: {fileID: 1961438147}
   - component: {fileID: 1961438152}
   - component: {fileID: 1961438151}
-  - component: {fileID: 1961438153}
-  - component: {fileID: 1961438154}
-  - component: {fileID: 1961438157}
-  - component: {fileID: 1961438156}
-  - component: {fileID: 1961438155}
+  - component: {fileID: 1961438162}
+  - component: {fileID: 1961438161}
+  - component: {fileID: 1961438160}
+  - component: {fileID: 1961438159}
+  - component: {fileID: 1961438158}
+  - component: {fileID: 1961438164}
+  - component: {fileID: 1961438163}
   m_Layer: 0
   m_Name: NPC
   m_TagString: NPC
@@ -4149,7 +4151,28 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.69
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1961438153
+--- !u!65 &1961438158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961438143}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1961438159
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4158,75 +4181,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1961438143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7a3d5aaaee7a86428868d73c3f9f163, type: 3}
+  m_Script: {fileID: 11500000, guid: 70c457912d696bc43bb1955cd08e2512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startNode: {fileID: 11400000, guid: d5129665949c84f488571807eeb18c79, type: 2}
---- !u!114 &1961438154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1961438143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d2bdd810feccbd488f6e4c178a898cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lookTarget: {fileID: 195766232}
-  cameraDistance: 3
-  cameraHeight: 1.5
-  smoothSpeed: 2
---- !u!114 &1961438155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1961438143}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bbb2ffceae70394ba640da66c5bea09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackDamage: 10
-  attackRange: 2
-  attackCooldown: 1.5
-  chaseSpeed: 5
-  detectionRange: 8
---- !u!114 &1961438156
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1961438143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a28ccf155683ca41bc91664dcb2ebbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startNode: {fileID: 11400000, guid: d5129665949c84f488571807eeb18c79, type: 2}
-  npcScripts:
-  - {fileID: 1961438153}
-  - {fileID: 1961438154}
-  - {fileID: 1961438157}
-  - {fileID: 1336611083}
-  enemyScripts:
-  - {fileID: 1961438155}
-  dialogueTrigger: {fileID: 0}
-  combatCollider: {fileID: 0}
   enemyMaterial: {fileID: 2100000, guid: 43158253ccae5cf4d9e33770e01e8a1e, type: 2}
-  characterRenderer: {fileID: 0}
+  characterRenderer: {fileID: 1961438147}
+--- !u!114 &1961438160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961438143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6608c6979859a0245b2a1f19b602ce6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   characterAnimator: {fileID: 0}
   transformTrigger: TransformToEnemy
+  defeatTrigger: Defeated
   transformSound: {fileID: 0}
+  defeatSound: {fileID: 0}
   audioSource: {fileID: 0}
-  shouldTransformOnDialogueEnd: 1
-  transformTriggerNodeName: NPC A2
-  transformTriggerText: Cerrar
---- !u!114 &1961438157
+--- !u!114 &1961438161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4235,12 +4213,65 @@ MonoBehaviour:
   m_GameObject: {fileID: 1961438143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e4b4de8082da1848841ea1f3068355e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1aa05a6d57f420c43a40a61029e3acb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  waitTime: 3
-  patrolPoints: []
+  shouldTransformOnDialogueEnd: 1
+  transformTriggerNodeName: TransformTriggerNode
+  transformTriggerText: '[TRANSFORM]'
+--- !u!114 &1961438162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961438143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4eb0a82349450445a298b55ee0c5403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialDialogueNode: {fileID: 11400000, guid: d5129665949c84f488571807eeb18c79, type: 2}
+  postDefeatDialogueNode: {fileID: 11400000, guid: e890231da6e9a574dad4a8e26b7c5f5f, type: 2}
+  npcScripts:
+  - {fileID: 1961438161}
+  - {fileID: 1961438159}
+  - {fileID: 1961438160}
+  enemyScripts:
+  - {fileID: 1961438163}
+  - {fileID: 1961438164}
+  dialogueTrigger: {fileID: 1961438152}
+  combatCollider: {fileID: 1961438158}
+  currentState: 0
+--- !u!114 &1961438163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961438143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f146a283cc7d7046a146421e0781757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disruptTeleport: 1
+  activateCooldown: 1
+--- !u!114 &1961438164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961438143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f7a10c9ad72d74fa55bb3f3415d7db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceImpulsive: 300
+  pushDuration: 0.5
+  damage: 1
 --- !u!1 &1995413314
 GameObject:
   m_ObjectHideFlags: 0

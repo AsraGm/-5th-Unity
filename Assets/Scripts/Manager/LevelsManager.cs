@@ -56,6 +56,7 @@ public class LevelsManager : MonoBehaviour
 
     private void DefeatBoss()
     {
-       Destroy(levels[currentLevelIndex].boss.gameObject); // Destruye el objeto del jefe actual.
+        NPCController npc = levels[currentLevelIndex].boss.GetComponent<NPCController>();
+        if (npc != null) npc.DefeatBoss();
     }
 }
