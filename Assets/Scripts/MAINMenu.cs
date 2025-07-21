@@ -9,7 +9,7 @@ public class MAINMenu : MonoBehaviour
     public void Play()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("PARCIAL");
+        SceneManager.LoadScene("LEVEL 1");
     }
 
     public void Levels()

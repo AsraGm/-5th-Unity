@@ -47,7 +47,6 @@ public class TeleportCore : MonoBehaviour
         if (isDecisionActive)
         {
             decisionTimer -= Time.unscaledDeltaTime;
-            Debug.Log($"Tiempo restante: {decisionTimer:F} segundos");
 
             if (decisionTimer <= 0f)
             {
@@ -124,7 +123,6 @@ public class TeleportCore : MonoBehaviour
         }
         else
         {
-            Debug.Log("¡Posición no válida! Intenta de nuevo.");
             CancelPreview();
         }
     }
@@ -155,7 +153,6 @@ public class TeleportCore : MonoBehaviour
 
     void OnDecisionTimeout()
     {
-        Debug.Log("¡Tiempo agotado! Cooldown activado.");
         isDecisionActive = false;
         CancelPreview();
         lastTeleportTime = Time.time;

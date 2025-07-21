@@ -51,11 +51,6 @@ public class EnemyTeleportDisruptor : MonoBehaviour
             if (activateCooldown)
             {
                 teleportScript.lastTeleportTime = Time.time;
-                Debug.Log("Teleport cancelado por enemigo! Cooldown activado.");
-            }
-            else
-            {
-                Debug.Log("Teleport cancelado por enemigo!");
             }
         }
     }

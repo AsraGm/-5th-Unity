@@ -27,7 +27,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Animator panelAnimator;
 
     [Header("Keybind Settings")]
-    [Tooltip("Tecla para seleccionar opci�n")]
+    [Tooltip("Tecla para seleccionar opción")]
     [SerializeField] private KeyCode selectKey = KeyCode.Return;
     [Tooltip("Tecla para mover arriba")]
     [SerializeField] private KeyCode upKey = KeyCode.UpArrow;
@@ -35,9 +35,9 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private KeyCode downKey = KeyCode.DownArrow;
 
     [Header("Visual Feedback")]
-    [Tooltip("Color de opci�n seleccionada")]
+    [Tooltip("Color de opción seleccionada")]
     [SerializeField] private Color selectedColor = Color.yellow;
-    [Tooltip("Color de opci�n normal")]
+    [Tooltip("Color de opción normal")]
     [SerializeField] private Color normalColor = Color.white;
 
     [Header("Player Control")]
@@ -47,13 +47,21 @@ public class DialogueManager : MonoBehaviour
     [Header("Camera Control")]
     [SerializeField] private CAMERA cameraController;
 
-    [Tooltip("Para congelar f�sica")]
-    [SerializeField] private Rigidbody playerRigidbody; 
+    [Tooltip("Para congelar física")]
+    [SerializeField] private Rigidbody playerRigidbody;
 
     private Coroutine typingCoroutine;
     private DIALOGUENODE currentNode;
     private Button[] currentButtons;
     private int selectedIndex = 0;
+
+    // Variables para optimización
+    private bool isDialogueActive = false;
+    private bool hasValidButtons = false;
+    private int cachedButtonCount = 0;
+
+    // Cache para componentes TMP_Text de los botones
+    private TMP_Text[] buttonTexts;
 
     private void Awake()
     {
@@ -76,42 +84,55 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (!dialoguePanel.activeSelf) return;
+        // OPTIMIZACIÓN: Solo procesar input si el diálogo está activo Y hay botones válidos
+        if (!isDialogueActive || !hasValidButtons) return;
 
         HandleKeyboardNavigation();
     }
 
     private void HandleKeyboardNavigation()
     {
-        if (currentButtons == null || currentButtons.Length == 0) return;
-
-        // Guardar el �ndice anterior para actualizar el color
+        // Cache del índice anterior para comparación
         int previousIndex = selectedIndex;
 
-        // Navegaci�n con teclado
+        // Navegación con teclado
         if (Input.GetKeyDown(downKey))
         {
-            selectedIndex = (selectedIndex + 1) % currentButtons.Length;
+            selectedIndex = (selectedIndex + 1) % cachedButtonCount;
         }
         else if (Input.GetKeyDown(upKey))
         {
-            selectedIndex = (selectedIndex - 1 + currentButtons.Length) % currentButtons.Length;
+            selectedIndex = (selectedIndex - 1 + cachedButtonCount) % cachedButtonCount;
         }
         else if (Input.GetKeyDown(selectKey))
         {
             currentButtons[selectedIndex].onClick.Invoke();
             return;
         }
+
+        // OPTIMIZACIÓN: Solo actualizar colores si cambió la selección
         if (previousIndex != selectedIndex)
         {
-            currentButtons[previousIndex].GetComponentInChildren<TMP_Text>().color = normalColor;
-            currentButtons[selectedIndex].GetComponentInChildren<TMP_Text>().color = selectedColor;
+            UpdateButtonColors(previousIndex, selectedIndex);
+        }
+    }
+
+    // OPTIMIZACIÓN: Método separado para actualizar colores sin buscar componentes cada frame
+    private void UpdateButtonColors(int previousIndex, int newIndex)
+    {
+        if (buttonTexts != null && buttonTexts.Length > previousIndex && buttonTexts.Length > newIndex)
+        {
+            buttonTexts[previousIndex].color = normalColor;
+            buttonTexts[newIndex].color = selectedColor;
         }
     }
 
     public void StartDialogue(DIALOGUENODE startNode)
     {
-        cameraController.SwitchCameraStyle(CAMERA.CameraStyle.Dialogue); // Nueva línea
+        // OPTIMIZACIÓN: Activar flag de diálogo activo
+        isDialogueActive = true;
+
+        cameraController.SwitchCameraStyle(CAMERA.CameraStyle.Dialogue);
         playerMovement.controlActivo = false;
 
         currentNode = startNode;
@@ -123,6 +144,8 @@ public class DialogueManager : MonoBehaviour
     private void UpdateDialogueUI()
     {
         ClearSelection();
+
+        // Limpiar botones existentes
         foreach (Transform child in responsesContainer)
         {
             Destroy(child.gameObject);
@@ -139,7 +162,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueText.text = "";
 
-        var stringBuilder = new System.Text.StringBuilder(); // ← Clave para optimizar strings
+        var stringBuilder = new System.Text.StringBuilder();
 
         foreach (char letter in text)
         {
@@ -155,6 +178,8 @@ public class DialogueManager : MonoBehaviour
     private void CreateResponseButtons()
     {
         ClearSelection();
+
+        // Limpiar botones anteriores
         foreach (Transform child in responsesContainer)
         {
             Destroy(child.gameObject);
@@ -175,12 +200,24 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
+        // OPTIMIZACIÓN: Cache de botones y textos
         currentButtons = responsesContainer.GetComponentsInChildren<Button>();
+        cachedButtonCount = currentButtons.Length;
 
-        if (currentButtons.Length > 0)
+        // Cache de componentes TMP_Text para evitar GetComponentInChildren repetidos
+        buttonTexts = new TMP_Text[cachedButtonCount];
+        for (int i = 0; i < cachedButtonCount; i++)
+        {
+            buttonTexts[i] = currentButtons[i].GetComponentInChildren<TMP_Text>();
+        }
+
+        // OPTIMIZACIÓN: Establecer flags de estado
+        hasValidButtons = cachedButtonCount > 0;
+
+        if (hasValidButtons)
         {
             selectedIndex = 0;
-            currentButtons[selectedIndex].GetComponentInChildren<TMP_Text>().color = selectedColor;
+            buttonTexts[selectedIndex].color = selectedColor;
         }
     }
 
@@ -189,31 +226,35 @@ public class DialogueManager : MonoBehaviour
         GameObject button = Instantiate(responseButtonPrefab, responsesContainer);
         Button btnComponent = button.GetComponent<Button>();
         TMP_Text btnText = button.GetComponentInChildren<TMP_Text>();
-            btnText.text = text;
+        btnText.text = text;
 
-        if (isCloseButton) // Si es el bot�n de cerrar
+        if (isCloseButton)
         {
-            btnText.color = new Color(1f, 0, 0); // Rojo
+            btnText.color = new Color(1f, 0, 0);
             btnText.fontStyle = FontStyles.Bold;
             button.GetComponent<Image>().color = new Color(0.9f, 0.9f, 0.9f, 0.2f);
         }
 
         button.GetComponent<Button>().onClick.AddListener(action);
-        // Debug visual
-        Debug.Log($"Boton creado: {text}", button);
     }
 
     private void ClearSelection()
     {
-        if (currentButtons != null)
+        // OPTIMIZACIÓN: Usar cache en lugar de buscar componentes
+        if (buttonTexts != null)
         {
-            foreach (var button in currentButtons)
+            for (int i = 0; i < buttonTexts.Length; i++)
             {
-                if (button != null)
-                    button.GetComponentInChildren<TMP_Text>().color = normalColor;
+                if (buttonTexts[i] != null)
+                    buttonTexts[i].color = normalColor;
             }
         }
+
+        // Limpiar cache
         currentButtons = null;
+        buttonTexts = null;
+        hasValidButtons = false;
+        cachedButtonCount = 0;
     }
 
     private void SelectResponse(DialogueResponse response)
@@ -234,6 +275,9 @@ public class DialogueManager : MonoBehaviour
 
     public void OnDisappearEnd()
     {
+        // OPTIMIZACIÓN: Desactivar flag de diálogo activo
+        isDialogueActive = false;
+
         dialoguePanel.SetActive(false);
         ClearSelection();
 
@@ -246,7 +290,6 @@ public class DialogueManager : MonoBehaviour
         }
 
         if (currentNode.onNodeEnd != null) currentNode.onNodeEnd.Invoke();
-        Debug.Log("Movimiento restaurado correctamente");
     }
 
     private void EndDialogue()

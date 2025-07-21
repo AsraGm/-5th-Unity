@@ -28,10 +28,6 @@ public class EneTeleport : MonoBehaviour
         {
             _playerTransform = player.transform;
         }
-        else
-        {
-            Debug.LogWarning("No se encontró un GameObject con tag 'Player' en la escena.");
-        }
     }
 
     private void OnEnable()

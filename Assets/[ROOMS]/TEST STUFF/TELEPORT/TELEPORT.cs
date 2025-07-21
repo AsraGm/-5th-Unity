@@ -64,8 +64,7 @@ public class TELEPORT : MonoBehaviour
 
         if (isDecisionActive)
         {
-            decisionTimer -= Time.unscaledDeltaTime; // Usa unscaled para ignorar el slowdown
-            Debug.Log($"Tiempo restante: {decisionTimer:F} segundos");
+            decisionTimer -= Time.unscaledDeltaTime; 
 
             if (decisionTimer <= 0f)
             {
@@ -167,7 +166,6 @@ public class TELEPORT : MonoBehaviour
         }
         else
         {
-            Debug.Log("¡Posición no válida! Intenta de nuevo.");
             CancelPreview(); // Cancela sin activar cooldown
         }
     }
@@ -201,8 +199,7 @@ public class TELEPORT : MonoBehaviour
     }
 
     void OnDecisionTimeout()
-    {
-        Debug.Log("¡Tiempo agotado! Cooldown activado.");
+    { 
         isDecisionActive = false;
         CancelPreview();
         lastTeleportTime = Time.time; // Activa el cooldown

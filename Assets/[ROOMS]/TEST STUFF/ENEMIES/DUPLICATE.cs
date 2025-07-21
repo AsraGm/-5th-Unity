@@ -67,6 +67,5 @@ public class DUPLICATE : MonoBehaviour
         if (trigger.enemyPre == null || trigger.spawnPoint == null) return;
 
         Instantiate(trigger.enemyPre, trigger.spawnPoint.position, trigger.spawnPoint.rotation);
-        Debug.Log($"Enemigo spawnedo por ítem: {trigger.item.itemName}");
     }
 }
