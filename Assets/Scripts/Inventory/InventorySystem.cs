@@ -96,4 +96,10 @@ public class InventorySystem : MonoBehaviour
         itemLorePanel.ShowDetails(data);
         itemLorePanel.gameObject.SetActive(true);
     }
+    public void ClearAllItems()
+    {
+        inventoryItems.Clear();
+        UpdateInventoryUI();
+        Debug.Log($"Inventario limpiado - {inventoryItems.Count} items restantes");
+    }
 }

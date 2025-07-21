@@ -174,4 +174,14 @@ public class NPCController : MonoBehaviour
 
     [ContextMenu("Defeat Boss")]
     public void DebugDefeat() => DefeatBoss();
+
+    public void RevertToNPC()
+    {
+        if (currentState != NPCState.NPC)
+        {
+            Debug.Log($"Forzando {gameObject.name} de vuelta a estado NPC");
+            SetState(NPCState.NPC);
+            transformation.RevertToNPC();
+        }
+    }
 }
