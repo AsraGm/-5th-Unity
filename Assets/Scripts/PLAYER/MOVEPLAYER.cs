@@ -5,22 +5,20 @@ using UnityEngine;
 public class MOVEPLAYER : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;
-    public float groundDrag;
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
-
+    public float moveSpeed = 7f;
+    public float groundDrag = 5f;
+    public float jumpForce = 12f;
+    public float jumpCooldown = 0.25f;
+    public float airMultiplier = 0.4f;
     bool readyToJump;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
-    public Transform groundCheck; // Nuevo: asigna un empty child en la base del jugador
+    public Transform groundCheck;
     public float groundCheckRadius = 0.3f;
     public LayerMask whatIsGround;
-
     bool grounded;
 
     public Transform orientation;
@@ -29,24 +27,22 @@ public class MOVEPLAYER : MonoBehaviour
     float verticalInput;
 
     Vector3 moveDirection;
-
     Rigidbody rb;
     public bool controlActivo = true;
-
-    public static bool IsColliding { get; private set; } // Para saber si el jugador está en contacto
-
-
-    //// Para simular gravedad manualmente
-    //private float gravity = -9.81f;
-    //private float verticalVelocity = 0f;
+    public static bool IsColliding { get; private set; }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-        rb.mass = 1f; // Valor estándar (ajusta según necesites)
-        rb.linearDamping = 0f; // Asegúrate de que no hay resistencia en el aire
+        rb.mass = 1f;
+        rb.linearDamping = 0f;
+
+        // Configuraciones de rendimiento
+        Application.targetFrameRate = 60; // Cambiado de 1000 a 60
+        QualitySettings.vSyncCount = 1; // Habilita VSync
+
         if (groundCheck == null)
         {
             Debug.LogError("Asigna el GroundCheck transform en el inspector.");
@@ -55,19 +51,16 @@ public class MOVEPLAYER : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log($"Control activo: {controlActivo}");
         if (!controlActivo) return;
-        // Ground check usando CheckSphere (como en el segundo script)
+
+        // Ground check
         grounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, whatIsGround);
 
         MyInput();
         SpeedControl();
 
-        // Aplicar drag solo cuando está en tierra
-        if (grounded)
-            rb.linearDamping = groundDrag;
-        else
-            rb.linearDamping = 0;
+        // Aplicar drag
+        rb.linearDamping = grounded ? groundDrag : 0;
     }
 
     private void FixedUpdate()
@@ -83,6 +76,7 @@ public class MOVEPLAYER : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
+        // Jump input
         if (Input.GetKeyDown(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
@@ -94,9 +88,9 @@ public class MOVEPLAYER : MonoBehaviour
     private void MovePlayer()
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
         moveDirection = moveDirection.normalized;
 
+        // Aplicar fuerza con mejor control
         if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         else
@@ -116,7 +110,7 @@ public class MOVEPLAYER : MonoBehaviour
 
     private void Jump()
     {
-        // Resetear velocidad Y antes de saltar para evitar acumulación
+        // Reset Y velocity antes de saltar
         Vector3 vel = rb.linearVelocity;
         vel.y = 0f;
         rb.linearVelocity = vel;
@@ -139,7 +133,7 @@ public class MOVEPLAYER : MonoBehaviour
     {
         if (groundCheck != null)
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = grounded ? Color.green : Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
