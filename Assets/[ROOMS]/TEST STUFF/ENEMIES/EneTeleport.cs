@@ -6,10 +6,8 @@ public class EneTeleport : MonoBehaviour
     [Header("Configuración de Teletransporte")]
     [Tooltip("Dist mín desde el jugador donde el enemigo puede aparecer")]
     [SerializeField] private float minDistance = 3f;
-
     [Tooltip("Dist máx desde el jugador donde el enemigo puede aparecer")]
     [SerializeField] private float maxDistance = 7f;
-
     [Tooltip("Tiempo de espera antes de teletransportarse (s)")]
     [SerializeField] private float teleportDelay = 0.5f;
 
@@ -20,9 +18,17 @@ public class EneTeleport : MonoBehaviour
     private Transform _playerTransform;
     private bool _isTeleporting = false;
 
-    // Cacheamos el componente para evitar búsquedas repetidas
+    // ========== VARIABLES PARA RESET ==========
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
+
+
     private void Awake()
     {
+        // ========== GUARDAR POSICIÓN INICIAL ==========
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -33,17 +39,32 @@ public class EneTeleport : MonoBehaviour
     private void OnEnable()
     {
         TeleportCore.OnPlayerTeleported += OnPlayerTeleported;
+        // ========== SUSCRIBIRSE AL RESET ==========
+        ResetSystem.OnLevelReset += ResetToInitialPosition;
     }
 
     private void OnDisable()
     {
         TeleportCore.OnPlayerTeleported -= OnPlayerTeleported;
+        // ========== DESUSCRIBIRSE DEL RESET ==========
+        ResetSystem.OnLevelReset -= ResetToInitialPosition;
+    }
+
+    // ========== MÉTODO DE RESET AUTOMÁTICO ==========
+    private void ResetToInitialPosition()
+    {
+        // Parar cualquier teleport en progreso
+        StopAllCoroutines();
+
+        // Volver a posición original
+        transform.position = initialPosition;
+        transform.rotation = initialRotation;
+        _isTeleporting = false;
     }
 
     private void OnPlayerTeleported(Vector3 playerNewPosition)
     {
         if (_isTeleporting || _playerTransform == null) return;
-
         StartCoroutine(TeleportToPlayer(playerNewPosition));
     }
 
@@ -55,14 +76,12 @@ public class EneTeleport : MonoBehaviour
         // Calculamos posición aleatoria alrededor del jugador
         Vector3 randomDirection = Random.insideUnitSphere.normalized;
         randomDirection.y = 0f; // Ignoramos el eje Y para dirección horizontal
-
         Vector3 teleportPosition = playerPosition +
                                  randomDirection *
                                  Random.Range(minDistance, maxDistance);
 
         // Aplicamos offset vertical
         teleportPosition.y += verticalOffset;
-
         transform.position = teleportPosition;
         _isTeleporting = false;
     }
@@ -73,17 +92,14 @@ public class EneTeleport : MonoBehaviour
 #if UNITY_EDITOR
         // Solo ejecuta en el Editor para evitar overhead en builds
         CachePlayerTransformIfNeeded();
-
         if (_playerTransform != null)
         {
             // Círculo verde: Distancia mínima
             Gizmos.color = new Color(0, 1, 0, 0.5f);
             Gizmos.DrawWireSphere(_playerTransform.position, minDistance);
-
             // Círculo rojo: Distancia máxima
             Gizmos.color = new Color(1, 0, 0, 0.3f);
             Gizmos.DrawWireSphere(_playerTransform.position, maxDistance);
-
             // Línea de referencia
             Gizmos.color = Color.white;
             Gizmos.DrawLine(transform.position, _playerTransform.position);

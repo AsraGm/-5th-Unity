@@ -16,6 +16,8 @@ public class ResetSystem : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private RagdollController ragdollController; // NUEVA LÍNEA
+
 
     [Header("Audio")]
     [SerializeField] private AudioSource rewindAudioSource;
@@ -23,7 +25,7 @@ public class ResetSystem : MonoBehaviour
 
     // Estados iniciales
     private LevelInitialState initialState;
-
+    public static System.Action OnLevelReset;
     // Para el efecto visual
     private Queue<PlayerSnapshot> recentPositions;
     private int maxSnapshots = 150; // ~5 segundos a 30fps
@@ -85,6 +87,11 @@ public class ResetSystem : MonoBehaviour
 
     private void Start()
     {
+        if (ragdollController == null && player != null)
+        {
+            ragdollController = player.GetComponent<RagdollController>();
+        }
+
         SaveInitialLevelState();
         StartCoroutine(TrackRecentMovement());
 
@@ -115,7 +122,8 @@ public class ResetSystem : MonoBehaviour
 
         // Guardar estado de todos los NPCs
         initialState.npcStates = new List<NPCInitialState>();
-        NPCController[] allNPCs = FindObjectsOfType<NPCController>();
+        NPCController[] allNPCs = FindObjectsByType<NPCController>(FindObjectsSortMode.None);
+
 
         foreach (NPCController npc in allNPCs)
         {
@@ -131,7 +139,8 @@ public class ResetSystem : MonoBehaviour
 
         // Guardar estado de todos los items
         initialState.itemStates = new List<ItemInitialState>();
-        ItemPickup[] allItems = FindObjectsOfType<ItemPickup>();
+        ItemPickup[] allItems = FindObjectsByType<ItemPickup>(FindObjectsSortMode.None);
+
 
         foreach (ItemPickup item in allItems)
         {
@@ -259,36 +268,69 @@ public class ResetSystem : MonoBehaviour
 
         // 6. Limpiar queue de posiciones
         recentPositions.Clear();
+
+        OnLevelReset?.Invoke();
     }
 
     private void ResetPlayerState()
     {
+            StartCoroutine(CompletePlayerReset());
+    }
+
+    private IEnumerator CompletePlayerReset()
+    {
+        // Esperar 2 frames para asegurar que todo se resetee
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
         if (player != null)
         {
-            // Restaurar posición y rotación
-            player.position = initialState.playerPosition;
-            player.rotation = initialState.playerRotation;
-
-            // Restaurar vida completa
-            if (playerHealth != null)
-            {
-                playerHealth.ResetHealth(); // Necesitamos agregar este método
-            }
-
-            // Parar movimiento si tiene Rigidbody
+            // PASO 2: Parar todo movimiento del Rigidbody principal
             Rigidbody playerRb = player.GetComponent<Rigidbody>();
             if (playerRb != null)
             {
                 playerRb.linearVelocity = Vector3.zero;
                 playerRb.angularVelocity = Vector3.zero;
+                playerRb.isKinematic = false; // Asegurar que no esté kinematic
+                Debug.Log("Rigidbody principal reseteado");
+            }
+
+            // PASO 3: Restaurar posición y rotación
+            player.position = initialState.playerPosition;
+            player.rotation = initialState.playerRotation;
+            Debug.Log($"Posición restaurada a: {initialState.playerPosition}");
+
+            // PASO 4: Asegurar que el Animator esté activo
+            Animator animator = player.GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.enabled = true;
+                Debug.Log("Animator reactivado");
+            }
+
+            // PASO 5: Restaurar vida completa
+            if (playerHealth != null)
+            {
+                playerHealth.ResetHealth();
+                Debug.Log("Salud restaurada");
+            }
+
+            // PASO 6: Reactivar control del jugador
+            MOVEPLAYER moveScript = player.GetComponent<MOVEPLAYER>();
+            if (moveScript != null)
+            {
+                moveScript.controlActivo = true;
+                moveScript.EnableControl();
+                Debug.Log("Control del jugador reactivado");
             }
         }
 
-        // Restaurar cámara
+        // PASO 7: Restaurar cámara
         if (playerCamera != null)
         {
             playerCamera.transform.position = initialState.cameraPosition;
             playerCamera.transform.rotation = initialState.cameraRotation;
+            Debug.Log("Cámara restaurada");
         }
     }
 
@@ -327,7 +369,7 @@ public class ResetSystem : MonoBehaviour
         }
 
         // Método 2: Buscar TODOS los ItemPickup existentes (más seguro)
-        ItemPickup[] allItems = FindObjectsOfType<ItemPickup>(true); // incluye inactivos
+        ItemPickup[] allItems = FindObjectsByType<ItemPickup>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (ItemPickup item in allItems)
         {
             item.ResetItem();

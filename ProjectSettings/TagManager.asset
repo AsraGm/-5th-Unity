@@ -7,6 +7,8 @@ TagManager:
   - Boss
   - NPC
   - Enemy
+  - Assets
+  - Walls
   layers:
   - Default
   - TransparentFX

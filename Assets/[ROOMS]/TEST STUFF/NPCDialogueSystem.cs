@@ -4,6 +4,7 @@ public class NPCDialogueSystem : MonoBehaviour
 {
     private NPCController controller;
     private bool isDialogueActive = false;
+    private DIALOGUENODE currentDialogueNode; // Nueva variable para trackear el diálogo actual
 
     [Header("Transformation Settings")]
     [Tooltip("¿Se transforma automáticamente al terminar el diálogo inicial?")]
@@ -24,6 +25,7 @@ public class NPCDialogueSystem : MonoBehaviour
 
         Debug.Log($"Iniciando diálogo en {gameObject.name} - Estado: {controller.CurrentState}");
         isDialogueActive = true;
+        currentDialogueNode = node; // Guardar referencia del diálogo actual
 
         // Solo configurar transformación si estamos en estado NPC inicial
         if (controller.IsNPC)
@@ -84,6 +86,17 @@ public class NPCDialogueSystem : MonoBehaviour
     public void OnDialogueEnd()
     {
         isDialogueActive = false;
+
+        // AQUÍ ES DONDE AGREGAS LA LÍNEA NUEVA
+        // Verificar si era un diálogo PostDefeat que terminó
+        if (controller.IsPostDefeat && currentDialogueNode == controller.PostDefeatDialogueNode)
+        {
+            Debug.Log("Diálogo PostDefeat terminado - Activando transición de escena");
+            GetComponent<NPCSceneTransition>()?.OnPostDefeatDialogueEnd();
+        }
+
+        // Limpiar referencia
+        currentDialogueNode = null;
     }
 
     public bool IsDialogueActive => isDialogueActive;

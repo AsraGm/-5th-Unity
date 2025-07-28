@@ -26,6 +26,9 @@ public class DUPLICATE : MonoBehaviour
     private float lastSpawnTime;
     private InventorySystem inventorySystem;
 
+    // ========== LISTA PARA TRACKEAR ENEMIGOS SPAWNEADOS ==========
+    private List<GameObject> spawnedEnemies = new List<GameObject>();
+
     private void Awake()
     {
         inventorySystem = InventorySystem.Instance;
@@ -34,11 +37,39 @@ public class DUPLICATE : MonoBehaviour
     private void OnEnable()
     {
         InventorySystem.OnItemAdded += OnItemCollected;
+        // ========== SUSCRIBIRSE AL RESET ==========
+        ResetSystem.OnLevelReset += ClearAllSpawnedEnemies;
     }
 
     private void OnDisable()
     {
         InventorySystem.OnItemAdded -= OnItemCollected;
+        // ========== DESUSCRIBIRSE DEL RESET ==========
+        ResetSystem.OnLevelReset -= ClearAllSpawnedEnemies;
+    }
+
+    // ========== MÉTODO DE LIMPIEZA AUTOMÁTICA ==========
+    private void ClearAllSpawnedEnemies()
+    {
+        // Destruir todos los enemigos spawneados
+        foreach (GameObject enemy in spawnedEnemies)
+        {
+            if (enemy != null)
+            {
+                Destroy(enemy);
+            }
+        }
+
+        // Limpiar la lista
+        spawnedEnemies.Clear();
+
+        // Resetear contadores
+        foreach (var trigger in spawnTriggers)
+        {
+            trigger.totalSpawned = 0;
+        }
+
+        Debug.Log($"DUPLICATE: {spawnedEnemies.Count} enemigos duplicados eliminados");
     }
 
     private void OnItemCollected(ItemData newItem)
@@ -66,6 +97,11 @@ public class DUPLICATE : MonoBehaviour
     {
         if (trigger.enemyPre == null || trigger.spawnPoint == null) return;
 
-        Instantiate(trigger.enemyPre, trigger.spawnPoint.position, trigger.spawnPoint.rotation);
+        // ========== TRACKEAR EL ENEMIGO SPAWNEADO ==========
+        GameObject newEnemy = Instantiate(trigger.enemyPre, trigger.spawnPoint.position, trigger.spawnPoint.rotation);
+        spawnedEnemies.Add(newEnemy);
+        trigger.totalSpawned++;
+
+        Debug.Log($"DUPLICATE: Enemigo spawneado. Total trackeados: {spawnedEnemies.Count}");
     }
 }

@@ -20,14 +20,19 @@ public class NPCController : MonoBehaviour
     [Tooltip("Collider para combate")]
     [SerializeField] private Collider combatCollider;
 
-    // Componentes modulares
+    // Componentes modulares existentes
     private NPCDialogueSystem dialogueSystem;
     private NPCTransformation transformation;
     private NPCEffectsManager effectsManager;
 
+    // Nuevos componentes modulares
+    private NPCStateManager stateManager;
+    private NPCInteractionHandler interactionHandler;
+    private NPCComponentController componentController;
+    private NPCSceneTransition sceneTransition;
+
     // Estados principales
     public enum NPCState { NPC, Enemy, PostDefeat }
-    [SerializeField] private NPCState currentState = NPCState.NPC;
 
     private void Awake()
     {
@@ -36,152 +41,81 @@ public class NPCController : MonoBehaviour
 
     private void Start()
     {
-        SetInitialState();
+        stateManager.SetInitialState();
     }
 
     private void InitializeComponents()
     {
-        // Obtener o agregar componentes modulares
+        // Componentes existentes
         dialogueSystem = GetComponent<NPCDialogueSystem>() ?? gameObject.AddComponent<NPCDialogueSystem>();
         transformation = GetComponent<NPCTransformation>() ?? gameObject.AddComponent<NPCTransformation>();
         effectsManager = GetComponent<NPCEffectsManager>() ?? gameObject.AddComponent<NPCEffectsManager>();
 
-        // Configurar componentes
+        // Nuevos componentes modulares
+        stateManager = GetComponent<NPCStateManager>() ?? gameObject.AddComponent<NPCStateManager>();
+        interactionHandler = GetComponent<NPCInteractionHandler>() ?? gameObject.AddComponent<NPCInteractionHandler>();
+        componentController = GetComponent<NPCComponentController>() ?? gameObject.AddComponent<NPCComponentController>();
+        sceneTransition = GetComponent<NPCSceneTransition>() ?? gameObject.AddComponent<NPCSceneTransition>();
+
+        // Configurar todos los componentes
         dialogueSystem.Initialize(this);
         transformation.Initialize(this);
         effectsManager.Initialize(this);
-    }
-
-    private void SetInitialState()
-    {
-        SetState(NPCState.NPC);
+        stateManager.Initialize(this);
+        interactionHandler.Initialize(this, dialogueSystem);
+        componentController.Initialize(this, npcScripts, enemyScripts, dialogueTrigger, combatCollider);
+        sceneTransition.Initialize(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            HandlePlayerInteraction();
-        }
+        interactionHandler.OnTriggerEnter(other);
     }
 
-    private void HandlePlayerInteraction()
-    {
-        switch (currentState)
-        {
-            case NPCState.NPC:
-                dialogueSystem.StartDialogue(initialDialogueNode);
-                break;
-            case NPCState.PostDefeat:
-                dialogueSystem.StartDialogue(postDefeatDialogueNode);
-                break;
-            case NPCState.Enemy:
-                // Los enemigos no inician diálogos
-                break;
-        }
-    }
-
-    // Método público llamado desde el sistema de diálogos
+    // Métodos públicos que mantienen la interfaz original
     public void TransformToEnemy()
     {
-        if (currentState != NPCState.NPC) return;
+        if (stateManager.CurrentState != NPCState.NPC) return;
 
-        SetState(NPCState.Enemy);
+        stateManager.SetState(NPCState.Enemy);
         transformation.ExecuteTransformation();
         effectsManager.PlayTransformationEffects();
     }
 
-    // Método público llamado desde LevelsManager
     public void DefeatBoss()
     {
-        if (currentState != NPCState.Enemy) return;
+        if (stateManager.CurrentState != NPCState.Enemy) return;
 
         Debug.Log($"{gameObject.name} ha sido salvado/derrotado!");
-        SetState(NPCState.PostDefeat);
+        stateManager.SetState(NPCState.PostDefeat);
         transformation.RevertToNPC();
         effectsManager.PlayDefeatEffects();
     }
 
-    private void SetState(NPCState newState)
+    public void RevertToNPC()
     {
-        currentState = newState;
-        UpdateComponents();
-    }
-
-    private void UpdateComponents()
-    {
-        switch (currentState)
+        if (stateManager.CurrentState != NPCState.NPC)
         {
-            case NPCState.NPC:
-                SetScriptsEnabled(npcScripts, true);
-                SetScriptsEnabled(enemyScripts, false);
-                SetColliders(true, false);
-                SetTag("NPC");
-                break;
-
-            case NPCState.Enemy:
-                SetScriptsEnabled(npcScripts, false);
-                SetScriptsEnabled(enemyScripts, true);
-                SetColliders(false, true);
-                SetTag("Enemy");
-                break;
-
-            case NPCState.PostDefeat:
-                SetScriptsEnabled(npcScripts, true);
-                SetScriptsEnabled(enemyScripts, false);
-                SetColliders(true, false);
-                SetTag("NPC");
-                break;
+            Debug.Log($"Forzando {gameObject.name} de vuelta a estado NPC");
+            stateManager.SetState(NPCState.NPC);
+            transformation.RevertToNPC();
         }
     }
 
-    private void SetScriptsEnabled(MonoBehaviour[] scripts, bool enabled)
-    {
-        if (scripts == null) return;
+    // Getters públicos - mantienen la interfaz original
+    public NPCState CurrentState => stateManager.CurrentState;
+    public bool IsNPC => stateManager.CurrentState == NPCState.NPC;
+    public bool IsEnemy => stateManager.CurrentState == NPCState.Enemy;
+    public bool IsPostDefeat => stateManager.CurrentState == NPCState.PostDefeat;
 
-        for (int i = 0; i < scripts.Length; i++)
-        {
-            if (scripts[i] != null && scripts[i].enabled != enabled)
-            {
-                scripts[i].enabled = enabled;
-            }
-        }
-    }
+    // Propiedades públicas para acceso de componentes
+    public DIALOGUENODE InitialDialogueNode => initialDialogueNode;
+    public DIALOGUENODE PostDefeatDialogueNode => postDefeatDialogueNode;
 
-    private void SetColliders(bool dialogueEnabled, bool combatEnabled)
-    {
-        if (dialogueTrigger != null) dialogueTrigger.enabled = dialogueEnabled;
-        if (combatCollider != null) combatCollider.enabled = combatEnabled;
-    }
-
-    private void SetTag(string newTag)
-    {
-        if (gameObject.tag != newTag)
-        {
-            gameObject.tag = newTag;
-        }
-    }
-
-    // Getters públicos
-    public NPCState CurrentState => currentState;
-    public bool IsNPC => currentState == NPCState.NPC;
-    public bool IsEnemy => currentState == NPCState.Enemy;
-    public bool IsPostDefeat => currentState == NPCState.PostDefeat;
-
-    // Debug methods
+    // Debug methods - mantienen funcionalidad original
     [ContextMenu("Transform to Enemy")]
     public void DebugTransform() => TransformToEnemy();
 
     [ContextMenu("Defeat Boss")]
     public void DebugDefeat() => DefeatBoss();
-
-    public void RevertToNPC()
-    {
-        if (currentState != NPCState.NPC)
-        {
-            Debug.Log($"Forzando {gameObject.name} de vuelta a estado NPC");
-            SetState(NPCState.NPC);
-            transformation.RevertToNPC();
-        }
-    }
 }

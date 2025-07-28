@@ -45,7 +45,8 @@ public class MOVEPLAYER : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
-
+        rb.mass = 1f; // Valor estándar (ajusta según necesites)
+        rb.linearDamping = 0f; // Asegúrate de que no hay resistencia en el aire
         if (groundCheck == null)
         {
             Debug.LogError("Asigna el GroundCheck transform en el inspector.");
@@ -67,16 +68,6 @@ public class MOVEPLAYER : MonoBehaviour
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
-
-        //// Simular gravedad para el salto (opcional, para mayor control)
-        //if (grounded && verticalVelocity < 0)
-        //{
-        //    verticalVelocity = -2f; // Pequeña fuerza hacia abajo para mantenerlo pegado al suelo
-        //}
-        //else
-        //{
-        //    verticalVelocity += gravity * Time.deltaTime;
-        //}
     }
 
     private void FixedUpdate()
@@ -103,6 +94,8 @@ public class MOVEPLAYER : MonoBehaviour
     private void MovePlayer()
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        moveDirection = moveDirection.normalized;
 
         if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
