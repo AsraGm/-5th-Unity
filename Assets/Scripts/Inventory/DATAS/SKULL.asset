@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SKULL
   m_EditorClassIdentifier: 
   itemName: SKULL
-  icon: {fileID: 21300000, guid: 32890ba103e6da740b58fb013668470b, type: 3}
+  icon: {fileID: 21300000, guid: 82f8c528a112228419901fe885b663be, type: 3}
   loreImage: {fileID: 21300000, guid: dc03fcb6d628fcd41acd925a40c31f67, type: 3}

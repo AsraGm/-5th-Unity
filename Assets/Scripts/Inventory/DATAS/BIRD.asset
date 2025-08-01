@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ee7fc1835a5a5648bca0cca5cb7afe7, type: 3}
-  m_Name: FEATHER
+  m_Name: BIRD
   m_EditorClassIdentifier: 
-  itemName: FEATHER
-  icon: {fileID: 21300000, guid: 714be6a08cc855444b915ea7ad9bfb13, type: 3}
+  itemName: BIRD
+  icon: {fileID: 21300000, guid: 1d892ca4651e4724598b0b68791111f5, type: 3}
   loreImage: {fileID: 21300000, guid: dc03fcb6d628fcd41acd925a40c31f67, type: 3}

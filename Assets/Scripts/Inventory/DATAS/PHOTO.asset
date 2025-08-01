@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PHOTO
   m_EditorClassIdentifier: 
   itemName: PHOTO
-  icon: {fileID: 21300000, guid: b481b94083809864aac6b24a45cc7256, type: 3}
+  icon: {fileID: 21300000, guid: b837c6f449e37ac48a03e9dff1a97246, type: 3}
   loreImage: {fileID: 21300000, guid: dc03fcb6d628fcd41acd925a40c31f67, type: 3}
