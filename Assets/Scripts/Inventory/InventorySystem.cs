@@ -96,6 +96,38 @@ public class InventorySystem : MonoBehaviour
         itemLorePanel.ShowDetails(data);
         itemLorePanel.gameObject.SetActive(true);
     }
+
+    public void SetItemCount(int targetCount)
+    {
+        // Si ya tenemos más ítems de los que necesitamos, no hacer nada
+        if (inventoryItems.Count >= targetCount)
+        {
+            return;
+        }
+        Debug.Log($"SetItemCount llamado: Actual={inventoryItems.Count}, Target={targetCount}");
+    }
+    public List<ItemData> GetItemsToPreserve(int count)
+    {
+        List<ItemData> itemsToPreserve = new List<ItemData>();
+
+        for (int i = 0; i < Mathf.Min(count, inventoryItems.Count); i++)
+        {
+            itemsToPreserve.Add(inventoryItems[i]);
+        }
+
+        return itemsToPreserve;
+    }
+
+    // MÉTODO ALTERNATIVO: Restaurar ítems específicos
+    public void RestoreItems(List<ItemData> itemsToRestore)
+    {
+        inventoryItems.Clear();
+        inventoryItems.AddRange(itemsToRestore);
+        UpdateInventoryUI();
+
+        Debug.Log($"Inventario restaurado con {inventoryItems.Count} ítems preservados");
+    }
+
     public void ClearAllItems()
     {
         inventoryItems.Clear();

@@ -33,16 +33,14 @@ public class LevelsManager : MonoBehaviour
 
     private void CheckCurrentLevel()
     {
-        // Verifica si el sistema de inventario está configurado y si hay niveles definidos para evitar errores.
-        if (inventorySystem == null || levels.Count == 0) return; // 
-        if (currentLevelIndex < +
-            0 || currentLevelIndex >= levels.Count) return;
+        if (inventorySystem == null || levels.Count == 0) return;
+        if (currentLevelIndex < 0 || currentLevelIndex >= levels.Count) return;
 
-        LevelData level = levels[currentLevelIndex]; // Creo "LevelData level" para acceder a los datos del nivel actual.
+        LevelData level = levels[currentLevelIndex];
 
         if (inventorySystem.ItemCount >= level.itemsRequired && !level.bossDefeated && level.boss != null)
         {
-            DefeatBoss(); // Llama al método para derrotar al jefe.
+            DefeatBoss();
             level.bossDefeated = true;
             LevelComplete();
         }
@@ -50,13 +48,52 @@ public class LevelsManager : MonoBehaviour
 
     private void LevelComplete()
     {
-        if (currentLevelIndex < levels.Count - 1) { currentLevelIndex++; Debug.Log($"Avanzando al nivel {levels[currentLevelIndex].levelName}"); }
-        else Debug.Log("Todos los niveles completados!");
+        if (currentLevelIndex < levels.Count - 1)
+        {
+            currentLevelIndex++;
+
+            // NUEVO: Notificar al ResetSystem que el nivel ha cambiado
+            if (ResetSystem.Instance != null)
+            {
+                ResetSystem.Instance.UpdateLevelState();
+            }
+
+            Debug.Log($"Avanzando al nivel {levels[currentLevelIndex].levelName}");
+        }
+        else
+        {
+            Debug.Log("Todos los niveles completados!");
+        }
     }
 
     private void DefeatBoss()
     {
         NPCController npc = levels[currentLevelIndex].boss.GetComponent<NPCController>();
         if (npc != null) npc.DefeatBoss();
+    }
+
+    // NUEVOS: Métodos públicos para que ResetSystem pueda acceder a la información
+    public int GetCurrentLevelIndex()
+    {
+        return currentLevelIndex;
+    }
+
+    public int GetLevelsCount()
+    {
+        return levels.Count;
+    }
+
+    public LevelData GetLevelData(int levelIndex)
+    {
+        if (levelIndex >= 0 && levelIndex < levels.Count)
+        {
+            return levels[levelIndex];
+        }
+        return null;
+    }
+
+    public LevelData GetCurrentLevelData()
+    {
+        return GetLevelData(currentLevelIndex);
     }
 }
