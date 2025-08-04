@@ -9,26 +9,12 @@ public class PlayerHealth : MonoBehaviour
     private List<Image> originalHearts; // Cache de corazones originales
     [SerializeField] List<Image> hearts = new List<Image>();
 
-    [Header("References")]
-    [SerializeField] private RagdollController ragdollController;
-
     private bool isDead = false;
 
     private void Start()
     {
         // Guardar referencia de corazones originales
         originalHearts = new List<Image>(hearts);
-
-        // Obtener RagdollController si no está asignado
-        if (ragdollController == null)
-        {
-            ragdollController = GetComponent<RagdollController>();
-        }
-
-        if (ragdollController == null)
-        {
-            Debug.LogWarning("RagdollController no encontrado en " + gameObject.name);
-        }
     }
 
     public void TakeDamagePlayer(int damage)
@@ -67,12 +53,6 @@ public class PlayerHealth : MonoBehaviour
             }
         }
 
-        // Asegurar que el ragdoll esté desactivado y el animator activo
-        if (ragdollController != null)
-        {
-            ragdollController.EnableAnimator();
-        }
-
         Debug.Log("Salud restaurada completamente");
     }
 
@@ -82,16 +62,6 @@ public class PlayerHealth : MonoBehaviour
 
         isDead = true;
         Debug.Log("El jugador ha muerto.");
-
-        // Activar ragdoll inmediatamente
-        if (ragdollController != null)
-        {
-            ragdollController.EnableRagdoll();
-
-            // Opcional: aplicar una pequeña fuerza para hacer más dramática la muerte
-            Vector3 deathForce = Vector3.up * 2f + Random.insideUnitSphere * 1f;
-            ragdollController.ApplyRagdollForce(deathForce, transform.position);
-        }
 
         // Esperar un momento antes de iniciar el reset para que se vea el ragdoll
         StartCoroutine(DelayedReset());
@@ -119,12 +89,6 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamageWithForce(int damage, Vector3 force, Vector3 hitPoint)
     {
         TakeDamagePlayer(damage);
-
-        // Si muere, aplicar la fuerza al ragdoll
-        if (isDead && ragdollController != null && ragdollController.IsRagdollActive())
-        {
-            ragdollController.ApplyRagdollForce(force, hitPoint);
-        }
     }
 
     // Métodos para debug

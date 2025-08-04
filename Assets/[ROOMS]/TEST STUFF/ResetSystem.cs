@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal; // Para URP
 
 public class ResetSystem : MonoBehaviour
 {
@@ -16,11 +18,25 @@ public class ResetSystem : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private RagdollController ragdollController;
 
     [Header("Audio")]
     [SerializeField] private AudioSource rewindAudioSource;
     [SerializeField] private AudioClip rewindSound;
+
+    // NUEVO: Post Processing para efectos de muerte
+    [Header("Death Visual Effects")]
+    [SerializeField] private Volume postProcessVolume;
+    [Tooltip("Intensidad máxima de la viñeta durante el parpadeo")]
+    [SerializeField] private float maxVignetteIntensity = 0.8f;
+    [Tooltip("Velocidad del parpadeo de la viñeta")]
+    [SerializeField] private float vignetteFlickerSpeed = 8f;
+    [Tooltip("Duración del fade out final de la viñeta")]
+    [SerializeField] private float vignetteFadeOutDuration = 1.5f;
+
+    // Referencias de post processing
+    private Vignette vignette;
+    private float originalVignetteIntensity;
+    private bool hasVignetteEffect = false;
 
     // NUEVO: Para trackear ítems por nivel
     [Header("Level Management")]
@@ -95,10 +111,8 @@ public class ResetSystem : MonoBehaviour
 
     private void Start()
     {
-        if (ragdollController == null && player != null)
-        {
-            ragdollController = player.GetComponent<RagdollController>();
-        }
+        // NUEVO: Inicializar post processing
+        InitializePostProcessing();
 
         // NUEVO: Obtener referencia al LevelsManager si no está asignada
         if (levelsManager == null)
@@ -108,6 +122,28 @@ public class ResetSystem : MonoBehaviour
 
         SaveInitialLevelState();
         StartCoroutine(TrackRecentMovement());
+    }
+
+    // NUEVO: Inicializar efectos de post processing
+    private void InitializePostProcessing()
+    {
+        if (postProcessVolume == null)
+        {
+            Debug.LogWarning("No se ha asignado el Volume de Post Processing! Los efectos visuales de muerte no funcionarán.");
+            return;
+        }
+
+        // Obtener referencia al efecto Vignette
+        if (postProcessVolume.profile.TryGet<Vignette>(out vignette))
+        {
+            originalVignetteIntensity = vignette.intensity.value;
+            hasVignetteEffect = true;
+            Debug.Log($"Vignette encontrado. Intensidad original: {originalVignetteIntensity}");
+        }
+        else
+        {
+            Debug.LogWarning("No se encontró el efecto Vignette en el Volume Profile. Agrega Vignette al Volume Profile para los efectos visuales.");
+        }
     }
 
     // NUEVO: Método público para actualizar el estado cuando se cambia de nivel
@@ -241,6 +277,13 @@ public class ResetSystem : MonoBehaviour
     {
         isRewinding = true;
 
+        // NUEVO: Iniciar efecto de viñeta parpadeante
+        Coroutine vignetteEffect = null;
+        if (hasVignetteEffect)
+        {
+            vignetteEffect = StartCoroutine(VignetteFlickerEffect());
+        }
+
         Time.timeScale = 0.3f;
 
         if (rewindAudioSource != null && rewindSound != null)
@@ -253,9 +296,67 @@ public class ResetSystem : MonoBehaviour
         ResetLevelToInitial();
 
         Time.timeScale = 1f;
+
+        // NUEVO: Detener el parpadeo y hacer fade out suave de la viñeta
+        if (vignetteEffect != null)
+        {
+            StopCoroutine(vignetteEffect);
+        }
+
+        if (hasVignetteEffect)
+        {
+            yield return StartCoroutine(VignetteFadeOut());
+        }
+
         isRewinding = false;
 
         Debug.Log("¡Reset completo ejecutado!");
+    }
+
+    // NUEVO: Efecto de parpadeo de viñeta durante el reset
+    private IEnumerator VignetteFlickerEffect()
+    {
+        if (!hasVignetteEffect) yield break;
+
+        float elapsedTime = 0f;
+        float totalDuration = rewindEffectDuration + 1f; // Un poco más que el rewind para que se vea completo
+
+        while (elapsedTime < totalDuration)
+        {
+            // Crear efecto de parpadeo usando una función seno
+            float flickerValue = Mathf.Sin(elapsedTime * vignetteFlickerSpeed) * 0.5f + 0.5f;
+            float currentIntensity = Mathf.Lerp(originalVignetteIntensity, maxVignetteIntensity, flickerValue);
+
+            vignette.intensity.value = currentIntensity;
+
+            elapsedTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+    }
+
+    // NUEVO: Fade out suave de la viñeta después del reset
+    private IEnumerator VignetteFadeOut()
+    {
+        if (!hasVignetteEffect) yield break;
+
+        float elapsedTime = 0f;
+        float startIntensity = vignette.intensity.value;
+
+        while (elapsedTime < vignetteFadeOutDuration)
+        {
+            float progress = elapsedTime / vignetteFadeOutDuration;
+            // Usar una curva suave para el fade out
+            float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
+
+            vignette.intensity.value = Mathf.Lerp(startIntensity, originalVignetteIntensity, smoothProgress);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Asegurar que vuelva exactamente al valor original
+        vignette.intensity.value = originalVignetteIntensity;
+        Debug.Log("Efecto de viñeta completado - intensidad restaurada a: " + originalVignetteIntensity);
     }
 
     private IEnumerator PlayRewindEffect()
@@ -417,9 +518,28 @@ public class ResetSystem : MonoBehaviour
         Debug.Log("Diálogos reseteados");
     }
 
+    // NUEVO: Método público para resetear manualmente los efectos (útil para debugging)
+    public void ResetPostProcessingEffects()
+    {
+        if (hasVignetteEffect)
+        {
+            vignette.intensity.value = originalVignetteIntensity;
+            Debug.Log("Efectos de post processing reseteados manualmente");
+        }
+    }
+
     [ContextMenu("Test Death Reset")]
     public void TestDeathReset()
     {
         OnPlayerDeath();
+    }
+
+    [ContextMenu("Test Vignette Effect")]
+    public void TestVignetteEffect()
+    {
+        if (hasVignetteEffect)
+        {
+            StartCoroutine(VignetteFlickerEffect());
+        }
     }
 }

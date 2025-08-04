@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class MOVEPLAYER : MonoBehaviour
@@ -22,6 +23,10 @@ public class MOVEPLAYER : MonoBehaviour
     bool grounded;
 
     public Transform orientation;
+
+    [Header("Rotation")]
+    public float rotationSpeed = 5f;
+    public CinemachineFreeLook freeLookCam;
 
     float horizontalInput;
     float verticalInput;
@@ -48,7 +53,24 @@ public class MOVEPLAYER : MonoBehaviour
             Debug.LogError("Asigna el GroundCheck transform en el inspector.");
         }
     }
-
+    private void HandlePlayerRotation()
+    {
+        if (freeLookCam != null)
+        {
+            // Rotar el personaje con la cámara
+            float cameraYRotation = freeLookCam.m_XAxis.Value;
+            Quaternion targetRotation = Quaternion.Euler(0f, cameraYRotation, 0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+        else
+        {
+            // Código original para cuando hay input de movimiento
+            if (moveDirection != Vector3.zero)
+            {
+                transform.forward = Vector3.Slerp(transform.forward, moveDirection.normalized, Time.deltaTime * rotationSpeed);
+            }
+        }
+    }
     private void Update()
     {
         if (!controlActivo) return;
@@ -58,6 +80,7 @@ public class MOVEPLAYER : MonoBehaviour
 
         MyInput();
         SpeedControl();
+        HandlePlayerRotation();
 
         // Aplicar drag
         rb.linearDamping = grounded ? groundDrag : 0;
