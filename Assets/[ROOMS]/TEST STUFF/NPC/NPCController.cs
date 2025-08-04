@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class NPCController : MonoBehaviour
 {
@@ -15,10 +16,18 @@ public class NPCController : MonoBehaviour
     public MonoBehaviour[] enemyScripts;
 
     [Header("Colliders")]
-    [Tooltip("Collider del trigger de di醠ogo")]
+    [Tooltip("Collider del trigger de di谩logo")]
     [SerializeField] private Collider dialogueTrigger;
     [Tooltip("Collider para combate")]
     [SerializeField] private Collider combatCollider;
+
+    [Header("Post Defeat Position")]
+    [Tooltip("Empty GameObject donde se mover谩 el jefe al ser derrotado")]
+    [SerializeField] private Transform defeatPosition;
+    [Tooltip("驴Mover instant谩neamente o con animaci贸n?")]
+    [SerializeField] private bool instantTeleport = true;
+    [Tooltip("Velocidad de movimiento si no es teleport instant谩neo")]
+    [SerializeField] private float moveSpeed = 5f;
 
     // Componentes modulares existentes
     private NPCDialogueSystem dialogueSystem;
@@ -72,7 +81,7 @@ public class NPCController : MonoBehaviour
         interactionHandler.OnTriggerEnter(other);
     }
 
-    // M閠odos p鷅licos que mantienen la interfaz original
+    // M茅todos p煤blicos que mantienen la interfaz original
     public void TransformToEnemy()
     {
         if (stateManager.CurrentState != NPCState.NPC) return;
@@ -90,6 +99,94 @@ public class NPCController : MonoBehaviour
         stateManager.SetState(NPCState.PostDefeat);
         transformation.RevertToNPC();
         effectsManager.PlayDefeatEffects();
+
+        // ========== NUEVA SECUENCIA: PARAR + MOVER A POSICI脫N ==========
+        StartCoroutine(DefeatSequence());
+    }
+
+    private IEnumerator DefeatSequence()
+    {
+        // Paso 1: Parar todo movimiento inmediatamente
+        StopAllMovement();
+
+        // Paso 2: Mover a la posici贸n de derrota si est谩 configurada
+        if (defeatPosition != null)
+        {
+            yield return StartCoroutine(MoveToDefeatPosition());
+        }
+        else
+        {
+            Debug.LogWarning($"No hay posici贸n de derrota configurada para {gameObject.name}");
+        }
+
+        Debug.Log($"{gameObject.name} secuencia de derrota completada");
+    }
+
+    private IEnumerator MoveToDefeatPosition()
+    {
+        if (instantTeleport)
+        {
+            // Teleport instant谩neo
+            transform.position = defeatPosition.position;
+            transform.rotation = defeatPosition.rotation;
+            Debug.Log($"{gameObject.name} teleportado a posici贸n de derrota");
+        }
+        else
+        {
+            // Movimiento suave
+            Debug.Log($"{gameObject.name} movi茅ndose a posici贸n de derrota...");
+
+            Vector3 startPos = transform.position;
+            Quaternion startRot = transform.rotation;
+            float elapsedTime = 0f;
+            float duration = Vector3.Distance(startPos, defeatPosition.position) / moveSpeed;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float progress = elapsedTime / duration;
+
+                transform.position = Vector3.Lerp(startPos, defeatPosition.position, progress);
+                transform.rotation = Quaternion.Lerp(startRot, defeatPosition.rotation, progress);
+
+                yield return null;
+            }
+
+            // Asegurar posici贸n final exacta
+            transform.position = defeatPosition.position;
+            transform.rotation = defeatPosition.rotation;
+
+            Debug.Log($"{gameObject.name} lleg贸 a posici贸n de derrota");
+        }
+    }
+
+    private void StopAllMovement()
+    {
+        // Parar NavMeshAgent
+        var navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (navAgent != null)
+        {
+            navAgent.isStopped = true;
+            navAgent.velocity = Vector3.zero;
+        }
+
+        // Parar Rigidbody
+        var rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+
+        // Parar Animator (opcional)
+        var animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.speed = 0f; // Para animaciones de movimiento
+        }
+
+        Debug.Log($"{gameObject.name} detenido completamente");
     }
 
     public void RevertToNPC()
@@ -102,13 +199,13 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    // Getters p鷅licos - mantienen la interfaz original
+    // Getters p煤blicos - mantienen la interfaz original
     public NPCState CurrentState => stateManager.CurrentState;
     public bool IsNPC => stateManager.CurrentState == NPCState.NPC;
     public bool IsEnemy => stateManager.CurrentState == NPCState.Enemy;
     public bool IsPostDefeat => stateManager.CurrentState == NPCState.PostDefeat;
 
-    // Propiedades p鷅licas para acceso de componentes
+    // Propiedades p煤blicas para acceso de componentes
     public DIALOGUENODE InitialDialogueNode => initialDialogueNode;
     public DIALOGUENODE PostDefeatDialogueNode => postDefeatDialogueNode;
 
@@ -118,4 +215,13 @@ public class NPCController : MonoBehaviour
 
     [ContextMenu("Defeat Boss")]
     public void DebugDefeat() => DefeatBoss();
+
+    [ContextMenu("Move to Defeat Position")]
+    public void DebugMoveToDefeatPosition()
+    {
+        if (defeatPosition != null)
+        {
+            StartCoroutine(MoveToDefeatPosition());
+        }
+    }
 }

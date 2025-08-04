@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -12,44 +12,44 @@ public class NPCSceneTransition : MonoBehaviour
     [Header("Comic Loading Screen")]
     [Tooltip("GameObject que contiene toda la UI de carga con comic")]
     [SerializeField] private GameObject comicLoadingScreen;
-    [Tooltip("Image component donde se mostrar· el comic")]
+    [Tooltip("Image component donde se mostrar√° el comic")]
     [SerializeField] private Image comicImage;
     [Tooltip("Sprite del comic a mostrar")]
     [SerializeField] private Sprite comicSprite;
     [Tooltip("Panel negro para fade in/out")]
     [SerializeField] private Image fadePanel;
-    [Tooltip("BotÛn de continuar")]
+    [Tooltip("Bot√≥n de continuar")]
     [SerializeField] private Button continueButton;
     [Tooltip("Slider de progreso de carga (opcional)")]
     [SerializeField] private Slider loadingBar;
 
     [Header("Timing Settings")]
-    [Tooltip("DuraciÛn del fade a negro (segundos)")]
+    [Tooltip("Duraci√≥n del fade a negro (segundos)")]
     [SerializeField] private float fadeToBlackDuration = 1f;
-    [Tooltip("Tiempo que se muestra el comic antes del botÛn (segundos)")]
+    [Tooltip("Tiempo que se muestra el comic antes del bot√≥n (segundos)")]
     [SerializeField] private float comicDisplayTime = 3f;
-    [Tooltip("DuraciÛn del fade desde negro (segundos)")]
+    [Tooltip("Duraci√≥n del fade desde negro (segundos)")]
     [SerializeField] private float fadeFromBlackDuration = 1f;
 
     [Header("Activation Method")]
-    [Tooltip("CÛmo se activar· la transiciÛn")]
+    [Tooltip("C√≥mo se activar√° la transici√≥n")]
     [SerializeField] private ActivationMethod activationMethod = ActivationMethod.DialogueNodeEvent;
 
     [Header("Node Event Method")]
-    [Tooltip("Texto que debe contener el nodo de di·logo para activar transiciÛn")]
+    [Tooltip("Texto que debe contener el nodo de di√°logo para activar transici√≥n")]
     [SerializeField] private string transitionTriggerText = "[SCENE_TRANSITION]";
-    [Tooltip("Nombre especÌfico del nodo que activa la transiciÛn")]
+    [Tooltip("Nombre espec√≠fico del nodo que activa la transici√≥n")]
     [SerializeField] private string transitionNodeName = "EndLevelNode";
 
     [Header("Auto Method")]
-    [Tooltip("øActivar autom·ticamente al terminar di·logo PostDefeat?")]
+    [Tooltip("¬øActivar autom√°ticamente al terminar di√°logo PostDefeat?")]
     [SerializeField] private bool triggerOnPostDefeatEnd = true;
 
     public enum ActivationMethod
     {
-        DialogueNodeEvent,  // Se activa desde un nodo especÌfico del di·logo
-        AutoOnPostDefeat,   // Se activa autom·ticamente en PostDefeat
-        Manual             // Solo activaciÛn manual
+        DialogueNodeEvent,  // Se activa desde un nodo espec√≠fico del di√°logo
+        AutoOnPostDefeat,   // Se activa autom√°ticamente en PostDefeat
+        Manual             // Solo activaci√≥n manual
     }
 
     private NPCController controller;
@@ -60,7 +60,7 @@ public class NPCSceneTransition : MonoBehaviour
     {
         controller = npcController;
 
-        // Verificar configuraciÛn
+        // Verificar configuraci√≥n
         if (string.IsNullOrEmpty(targetSceneName))
         {
             Debug.LogWarning($"Nombre de escena target no configurado en {gameObject.name}");
@@ -77,27 +77,27 @@ public class NPCSceneTransition : MonoBehaviour
         // Inicializar UI
         InitializeComicUI();
 
-        // Configurar seg˙n el mÈtodo de activaciÛn
+        // Configurar seg√∫n el m√©todo de activaci√≥n
         SetupActivationMethod();
 
-        Debug.Log($"NPCSceneTransition inicializado - Target: {targetSceneName}, MÈtodo: {activationMethod}");
+        Debug.Log($"NPCSceneTransition inicializado - Target: {targetSceneName}, M√©todo: {activationMethod}");
     }
 
     private void InitializeComicUI()
     {
-        // Asegurar que la pantalla de carga estÈ desactivada inicialmente
+        // Asegurar que la pantalla de carga est√© desactivada inicialmente
         if (comicLoadingScreen != null)
         {
             comicLoadingScreen.SetActive(false);
         }
 
-        // Configurar el comic sprite si est· asignado
+        // Configurar el comic sprite si est√° asignado
         if (comicImage != null && comicSprite != null)
         {
             comicImage.sprite = comicSprite;
         }
 
-        // Configurar el botÛn de continuar
+        // Configurar el bot√≥n de continuar
         if (continueButton != null)
         {
             continueButton.onClick.RemoveAllListeners();
@@ -129,21 +129,21 @@ public class NPCSceneTransition : MonoBehaviour
                 SetupDialogueEvents();
                 break;
             case ActivationMethod.AutoOnPostDefeat:
-                Debug.Log($"TransiciÛn autom·tica configurada para PostDefeat en {gameObject.name}");
+                Debug.Log($"Transici√≥n autom√°tica configurada para PostDefeat en {gameObject.name}");
                 break;
             case ActivationMethod.Manual:
-                Debug.Log($"TransiciÛn configurada para activaciÛn manual en {gameObject.name}");
+                Debug.Log($"Transici√≥n configurada para activaci√≥n manual en {gameObject.name}");
                 break;
         }
     }
 
     private void SetupDialogueEvents()
     {
-        // Configurar eventos en el di·logo PostDefeat
+        // Configurar eventos en el di√°logo PostDefeat
         if (controller.PostDefeatDialogueNode != null)
         {
             ConfigureNodeForTransition(controller.PostDefeatDialogueNode);
-            Debug.Log($"Eventos de transiciÛn configurados en di·logo PostDefeat de {gameObject.name}");
+            Debug.Log($"Eventos de transici√≥n configurados en di√°logo PostDefeat de {gameObject.name}");
         }
     }
 
@@ -151,7 +151,7 @@ public class NPCSceneTransition : MonoBehaviour
     {
         if (node == null) return;
 
-        // Verificar si este nodo debe activar la transiciÛn
+        // Verificar si este nodo debe activar la transici√≥n
         bool shouldTriggerTransition = node.name == transitionNodeName ||
                                      (!string.IsNullOrEmpty(node.dialogueText) &&
                                       node.dialogueText.Contains(transitionTriggerText));
@@ -161,15 +161,15 @@ public class NPCSceneTransition : MonoBehaviour
             // Limpiar listeners previos para evitar duplicados
             node.onNodeEnd.RemoveListener(OnDialogueTransitionTrigger);
             node.onNodeEnd.AddListener(OnDialogueTransitionTrigger);
-            Debug.Log($"Configurado evento de transiciÛn en nodo: {node.name}");
+            Debug.Log($"Configurado evento de transici√≥n en nodo: {node.name}");
         }
 
-        // Si es el nodo final y est· configurado para activar al final
+        // Si es el nodo final y est√° configurado para activar al final
         if (node.isEndNode && triggerOnPostDefeatEnd && activationMethod == ActivationMethod.DialogueNodeEvent)
         {
             node.onNodeEnd.RemoveListener(OnDialogueTransitionTrigger);
             node.onNodeEnd.AddListener(OnDialogueTransitionTrigger);
-            Debug.Log($"Configurado evento de transiciÛn en nodo final: {node.name}");
+            Debug.Log($"Configurado evento de transici√≥n en nodo final: {node.name}");
         }
 
         // Configurar recursivamente en las respuestas
@@ -185,41 +185,41 @@ public class NPCSceneTransition : MonoBehaviour
         }
     }
 
-    // Este mÈtodo se llama desde los eventos del di·logo
+    // Este m√©todo se llama desde los eventos del di√°logo
     private void OnDialogueTransitionTrigger()
     {
-        Debug.Log($"Evento de di·logo activado - Iniciando secuencia de comic desde {gameObject.name}");
+        Debug.Log($"Evento de di√°logo activado - Iniciando secuencia de comic desde {gameObject.name}");
         TriggerSceneTransition();
     }
 
-    // MÈtodo p˙blico para activaciÛn autom·tica
+    // M√©todo p√∫blico para activaci√≥n autom√°tica
     public void OnPostDefeatDialogueEnd()
     {
         if (activationMethod == ActivationMethod.AutoOnPostDefeat && triggerOnPostDefeatEnd)
         {
-            Debug.Log("Di·logo PostDefeat terminado - Activando secuencia de comic");
+            Debug.Log("Di√°logo PostDefeat terminado - Activando secuencia de comic");
             TriggerSceneTransition();
         }
     }
 
-    // MÈtodo principal de activaciÛn
+    // M√©todo principal de activaci√≥n
     public void TriggerSceneTransition()
     {
         if (transitionInProgress)
         {
-            Debug.Log($"TransiciÛn ya est· en progreso en {gameObject.name}");
+            Debug.Log($"Transici√≥n ya est√° en progreso en {gameObject.name}");
             return;
         }
 
         if (string.IsNullOrEmpty(targetSceneName))
         {
-            Debug.LogError($"No se puede iniciar transiciÛn: Nombre de escena no configurado en {gameObject.name}");
+            Debug.LogError($"No se puede iniciar transici√≥n: Nombre de escena no configurado en {gameObject.name}");
             return;
         }
 
         if (comicLoadingScreen == null)
         {
-            Debug.LogError($"No se puede iniciar transiciÛn: Comic Loading Screen no configurado en {gameObject.name}");
+            Debug.LogError($"No se puede iniciar transici√≥n: Comic Loading Screen no configurado en {gameObject.name}");
             return;
         }
 
@@ -244,7 +244,7 @@ public class NPCSceneTransition : MonoBehaviour
 
         Debug.Log("Pantalla de comic activada (oculta por fade panel)");
 
-        // Paso 2: PequeÒa pausa para asegurar que se aplicÛ el fade
+        // Paso 2: Peque√±a pausa para asegurar que se aplic√≥ el fade
         yield return new WaitForEndOfFrame();
 
         // Paso 3: Iniciar carga de escena en background
@@ -255,11 +255,12 @@ public class NPCSceneTransition : MonoBehaviour
         // Paso 4: Fade desde negro (mostrar comic)
         yield return StartCoroutine(FadeFromBlack());
 
-        // Paso 5: Mostrar comic por el tiempo especificado
+        // Paso 5: Mostrar comic por el tiempo especificado Y cargar en paralelo
         Debug.Log($"Mostrando comic por {comicDisplayTime} segundos...");
         float elapsedTime = 0f;
 
-        while (elapsedTime < comicDisplayTime)
+        // ========== L√ìGICA ARREGLADA: ESPERAR TIEMPO O CARGA (LO QUE TERMINE PRIMERO) ==========
+        while (elapsedTime < comicDisplayTime && loadOperation.progress < 0.9f)
         {
             // Actualizar barra de progreso si existe
             if (loadingBar != null)
@@ -272,7 +273,19 @@ public class NPCSceneTransition : MonoBehaviour
             yield return null;
         }
 
-        // Paso 6: Esperar a que termine de cargar
+        // ========== ESPERAR LO QUE FALTE ==========
+        // Si la carga termin√≥ pero el tiempo no
+        while (elapsedTime < comicDisplayTime)
+        {
+            if (loadingBar != null)
+            {
+                loadingBar.value = 1f;
+            }
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Si el tiempo termin√≥ pero la carga no (muy raro, pero por si acaso)
         while (loadOperation.progress < 0.9f)
         {
             if (loadingBar != null)
@@ -283,7 +296,9 @@ public class NPCSceneTransition : MonoBehaviour
             yield return null;
         }
 
-        // Paso 7: Mostrar botÛn de continuar
+        // ========== ACTIVAR BOT√ìN SIEMPRE ==========
+        Debug.Log("¬°Activando bot√≥n de continuar!");
+
         if (loadingBar != null)
         {
             loadingBar.value = 1f;
@@ -292,11 +307,15 @@ public class NPCSceneTransition : MonoBehaviour
         if (continueButton != null)
         {
             continueButton.interactable = true;
-            Debug.Log("BotÛn de continuar habilitado");
+            Debug.Log("‚úÖ Bot√≥n de continuar ACTIVADO");
+
+            // ========== DEBUG EXTRA ==========
+            Debug.Log($"Estado del bot√≥n: activo={continueButton.gameObject.activeInHierarchy}, interactable={continueButton.interactable}");
         }
         else
         {
-            // Si no hay botÛn, continuar autom·ticamente despuÈs de un momento
+            Debug.LogWarning("‚ùå ContinueButton es NULL!");
+            // Si no hay bot√≥n, continuar autom√°ticamente despu√©s de un momento
             yield return new WaitForSeconds(1f);
             OnContinueButtonPressed();
         }
@@ -348,12 +367,12 @@ public class NPCSceneTransition : MonoBehaviour
     {
         if (loadOperation != null)
         {
-            Debug.Log("BotÛn continuar presionado - Activando nueva escena");
+            Debug.Log("Bot√≥n continuar presionado - Activando nueva escena");
             loadOperation.allowSceneActivation = true;
         }
     }
 
-    // MÈtodos de debug
+    // M√©todos de debug
     [ContextMenu("Test Comic Transition")]
     public void DebugTriggerTransition()
     {
@@ -369,10 +388,10 @@ public class NPCSceneTransition : MonoBehaviour
         {
             comicLoadingScreen.SetActive(false);
         }
-        Debug.Log($"TransiciÛn reseteada en {gameObject.name}");
+        Debug.Log($"Transici√≥n reseteada en {gameObject.name}");
     }
 
-    // Getters p˙blicos
+    // Getters p√∫blicos
     public bool TransitionInProgress => transitionInProgress;
     public string TargetSceneName => targetSceneName;
     public ActivationMethod CurrentActivationMethod => activationMethod;

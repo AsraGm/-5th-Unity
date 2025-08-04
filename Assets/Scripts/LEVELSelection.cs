@@ -25,7 +25,7 @@ public class LEVELSelection : MonoBehaviour
         else
         {
             Debug.Log("Carga directa a Level 1 (sin comic)");
-            SceneManager.LoadScene("PARCIAL");
+            SceneManager.LoadScene("LEVEL 1");
         }
     }
 
@@ -66,7 +66,7 @@ public class LEVELSelection : MonoBehaviour
     {
         Time.timeScale = 1f;
         Debug.Log("Carga directa a Level 1");
-        SceneManager.LoadScene("PARCIAL");
+        SceneManager.LoadScene("LEVEL 1");
     }
 
     public void Level2Direct()
@@ -89,7 +89,7 @@ public class LEVELSelection : MonoBehaviour
     {
         if (levelComicSystem != null)
         {
-            levelComicSystem.StartLevelComicSequence("PARCIAL", 1);
+            levelComicSystem.StartLevelComicSequence("LEVEL 1", 1);
         }
         else
         {

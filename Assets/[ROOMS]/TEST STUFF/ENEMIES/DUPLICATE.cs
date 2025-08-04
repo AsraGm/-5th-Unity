@@ -97,11 +97,18 @@ public class DUPLICATE : MonoBehaviour
     {
         if (trigger.enemyPre == null || trigger.spawnPoint == null) return;
 
-        // ========== TRACKEAR EL ENEMIGO SPAWNEADO ==========
+        // Instanciar el prefab
         GameObject newEnemy = Instantiate(trigger.enemyPre, trigger.spawnPoint.position, trigger.spawnPoint.rotation);
+
+        // ========== AGREGAR EL SCRIPT DE CONTROL AUTOMÁTICAMENTE ==========
+        if (newEnemy.GetComponent<SpawnedPrefabController>() == null)
+        {
+            newEnemy.AddComponent<SpawnedPrefabController>();
+        }
+
         spawnedEnemies.Add(newEnemy);
         trigger.totalSpawned++;
 
-        Debug.Log($"DUPLICATE: Enemigo spawneado. Total trackeados: {spawnedEnemies.Count}");
+        Debug.Log($"DUPLICATE: Enemigo spawneado con auto-destrucción. Total: {spawnedEnemies.Count}");
     }
 }

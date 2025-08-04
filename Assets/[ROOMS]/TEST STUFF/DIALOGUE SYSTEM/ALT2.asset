@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
+  m_Name: ALT2
+  m_EditorClassIdentifier: 
+  dialogueText: You have to give up that silly ideas of doing art by love, you must
+    seek the anger inside you
+  responses:
+  - responseText: "\xA1\xA1NO!!"
+    nextNode: {fileID: 11400000, guid: 79860cbf902794346a78a93c1e9af515, type: 2}
+  - responseText: You're horrible
+    nextNode: {fileID: 11400000, guid: 79860cbf902794346a78a93c1e9af515, type: 2}
+  isEndNode: 0
+  onNodeStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onNodeEnd:
+    m_PersistentCalls:
+      m_Calls: []

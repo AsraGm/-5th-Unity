@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/[ROOMS]/LEVEL 1.unity
     guid: b66dcc8d791968845998421869caa50e
   - enabled: 1
+    path: Assets/[ROOMS]/LEVEL 2.unity
+    guid: fde3df372e47a544c80e6356dfe44739
+  - enabled: 1
+    path: Assets/[ROOMS]/LEVEL 3.unity
+    guid: 65c3145802272aa49900206a6a034a84
+  - enabled: 1
     path: Assets/Scenes/Game/Credits.unity
     guid: 5479248805b602b43abbaafdf361b40f
   m_configObjects:
