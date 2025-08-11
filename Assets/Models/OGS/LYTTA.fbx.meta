@@ -80,7 +80,687 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: LYTTA(Clone)
+      parentName: 
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LYTTA
+      parentName: LYTTA(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: World_joint
+      parentName: LYTTA(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Root_joint
+      parentName: World_joint
+      position: {x: -1.11022e-18, y: 1.6317528, z: -0.138882}
+      rotation: {x: 0.1649706, y: 0.1649706, z: -0.6875935, w: 0.6875934}
+      scale: {x: 1, y: 1, z: 1}
+    - name: EspinaA_joint
+      parentName: Root_joint
+      position: {x: -0.1471129, y: 3.6977847e-34, z: -9.947598e-16}
+      rotation: {x: 0.0000000074505797, y: -0.21810925, z: 0.000000050640658, w: 0.9759244}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: EspinaB_joint
+      parentName: EspinaA_joint
+      position: {x: -0.113296695, y: 1.232595e-34, z: -4.263256e-16}
+      rotation: {x: -0.0000000013148002, y: -0.020024208, z: 0.00000006707904, w: 0.99979955}
+      scale: {x: 1.0000001, y: 1.0000002, z: 0.9999999}
+    - name: EspinaC_joint
+      parentName: EspinaB_joint
+      position: {x: -0.116042696, y: 1.288333e-17, z: -1.24345e-16}
+      rotation: {x: -0.000000017417822, y: -0.14642361, z: 4.0595133e-10, w: 0.989222}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+    - name: Pecho_joint
+      parentName: EspinaC_joint
+      position: {x: -0.23732229, y: 0, z: -1.1368679e-15}
+      rotation: {x: 0.000000012903541, y: 0.07564045, z: -0.00000006966893, w: 0.99713516}
+      scale: {x: 1.0000001, y: 0.99999994, z: 0.99999994}
+    - name: CuelloA_joint
+      parentName: Pecho_joint
+      position: {x: -0.099713914, y: -1.972152e-33, z: 3.019807e-16}
+      rotation: {x: -0.000000016769523, y: 0.10209251, z: -0.000000020935856, w: 0.9947749}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CuelloB_joint
+      parentName: CuelloA_joint
+      position: {x: -0.05584804, y: 0, z: 5.684342e-16}
+      rotation: {x: -0, y: -0, z: -2.5535127e-15, w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: CuelloC_joint
+      parentName: CuelloB_joint
+      position: {x: -0.057666577, y: 0, z: 7.1054265e-17}
+      rotation: {x: 0.0000000062341026, y: -0.11633818, z: 0.0000000090423375, w: 0.9932097}
+      scale: {x: 1.0000002, y: 1.0000001, z: 1.0000001}
+    - name: Cabeza_joint
+      parentName: CuelloC_joint
+      position: {x: -0.098617256, y: 1.972152e-33, z: -1.1368679e-15}
+      rotation: {x: 2.9779948e-10, y: -0, z: 8.8242985e-10, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1}
+    - name: ClaviculaIzq_joint
+      parentName: Pecho_joint
+      position: {x: 0.004537894, y: -0.09877404, z: 0.07005416}
+      rotation: {x: 0.024096953, y: 0.08271925, z: 0.7061246, w: 0.7028264}
+      scale: {x: 0.99999994, y: 0.9999997, z: 1}
+    - name: HombroIzq_joint
+      parentName: ClaviculaIzq_joint
+      position: {x: -0.153705, y: -0.0013067552, z: -0.06712417}
+      rotation: {x: 0.70627147, y: -0.028114703, z: 0.05795509, w: 0.7050046}
+      scale: {x: 0.9999999, y: 1.0000001, z: 1.0000002}
+    - name: CodoIzq_joint
+      parentName: HombroIzq_joint
+      position: {x: -0.36461917, y: 0.011422644, z: 0.0013408699}
+      rotation: {x: -0.014372136, y: -0.015638188, z: -0.05475992, w: 0.9982737}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint"
+      parentName: CodoIzq_joint
+      position: {x: -0.35222965, y: 6.750156e-16, z: 2.8421708e-15}
+      rotation: {x: -0.00000010803338, y: -0.000000064930624, z: -0.000000040685094, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
+    - name: Palma_joint
+      parentName: "Mu\xF1ecaIzq_joint"
+      position: {x: -0.039597545, y: -0.00077800587, z: 0.00903297}
+      rotation: {x: -0.6595975, y: 0.017365066, z: 0.077737965, w: 0.7473864}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: ManoA_joint
+      parentName: Palma_joint
+      position: {x: -0.07486286, y: -2.842171e-16, z: -3.9968027e-17}
+      rotation: {x: -0.00003573295, y: 0.0008284963, z: 0.011330046, w: 0.99993545}
+      scale: {x: 1.0000005, y: 1, z: 1.0000001}
+    - name: ManoB_joint
+      parentName: ManoA_joint
+      position: {x: -0.054408696, y: 1.563194e-15, z: -7.1054265e-17}
+      rotation: {x: 0.00000005859658, y: -0.0000000015829574, z: 0.026039144, w: 0.99966097}
+      scale: {x: 1, y: 1.0000005, z: 1}
+    - name: ManoC_joint
+      parentName: ManoB_joint
+      position: {x: -0.052676056, y: -1.98952e-15, z: 5.77316e-17}
+      rotation: {x: -0, y: -0, z: -0.0000000018626444, w: 1}
+      scale: {x: 1.0000001, y: 0.9999998, z: 0.9999999}
+    - name: PulgarA_joint
+      parentName: "Mu\xF1ecaIzq_joint"
+      position: {x: -0.02206532, y: 0.02883481, z: 0.011723159}
+      rotation: {x: -0.6861025, y: 0.025613822, z: -0.01286959, w: 0.72694004}
+      scale: {x: 1.0000004, y: 1.0000002, z: 1.0000001}
+    - name: PulgarB_joint
+      parentName: PulgarA_joint
+      position: {x: -0.04952908, y: -8.5265126e-16, z: 1.4210849e-16}
+      rotation: {x: -0.009196484, y: 0.03860309, z: -0.005033807, w: 0.9991997}
+      scale: {x: 1.0000002, y: 0.99999994, z: 1}
+    - name: PulgarC_joint
+      parentName: PulgarB_joint
+      position: {x: -0.04312066, y: -4.263256e-16, z: 2.842171e-16}
+      rotation: {x: 0.0000000502914, y: -0.00000031292427, z: 0.026039291, w: 0.99966097}
+      scale: {x: 0.99999994, y: 1.0000004, z: 1}
+    - name: ClaviculaDer_joint
+      parentName: Pecho_joint
+      position: {x: 0.00453904, y: 0.098774, z: 0.07005401}
+      rotation: {x: 0.70612323, y: 0.7028278, z: -0.024096573, w: -0.082719676}
+      scale: {x: 1.0000001, y: 1, z: 1.0000004}
+    - name: HombroDer_joint
+      parentName: ClaviculaDer_joint
+      position: {x: 0.15370499, y: 0.00131, z: 0.0671243}
+      rotation: {x: -0.7062601, y: 0.028109124, z: -0.057960697, w: -0.7050158}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CodoDer_joint
+      parentName: HombroDer_joint
+      position: {x: 0.36461464, y: -0.011421808, z: -0.0013362614}
+      rotation: {x: -0.014373205, y: -0.015642917, z: -0.054758366, w: 0.9982737}
+      scale: {x: 1.0000001, y: 1.0000005, z: 1}
+    - name: "Mu\xF1ecaDer_joint"
+      parentName: CodoDer_joint
+      position: {x: 0.35222945, y: -0.0000006577263, z: 0.0000001645336}
+      rotation: {x: 0.00000004749744, y: -0.00000008071945, z: -0.00000009923438, w: 1}
+      scale: {x: 1.0000002, y: 1.0000004, z: 1.0000007}
+    - name: Palma_joint
+      parentName: "Mu\xF1ecaDer_joint"
+      position: {x: 0.039601814, y: 0.000779577, z: -0.009037808}
+      rotation: {x: 0.6595974, y: -0.017365163, z: -0.077738084, w: -0.74738646}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: ManoA_joint
+      parentName: Palma_joint
+      position: {x: 0.07486296, y: 0.00000001926604, z: -0.0000005420272}
+      rotation: {x: -0.00003579256, y: 0.00082828035, z: 0.011358064, w: 0.99993515}
+      scale: {x: 1.0000002, y: 1, z: 1.0000004}
+    - name: ManoB_joint
+      parentName: ManoA_joint
+      position: {x: 0.05440382, y: -0.0000032107507, z: -0.0000000185399}
+      rotation: {x: -0.0000000023166584, y: -0.00000005505526, z: 0.026039047, w: 0.99966097}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999997}
+    - name: ManoC_joint
+      parentName: ManoB_joint
+      position: {x: 0.05267523, y: -0.0000007100497, z: 0.0000001600523}
+      rotation: {x: 0.0000000020594701, y: 0.000000029731067, z: 0.000000013038512, w: 1}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: PulgarA_joint
+      parentName: "Mu\xF1ecaDer_joint"
+      position: {x: 0.022070229, y: -0.028833188, z: -0.01172784}
+      rotation: {x: 0.68612653, y: -0.02559982, z: 0.012794123, w: -0.7269191}
+      scale: {x: 0.99999994, y: 1.0000002, z: 1.0000004}
+    - name: PulgarB_joint
+      parentName: PulgarA_joint
+      position: {x: 0.04952531, y: -0.000005504163, z: -0.0000062932945}
+      rotation: {x: -0.009195589, y: 0.038762663, z: -0.0051151365, w: 0.9991931}
+      scale: {x: 1, y: 0.9999997, z: 0.99999994}
+    - name: PulgarC_joint
+      parentName: PulgarB_joint
+      position: {x: 0.043123268, y: 0.00000602779, z: 0.000007077751}
+      rotation: {x: -0.00000016577536, y: -0, z: 0.026039395, w: 0.99966097}
+      scale: {x: 0.99999994, y: 1.0000001, z: 1}
+    - name: Pelvis_joint
+      parentName: Root_joint
+      position: {x: 0.017985899, y: 1.232595e-34, z: 0.0736753}
+      rotation: {x: 0.00000004470348, y: -0.61759263, z: 0.0000000372529, w: 0.7864981}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: MusloIzq_joint
+      parentName: Pelvis_joint
+      position: {x: -0.007894481, y: -0.1303903, z: 0.009546264}
+      rotation: {x: 0.31337738, y: 0.5644178, z: 0.73364055, w: -0.21212919}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
+    - name: RodillaIzq_joint
+      parentName: MusloIzq_joint
+      position: {x: -0.57545984, y: -3.1974422e-16, z: -3.907985e-16}
+      rotation: {x: 0.000000007450579, y: -0.000000089406946, z: 0.07198559, w: 0.99740565}
+      scale: {x: 0.9999999, y: 0.99999976, z: 0.9999998}
+    - name: TobilloIzq_joint
+      parentName: RodillaIzq_joint
+      position: {x: -0.77423435, y: -3.6859404e-16, z: -3.1974422e-16}
+      rotation: {x: 0.13026212, y: -0.0019659235, z: -0.10372575, w: 0.986037}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: PlantaIzq_joint
+      parentName: TobilloIzq_joint
+      position: {x: -0.20473978, y: 4.7073454e-16, z: -1.5987211e-16}
+      rotation: {x: -0.0072023924, y: 0.018332683, z: -0.6513021, w: 0.75856286}
+      scale: {x: 1, y: 0.9999999, z: 0.9999999}
+    - name: PuntaIzq_joint
+      parentName: PlantaIzq_joint
+      position: {x: -0.10759531, y: 1.2878587e-16, z: -1.0658141e-16}
+      rotation: {x: -0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: MusloDer_joint
+      parentName: Pelvis_joint
+      position: {x: -0.007895365, y: 0.13038999, z: 0.009547263}
+      rotation: {x: 0.73363614, y: -0.21213204, z: -0.3133752, w: -0.56442356}
+      scale: {x: 1.0000002, y: 1.0000004, z: 1.0000004}
+    - name: RodillaDer_joint
+      parentName: MusloDer_joint
+      position: {x: 0.5754608, y: -0.00000011708141, z: 0.0000007530995}
+      rotation: {x: 0.000000059604645, y: 0.000000052154064, z: -0.07198559, w: -0.9974057}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: TobilloDer_joint
+      parentName: RodillaDer_joint
+      position: {x: 0.7742343, y: 0.00000024149116, z: -0.0000008592174}
+      rotation: {x: -0.13026294, y: 0.0019653854, z: 0.10372588, w: -0.9860369}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: PlantaDer_joint
+      parentName: TobilloDer_joint
+      position: {x: 0.20474002, y: 0.0000002978295, z: 2.1316282e-16}
+      rotation: {x: -0.0072024604, y: 0.018331714, z: -0.6513021, w: 0.7585629}
+      scale: {x: 0.9999999, y: 0.9999998, z: 0.99999976}
+    - name: PuntaDer_joint
+      parentName: PlantaDer_joint
+      position: {x: 0.1075949, y: -2.8865798e-17, z: 8.8817837e-17}
+      rotation: {x: -0, y: -0, z: -1.9428903e-16, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: World_controller_group
+      parentName: LYTTA(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: World_controller
+      parentName: World_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_controller_group"
+      parentName: World_controller
+      position: {x: -0.72944677, y: 1.5803574, z: -0.15162869}
+      rotation: {x: 0.5803308, y: 0.30823162, z: 0.25095356, w: 0.7107966}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_controller"
+      parentName: "Mu\xF1ecaIzq_controller_group"
+      position: {x: 0.08389777, y: -0.01377223, z: 0.311274}
+      rotation: {x: 0.0006207178, y: -0.021104362, z: -0.029610543, w: 0.99933857}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BrazoIzq_jk_handler
+      parentName: "Mu\xF1ecaIzq_controller"
+      position: {x: -9.805489e-14, y: 5.7223556e-13, z: 1.2789769e-14}
+      rotation: {x: -0.5803321, y: -0.30823237, z: -0.25095314, w: 0.71079534}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_controller_group1"
+      parentName: World_controller
+      position: {x: 0.72944677, y: 1.5803574, z: -0.15162869}
+      rotation: {x: 0.25095356, y: 0.7107966, z: 0.5803308, w: 0.30823162}
+      scale: {x: 1, y: 1, z: -1}
+    - name: "Mu\xF1ecaDer_controller"
+      parentName: "Mu\xF1ecaDer_controller_group1"
+      position: {x: 0.08389777, y: -0.01377223, z: 0.311274}
+      rotation: {x: 0.00061927276, y: -0.021104319, z: -0.029610574, w: 0.99933857}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BrazoDer_jk_handler
+      parentName: "Mu\xF1ecaDer_controller"
+      position: {x: -4.4738754e-11, y: 2.6234698e-10, z: 6.037908e-12}
+      rotation: {x: 0.250957, y: 0.71080714, z: -0.58031964, w: 0.30822548}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Root_controller_group
+      parentName: World_controller
+      position: {x: -1.11022e-18, y: 1.51061, z: -0.138882}
+      rotation: {x: 0.16497059, y: 0.16497059, z: -0.6875934, w: 0.6875934}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Root_controller
+      parentName: Root_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: 0.031196676, z: -0, w: 0.99951327}
+      scale: {x: 1.1106904, y: 1.1106904, z: 1.1106904}
+    - name: EspinaA_controller_group
+      parentName: Root_controller
+      position: {x: -0.1324518, y: -1.2325951e-34, z: -1.1368684e-15}
+      rotation: {x: 0, y: -0.21810925, z: -0, w: 0.9759244}
+      scale: {x: 0.900341, y: 0.900341, z: 0.900341}
+    - name: EspinaA_controller
+      parentName: EspinaA_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: EspinaB_controller_group
+      parentName: EspinaA_controller
+      position: {x: -0.11329671, y: 4.9303805e-34, z: -1.7763567e-16}
+      rotation: {x: 0, y: -0.020024205, z: -0, w: 0.9997995}
+      scale: {x: 1, y: 1, z: 1}
+    - name: EspinaB_controller
+      parentName: EspinaB_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: EspinaC_controller_group
+      parentName: EspinaB_controller
+      position: {x: -0.116042696, y: 1.2883327e-17, z: -1.7763568e-17}
+      rotation: {x: 0, y: -0.14642364, z: -0, w: 0.989222}
+      scale: {x: 1, y: 1, z: 1}
+    - name: EspinaC_controller
+      parentName: EspinaC_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Pecho_controller_group
+      parentName: EspinaC_controller
+      position: {x: -0.23732227, y: -4.9303805e-34, z: -1.1368684e-15}
+      rotation: {x: 0, y: 0.075640485, z: -0, w: 0.99713516}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Pecho_controller
+      parentName: Pecho_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CuelloC_controller_group
+      parentName: Pecho_controller
+      position: {x: -0.099713914, y: -1.2325951e-34, z: 2.842171e-16}
+      rotation: {x: 0, y: 0.102092534, z: -0, w: 0.99477494}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CuelloC_controller
+      parentName: CuelloC_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CuelloB_controller_group
+      parentName: CuelloC_controller
+      position: {x: -0.055848036, y: 3.6977854e-34, z: 6.750156e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CuelloB_controller
+      parentName: CuelloB_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CuelloA_controller_group
+      parentName: CuelloB_controller
+      position: {x: -0.05766658, y: 0, z: -3.5527136e-17}
+      rotation: {x: 0, y: -0.116338216, z: -0, w: 0.99320966}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CuelloA_controller
+      parentName: CuelloA_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Cabeza_controller_group
+      parentName: CuelloA_controller
+      position: {x: -0.098617256, y: 0, z: -9.592326e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Cabeza_controller
+      parentName: Cabeza_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: 0.027598957, z: -0, w: 0.9996191}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ClaviculaIzq_controller_group
+      parentName: Pecho_controller
+      position: {x: 0.0045378944, y: -0.09877404, z: 0.070054166}
+      rotation: {x: 0.053454205, y: 0.053454205, z: 0.70508343, w: 0.70508343}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ClaviculaIzq_controller
+      parentName: ClaviculaIzq_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ClaviculaDer_controller_group
+      parentName: Pecho_controller
+      position: {x: 0.0045378944, y: 0.09877404, z: 0.070054166}
+      rotation: {x: 0.7050835, y: -0.7050835, z: -0.05345421, w: 0.05345421}
+      scale: {x: 1, y: 1, z: -1}
+    - name: ClaviculaDer_controller
+      parentName: ClaviculaDer_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Pelvis_controller_group
+      parentName: Root_controller
+      position: {x: 0.016193442, y: -1.2325951e-34, z: 0.06633289}
+      rotation: {x: 0, y: -0.61759263, z: -0, w: 0.7864981}
+      scale: {x: 0.900341, y: 0.900341, z: 0.900341}
+    - name: curve1
+      parentName: Pelvis_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CodoIzq_controller_group
+      parentName: World_controller
+      position: {x: -0.37757018, y: 1.8826135, z: -0.54803824}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CodoIzq_controller
+      parentName: CodoIzq_controller_group
+      position: {x: -0.001658421, y: -0.003647106, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: CodoDer_controller_group
+      parentName: World_controller
+      position: {x: 0.37757018, y: 1.8826135, z: -0.54803824}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: -1}
+    - name: CodoDer_controller
+      parentName: CodoDer_controller_group
+      position: {x: -0.001658421, y: -0.003647106, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: locator1
+      parentName: World_controller
+      position: {x: -0.4450122, y: 1.4288989, z: -0.1349829}
+      rotation: {x: 0.576556, y: 0.31036586, z: 0.21730205, w: 0.7239033}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_PulgarA_jointgrp"
+      parentName: locator1
+      position: {x: -0.022065317, y: 0.02883481, z: 0.011723156}
+      rotation: {x: -0.62322426, y: 0.35413072, z: -0.22957234, w: 0.6583916}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_PulgarA_jointCtrl"
+      parentName: "Mu\xF1ecaIzq_joint_PulgarA_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_PulgarA_joint_PulgarB_jointgrp"
+      parentName: "Mu\xF1ecaIzq_joint_PulgarA_jointCtrl"
+      position: {x: -0.04952908, y: -8.5265126e-16, z: 2.842171e-16}
+      rotation: {x: -0.009162984, y: 0.09282575, z: -0.012104632, w: 0.9955666}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_PulgarA_joint_PulgarB_jointCtrl"
+      parentName: "Mu\xF1ecaIzq_joint_PulgarA_joint_PulgarB_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_PulgarA_joint_PulgarB_joint_PulgarC_jointgrp"
+      parentName: "Mu\xF1ecaIzq_joint_PulgarA_joint_PulgarB_jointCtrl"
+      position: {x: -0.04312066, y: -2.842171e-16, z: 2.842171e-16}
+      rotation: {x: 0, y: 0, z: 0.026039237, w: 0.9996609}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_PulgarA_joint_PulgarB_joint_PulgarC_jointCtrl"
+      parentName: "Mu\xF1ecaIzq_joint_PulgarA_joint_PulgarB_joint_PulgarC_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_jointgrp"
+      parentName: locator1
+      position: {x: -0.11351042, y: -0.007762164, z: 0.018653486}
+      rotation: {x: -0.6582359, y: 0.04578037, z: 0.10988122, w: 0.743341}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_jointCtrl"
+      parentName: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_joint_ManoB_jointgrp"
+      parentName: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_jointCtrl"
+      position: {x: -0.054408703, y: 1.4210854e-15, z: -3.5527136e-17}
+      rotation: {x: 0, y: 0, z: 0.026039237, w: 0.9996609}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_joint_ManoB_jointCtrl"
+      parentName: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_joint_ManoB_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_joint_ManoB_joint_ManoC_jointgrp"
+      parentName: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_joint_ManoB_jointCtrl"
+      position: {x: -0.052676063, y: -1.9895197e-15, z: 7.105427e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_joint_ManoB_joint_ManoC_jointCtrl"
+      parentName: "Mu\xF1ecaIzq_joint_Palma_joint_ManoA_joint_ManoB_joint_ManoC_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: locator2
+      parentName: World_controller
+      position: {x: 0.4450122, y: 1.4288989, z: -0.1349829}
+      rotation: {x: -0.7239029, y: 0.21730211, z: -0.31036618, w: 0.5765564}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_jointgrp"
+      parentName: locator2
+      position: {x: 0.11351483, y: 0.00776321, z: -0.018658426}
+      rotation: {x: -0.6582359, y: 0.04578037, z: 0.10988122, w: 0.743341}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_jointCtrl"
+      parentName: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_joint_ManoB_jointgrp"
+      parentName: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_jointCtrl"
+      position: {x: 0.054403823, y: -0.0000032107514, z: -0.000000018539902}
+      rotation: {x: 0, y: 0, z: 0.026039237, w: 0.9996609}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_joint_ManoB_jointCtrl"
+      parentName: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_joint_ManoB_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_joint_ManoB_joint_ManoC_jointgrp"
+      parentName: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_joint_ManoB_jointCtrl"
+      position: {x: 0.052675232, y: -0.0000007100497, z: 0.00000016005232}
+      rotation: {x: 0.000000012904784, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_joint_ManoB_joint_ManoC_jointCtrl"
+      parentName: "Mu\xF1ecaDer_joint_Palma_joint_ManoA_joint_ManoB_joint_ManoC_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_PulgarA_jointgrp"
+      parentName: locator2
+      position: {x: 0.022070225, y: -0.028833186, z: -0.011727841}
+      rotation: {x: -0.62322426, y: 0.35413072, z: -0.22957234, w: 0.6583916}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_PulgarA_jointCtrl"
+      parentName: "Mu\xF1ecaDer_joint_PulgarA_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_PulgarA_joint_PulgarB_jointgrp"
+      parentName: "Mu\xF1ecaDer_joint_PulgarA_jointCtrl"
+      position: {x: 0.04952531, y: -0.000005504163, z: -0.0000062932945}
+      rotation: {x: -0.009162984, y: 0.09282575, z: -0.012104632, w: 0.9955666}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_PulgarA_joint_PulgarB_jointCtrl"
+      parentName: "Mu\xF1ecaDer_joint_PulgarA_joint_PulgarB_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_PulgarA_joint_PulgarB_joint_PulgarC_jointgrp"
+      parentName: "Mu\xF1ecaDer_joint_PulgarA_joint_PulgarB_jointCtrl"
+      position: {x: 0.043123268, y: 0.0000060277903, z: 0.0000070777505}
+      rotation: {x: 0, y: 0, z: 0.026039237, w: 0.9996609}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "Mu\xF1ecaDer_joint_PulgarA_joint_PulgarB_joint_PulgarC_jointCtrl"
+      parentName: "Mu\xF1ecaDer_joint_PulgarA_joint_PulgarB_joint_PulgarC_jointgrp"
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RodillaIzq_controller_group
+      parentName: World_controller
+      position: {x: -0.27007607, y: 0.8886578, z: 0.3688263}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RodillaIzq_controller
+      parentName: RodillaIzq_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RodillaDer_controller_group
+      parentName: World_controller
+      position: {x: 0.27007607, y: 0.8886578, z: 0.3688263}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: -1}
+    - name: RodillaDer_controller
+      parentName: RodillaDer_controller_group
+      position: {x: -2.493935e-17, y: -5.684342e-16, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PieDer_controller_group
+      parentName: World_controller
+      position: {x: 0.1570724, y: -0.01202569, z: -0.07360537}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: -1}
+    - name: PieDer_controller
+      parentName: PieDer_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: transform1
+      parentName: PieDer_controller
+      position: {x: 0.1570724, y: 0.01202569, z: 0.07360537}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: -1}
+    - name: TalonDer_inverse_joint
+      parentName: transform1
+      position: {x: 0.157072, y: -0.012025699, z: -0.073605396}
+      rotation: {x: 1, y: 0, z: 0, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PuntaDer_inverse_joint
+      parentName: TalonDer_inverse_joint
+      position: {x: -0, y: -0.00021469999, z: -0.2575804}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PlantaDer_inverse_joint
+      parentName: PuntaDer_inverse_joint
+      position: {x: -0, y: 1.3322676e-17, z: 0.107595496}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TobilloDer_inverse_joint
+      parentName: PlantaDer_inverse_joint
+      position: {x: -0, y: -0.139367, z: 0.1499845}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TobilloDer_controller_group
+      parentName: TobilloDer_inverse_joint
+      position: {x: 5.0354e-10, y: 0.00000002885437, z: 0.00000007011413}
+      rotation: {x: 0.47157288, y: 0.37895876, z: 0.604862, w: 0.51783323}
+      scale: {x: 1.4418442, y: 1.4418442, z: 1.4418442}
+    - name: TobilloDer_controller
+      parentName: TobilloDer_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.0000000025474827, y: -0.000000017299739, z: 4.609057e-11, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PiernaDer_jk_handler
+      parentName: TobilloDer_controller
+      position: {x: 0.0000000012191163, y: -1.2774576e-10, z: -4.03721e-10}
+      rotation: {x: -0.5540579, y: 0.5751634, z: -0.40957186, w: -0.44097373}
+      scale: {x: 0.6935562, y: 0.6935562, z: 0.6935562}
+    - name: Der_Planta_jk
+      parentName: PlantaDer_inverse_joint
+      position: {x: -0.0000023888729, y: -0.000000020046965, z: 0.00000011571011}
+      rotation: {x: 0.25857443, y: 0.6581393, z: 0.25857025, w: 0.6581288}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Der_Punta_jk
+      parentName: PuntaDer_inverse_joint
+      position: {x: -0.0000041115595, y: 0.000000015336797, z: 0.00000071572384}
+      rotation: {x: 0.00000015544386, y: 0.70711243, z: 0.000000077095336, w: 0.7071011}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PieIzq_controller_group
+      parentName: World_controller
+      position: {x: -0.1570724, y: -0.01202569, z: -0.07360537}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PieIzq_controller
+      parentName: PieIzq_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TalonIzq_inverse_joint
+      parentName: PieIzq_controller
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PuntaIzq_inverse_joint
+      parentName: TalonIzq_inverse_joint
+      position: {x: -0, y: 0.00021471658, z: 0.25758013}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PlantaIzq_inverse_joint
+      parentName: PuntaIzq_inverse_joint
+      position: {x: -0, y: 0.0000000011920929, z: -0.107595295}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TobilloIzq_inverse_joint
+      parentName: PlantaIzq_inverse_joint
+      position: {x: -0, y: 0.1393665, z: -0.14998451}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: TobilloIzq_controller_group
+      parentName: TobilloIzq_inverse_joint
+      position: {x: 0.000000009536743, y: 3.2150236e-18, z: 0.0000000047683715}
+      rotation: {x: 0.3881447, y: 0.4923506, z: 0.4310339, w: 0.64895636}
+      scale: {x: 1.3976598, y: 1.3976598, z: 1.3976598}
+    - name: TobilloIzq_controller
+      parentName: TobilloIzq_controller_group
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 4.8342763e-10, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: PiernaIzq_jk_handler
+      parentName: TobilloIzq_controller
+      position: {x: -0.0000000016017775, y: -5.5392513e-10, z: -0.0000000072538042}
+      rotation: {x: -0.44096896, y: -0.4095675, z: -0.57516694, w: 0.55406123}
+      scale: {x: 0.7154817, y: 0.7154817, z: 0.7154817}
+    - name: Izq_jPlanta_jk
+      parentName: PlantaIzq_inverse_joint
+      position: {x: 1.2450423e-10, y: -9.116963e-10, z: -0.000000008522658}
+      rotation: {x: 0.2585722, y: 0.658134, z: 0.25857222, w: 0.6581341}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Izq_Punta_jk
+      parentName: PuntaIzq_inverse_joint
+      position: {x: -0.000000013156425, y: -1.4876081e-10, z: 2.2095299e-10}
+      rotation: {x: 0, y: 0.7071067, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Centro_controller_group
+      parentName: World_controller
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Centro_controller
+      parentName: World_controller
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
