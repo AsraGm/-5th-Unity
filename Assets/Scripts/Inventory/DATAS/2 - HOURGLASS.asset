@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee7fc1835a5a5648bca0cca5cb7afe7, type: 3}
+  m_Name: 2 - HOURGLASS
+  m_EditorClassIdentifier: 
+  itemName: REMORSE
+  icon: {fileID: 0}
+  loreImage: {fileID: 21300000, guid: ca81e146d05cbe141b3910ca3b441d12, type: 3}

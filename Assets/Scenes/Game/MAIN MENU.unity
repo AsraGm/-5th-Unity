@@ -2152,7 +2152,7 @@ MonoBehaviour:
   firstLevelScene: LEVEL 1
   prologueScreen: {fileID: 1057671970}
   prologueComicImage: {fileID: 444805985}
-  prologueSprite: {fileID: 21300000, guid: a8b2046b66175b84cb35a81d7d02edbe, type: 3}
+  prologueSprite: {fileID: 21300000, guid: 8d1e30fb5011b8649b25b2ae04ef9b53, type: 3}
   fadePanel: {fileID: 98875971}
   continueButton: {fileID: 1301453424}
   loadingBar: {fileID: 0}
