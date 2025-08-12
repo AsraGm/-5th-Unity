@@ -100,6 +100,8 @@ public class NPCController : MonoBehaviour
         transformation.RevertToNPC();
         effectsManager.PlayDefeatEffects();
 
+        GameObject.FindWithTag("NPC").GetComponent<Animator>().SetTrigger("Death");
+
         // ========== NUEVA SECUENCIA: PARAR + MOVER A POSICIÓN ==========
         StartCoroutine(DefeatSequence());
     }

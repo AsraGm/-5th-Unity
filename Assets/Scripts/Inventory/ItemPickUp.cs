@@ -10,7 +10,7 @@ public class ItemPickup : MonoBehaviour
     // Referencias para el reset
     private Vector3 originalPosition;
     private Quaternion originalRotation;
-    private bool originalActiveState;
+    private bool originalActiveState;    
 
     private void Awake()
     {
@@ -44,6 +44,7 @@ public class ItemPickup : MonoBehaviour
 
             // Marcar como recogido y desactivar (NO destruir)
             wasPickedUp = true;
+            GameObject.Find("SCARECROW").GetComponent<Animator>().SetTrigger("Saxo");
             gameObject.SetActive(false);
 
             Debug.Log($"Item {itemData.name} recogido y desactivado");

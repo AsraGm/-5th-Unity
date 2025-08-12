@@ -38,6 +38,7 @@ public class Enemy : MonoBehaviour
             if (ShouldDealDamage())
             {
                 DealDamageToPlayer();
+                GameObject.Find("SCARECROW").GetComponent<Animator>().SetTrigger("Damaged");
                 PushTarget(collision.transform);
             }
         }

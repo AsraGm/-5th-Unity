@@ -5,6 +5,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyFollow : MonoBehaviour
 {
+    Rigidbody rb;
+    private Animator animator;
     [Header("Configuración de Seguimiento")]
     [Tooltip("Velocidad de movimiento del enemigo")]
     public float moveSpeed = 3.5f;
@@ -46,6 +48,8 @@ public class EnemyFollow : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
         // Guardar estado inicial para reset
         initialPosition = transform.position;
         initialRotation = transform.rotation;
@@ -104,6 +108,10 @@ public class EnemyFollow : MonoBehaviour
 
     private void Update()
     {
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        float horizontalSpeed = horizontalVelocity.magnitude;
+        animator.SetFloat("Speed", horizontalSpeed);
+
         if (playerTransform == null || navAgent == null || !isFollowing || isPausedByItem) return;
 
         FollowPlayer();
@@ -196,8 +204,8 @@ public class EnemyFollow : MonoBehaviour
 
     private IEnumerator PauseFollowingCoroutine()
     {
-        isPausedByItem = true;
-
+        GameObject.FindWithTag("Enemy").GetComponent<Animator>().SetTrigger("Damage");
+        isPausedByItem = true;        
         // Parar NavMeshAgent inmediatamente
         if (navAgent != null && navAgent.isOnNavMesh)
         {

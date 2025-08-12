@@ -1874,7 +1874,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: fcaf52c1c9ff17c4db5561112163256d, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 09712e4680f630449bf5f29844f625b5, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &781479110
 Transform:
@@ -9081,6 +9081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233eb851c09316b43832f3b0520edce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   moveSpeed: 7
   groundDrag: 5
   jumpForce: 5
@@ -21683,7 +21684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4479425001679861504, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.17080274
+      value: -0.17080276
       objectReference: {fileID: 0}
     - target: {fileID: 4479425001679861504, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_LocalRotation.z

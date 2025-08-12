@@ -56,9 +56,10 @@ public class DialogueManager : MonoBehaviour
     private int selectedIndex = 0;
 
     // Variables para optimización
-    private bool isDialogueActive = false;
+    public bool isDialogueActive = false;
     private bool hasValidButtons = false;
     private int cachedButtonCount = 0;
+    private MOVEPLAYER playerSpeed;
 
     // Cache para componentes TMP_Text de los botones
     private TMP_Text[] buttonTexts;
@@ -80,6 +81,7 @@ public class DialogueManager : MonoBehaviour
         {
             dialoguePanel.GetComponentInParent<Canvas>().gameObject.AddComponent<GraphicRaycaster>();
         }
+        playerSpeed = GetComponent<MOVEPLAYER>();
     }
 
     private void Update()
@@ -131,14 +133,14 @@ public class DialogueManager : MonoBehaviour
     {
         // OPTIMIZACIÓN: Activar flag de diálogo activo
         isDialogueActive = true;
-
+        GameObject.FindWithTag("NPC").GetComponent<Animator>().SetBool("Dialogue", true);
         cameraController.SwitchCameraStyle(CAMERA.CameraStyle.Dialogue);
         playerMovement.controlActivo = false;
 
         currentNode = startNode;
         dialoguePanel.SetActive(true);
         panelAnimator.SetTrigger("Appear");
-        UpdateDialogueUI();
+        UpdateDialogueUI();        
     }
 
     private void UpdateDialogueUI()
@@ -276,8 +278,7 @@ public class DialogueManager : MonoBehaviour
     public void OnDisappearEnd()
     {
         // OPTIMIZACIÓN: Desactivar flag de diálogo activo
-        isDialogueActive = false;
-
+        isDialogueActive = false;        
         dialoguePanel.SetActive(false);
         ClearSelection();
 
@@ -287,6 +288,7 @@ public class DialogueManager : MonoBehaviour
         {
             playerRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             playerRigidbody.linearVelocity = Vector3.zero;
+            GameObject.FindWithTag("NPC").GetComponent<Animator>().SetBool("Dialogue", false);
         }
 
         if (currentNode.onNodeEnd != null) currentNode.onNodeEnd.Invoke();

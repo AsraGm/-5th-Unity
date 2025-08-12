@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
+using UnityEditor;
 using UnityEngine;
 
 public class MOVEPLAYER : MonoBehaviour
 {
+    GameObject objetoDialogo;
+        
+    public Animator animator;       // Asigna el Animator desde el inspector     
     [Header("Movement")]
     public float moveSpeed = 7f;
     public float groundDrag = 5f;
@@ -20,7 +24,7 @@ public class MOVEPLAYER : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.3f;
     public LayerMask whatIsGround;
-    bool grounded;
+    public bool grounded;
 
     public Transform orientation;
 
@@ -38,6 +42,27 @@ public class MOVEPLAYER : MonoBehaviour
 
     private void Start()
     {
+        objetoDialogo = GameObject.Find("DialogueManager");
+        if (objetoDialogo != null)
+        {
+            // Obtener el script del objeto
+            DialogueManager script = objetoDialogo.GetComponent<DialogueManager>();
+
+            if (script != null)
+            {
+                // Obtener el valor del bool
+                bool valor = script.isDialogueActive;
+                Debug.Log("Valor del bool: " + valor);
+            }
+            else
+            {
+                Debug.LogWarning("No se encontrÃ³ el script en el objeto.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No se encontrÃ³ el objeto con ese nombre.");
+        }
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
@@ -57,14 +82,14 @@ public class MOVEPLAYER : MonoBehaviour
     {
         if (freeLookCam != null)
         {
-            // Rotar el personaje con la cámara
+            // Rotar el personaje con la cï¿½mara
             float cameraYRotation = freeLookCam.m_XAxis.Value;
             Quaternion targetRotation = Quaternion.Euler(0f, cameraYRotation, 0f);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
         else
         {
-            // Código original para cuando hay input de movimiento
+            // Cï¿½digo original para cuando hay input de movimiento
             if (moveDirection != Vector3.zero)
             {
                 transform.forward = Vector3.Slerp(transform.forward, moveDirection.normalized, Time.deltaTime * rotationSpeed);
@@ -72,7 +97,8 @@ public class MOVEPLAYER : MonoBehaviour
         }
     }
     private void Update()
-    {
+    {        
+        animator.SetBool("Dialogo", objetoDialogo.GetComponent<DialogueManager>().isDialogueActive);
         if (!controlActivo) return;
 
         // Ground check
@@ -84,6 +110,17 @@ public class MOVEPLAYER : MonoBehaviour
 
         // Aplicar drag
         rb.linearDamping = grounded ? groundDrag : 0;
+
+        // Tomar la velocidad actual del rigidbody
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+        // Magnitud horizontal (en metros/segundo)
+        float horizontalSpeed = horizontalVelocity.magnitude;
+
+        // Pasar la velocidad al Animator
+        animator.SetFloat("Speed", horizontalSpeed);
+        bool isMoving = (horizontalInput != 0 || verticalInput != 0);
+        animator.SetBool("MoveKey", isMoving);        
     }
 
     private void FixedUpdate()
