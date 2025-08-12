@@ -34,7 +34,7 @@ public class EnemyFollow : MonoBehaviour
     private NavMeshAgent navAgent;
 
     // Estados del sistema
-    private bool isFollowing = true;
+    public bool isFollowing = true;
     private bool isPausedByItem = false;
 
     // Reset system
@@ -108,14 +108,10 @@ public class EnemyFollow : MonoBehaviour
 
     private void Update()
     {
-        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        float horizontalSpeed = horizontalVelocity.magnitude;
-        animator.SetFloat("Speed", horizontalSpeed);
-
         if (playerTransform == null || navAgent == null || !isFollowing || isPausedByItem) return;
 
         FollowPlayer();
-
+        GameObject.FindWithTag("Enemy").GetComponent<Animator>().SetBool("Following", isFollowing);
         // Actualizar velocidad si cambió en runtime
         if (navAgent.speed != moveSpeed)
         {
