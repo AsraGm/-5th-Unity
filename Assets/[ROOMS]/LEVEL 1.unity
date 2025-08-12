@@ -11144,7 +11144,6 @@ GameObject:
   - component: {fileID: 206349668}
   - component: {fileID: 919132149225986100}
   - component: {fileID: 919132149225986101}
-  - component: {fileID: 919132149225986102}
   m_Layer: 0
   m_Name: LYTTA
   m_TagString: NPC
@@ -11201,18 +11200,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &919132149225986102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132149225986099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68e7cd4beba49b24485828d2bc008236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &919132149492305689 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8884668637571722939, guid: b33905fc195a179468d459c2e7bb371d, type: 3}
@@ -14424,7 +14411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1929186673745734024, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.28507024
+      value: 0.2850702
       objectReference: {fileID: 0}
     - target: {fileID: 1929186673745734024, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_LocalRotation.y

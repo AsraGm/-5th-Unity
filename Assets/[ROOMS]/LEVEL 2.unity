@@ -6511,17 +6511,17 @@ MonoBehaviour:
   levels:
   - levelName: LEVEL 1
     itemsRequired: 3
-    boss: {fileID: 543450651630411223}
+    boss: {fileID: 0}
     bossDefeated: 0
   - levelName: LEVEL 2
     itemsRequired: 3
-    boss: {fileID: 148393850}
+    boss: {fileID: 543450651630411223}
     bossDefeated: 0
   - levelName: LEVEL 3
     itemsRequired: 0
     boss: {fileID: 0}
     bossDefeated: 0
-  currentLevelIndex: 0
+  currentLevelIndex: 1
 --- !u!1 &692481927
 GameObject:
   m_ObjectHideFlags: 0
@@ -7695,7 +7695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8bcc77824af174ea361d1b26292e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: be0b5db8f9c261040ada1a89693ff9d1, type: 2}
+  itemData: {fileID: 11400000, guid: 0d945f81548363142822592d905d272d, type: 2}
   wasPickedUp: 0
 --- !u!65 &787181919
 BoxCollider:
@@ -8969,6 +8969,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1242922945161587661, guid: 47a66aa9ddfcd434285696d381c04706, type: 3}
   m_PrefabInstance: {fileID: 886375618}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &894675365 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5066800587246129286, guid: b33905fc195a179468d459c2e7bb371d, type: 3}
+  m_PrefabInstance: {fileID: 2083866919}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &895093466
 PrefabInstance:
@@ -14560,6 +14565,7 @@ MonoBehaviour:
   playerMovement: {fileID: 1042252215}
   cameraController: {fileID: 1908929392}
   playerRigidbody: {fileID: 1042252212}
+  isDialogueActive: 0
 --- !u!1 &1345909908 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1034139688959124347, guid: a46bd60a12149ba499659b0f88faeee3, type: 3}
@@ -22179,7 +22185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8bcc77824af174ea361d1b26292e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 90c179b7d67c7cc47b6adcd45d1969bd, type: 2}
+  itemData: {fileID: 11400000, guid: cb5dc8babe705f74399fb5188105beff, type: 2}
   wasPickedUp: 0
 --- !u!65 &2033332127
 BoxCollider:
@@ -23599,7 +23605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8bcc77824af174ea361d1b26292e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 4990d62d59699994cb876379a88ca2de, type: 2}
+  itemData: {fileID: 11400000, guid: 08987fd551f1e71419216f8a326df7bc, type: 2}
   wasPickedUp: 0
 --- !u!65 &2133390695
 BoxCollider:
@@ -23880,7 +23886,7 @@ PrefabInstance:
     - target: {fileID: 2129650028668961924, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: dialogueLookAt
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 894675365}
     - target: {fileID: 2129650028668961924, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: thirdPersonCam
       value: 
@@ -23947,31 +23953,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6452732807426715392, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.65061605
+      value: 5.9599967
       objectReference: {fileID: 0}
     - target: {fileID: 6452732807426715392, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3761284
+      value: 0.7785518
       objectReference: {fileID: 0}
     - target: {fileID: 6452732807426715392, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.814487
+      value: -15.975042
       objectReference: {fileID: 0}
     - target: {fileID: 6452732807426715392, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9003423
+      value: 0.53826416
       objectReference: {fileID: 0}
     - target: {fileID: 6452732807426715392, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.4002837
+      value: 0.1362589
       objectReference: {fileID: 0}
     - target: {fileID: 6452732807426715392, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.15602817
+      value: -0.8212032
       objectReference: {fileID: 0}
     - target: {fileID: 6452732807426715392, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.06936865
+      value: 0.13164541
       objectReference: {fileID: 0}
     - target: {fileID: 9019171829106294214, guid: c355e2f788a58f04cb2e7c899fb4a341, type: 3}
       propertyPath: m_Name
@@ -24048,6 +24054,18 @@ PrefabInstance:
       propertyPath: defeatPosition
       value: 
       objectReference: {fileID: 1807370059}
+    - target: {fileID: 3843871388277022356, guid: a46bd60a12149ba499659b0f88faeee3, type: 3}
+      propertyPath: spawnTriggers.Array.data[0].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 0d945f81548363142822592d905d272d, type: 2}
+    - target: {fileID: 3843871388277022356, guid: a46bd60a12149ba499659b0f88faeee3, type: 3}
+      propertyPath: spawnTriggers.Array.data[1].item
+      value: 
+      objectReference: {fileID: 11400000, guid: cb5dc8babe705f74399fb5188105beff, type: 2}
+    - target: {fileID: 3843871388277022356, guid: a46bd60a12149ba499659b0f88faeee3, type: 3}
+      propertyPath: spawnTriggers.Array.data[2].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 08987fd551f1e71419216f8a326df7bc, type: 2}
     - target: {fileID: 3843871388277022356, guid: a46bd60a12149ba499659b0f88faeee3, type: 3}
       propertyPath: spawnTriggers.Array.data[0].spawnPoint
       value: 
@@ -24283,15 +24301,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5845877219223161098, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.40028378
+      value: 0.40028372
       objectReference: {fileID: 0}
     - target: {fileID: 5845877219223161098, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.15602818
+      value: 0.1560282
       objectReference: {fileID: 0}
     - target: {fileID: 5845877219223161098, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.06936868
+      value: -0.069368675
       objectReference: {fileID: 0}
     - target: {fileID: 8838705692436880420, guid: 6fbf834007b17d044a509e22765b24c1, type: 3}
       propertyPath: m_FollowOffset.y
