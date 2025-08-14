@@ -92,6 +92,8 @@ public class Enemy : MonoBehaviour
     {
         Rigidbody playerRb = target.transform.GetComponent<Rigidbody>();
         Vector3 pushDirection = (target.transform.position - transform.position).normalized;
+        pushDirection.y = 0;
+        pushDirection = pushDirection.normalized;
         StartCoroutine(PushTargetSmooth(playerRb, pushDirection, forceImpulsive, pushDuration));
     }
 

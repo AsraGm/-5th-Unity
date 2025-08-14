@@ -33,6 +33,9 @@ public class ResetSystem : MonoBehaviour
     [Tooltip("Duración del fade out final de la viñeta")]
     [SerializeField] private float vignetteFadeOutDuration = 1.5f;
 
+    [Header("Items que se desactivan al morir")]
+    [SerializeField] private List<GameObject> itemsToDeactivateOnDeath = new List<GameObject>();
+
     // Referencias de post processing
     private Vignette vignette;
     private float originalVignetteIntensity;
@@ -393,21 +396,36 @@ public class ResetSystem : MonoBehaviour
         // 2. Reset de todos los NPCs
         ResetAllNPCs();
 
-        // 3. Reset de todos los items del mundo
+        // 3. NUEVO: Reset de todos los NPCItemSpawners PRIMERO (ANTES de los items)
+        ResetAllItemSpawners();
+
+        // 4. Reset de todos los items del mundo (DESPUÉS de los spawners)
         ResetAllItems();
 
-        // 4. MODIFICADO: Limpiar inventario PERO preservar ítems de niveles anteriores
+        ForceDeactivateSpecificItems();
+
+        // 5. MODIFICADO: Limpiar inventario PERO preservar ítems de niveles anteriores
         ResetInventoryWithPreservation();
 
-        // 5. Reset de diálogos
+        // 6. Reset de diálogos
         ResetDialogueSystem();
 
-        // 6. Limpiar queue de posiciones
+        // 7. Limpiar queue de posiciones
         recentPositions.Clear();
 
         OnLevelReset?.Invoke();
     }
-
+    private void ForceDeactivateSpecificItems()
+    {
+        foreach (GameObject item in itemsToDeactivateOnDeath)
+        {
+            if (item != null)
+            {
+                item.SetActive(false);
+                Debug.Log($"Item {item.name} forzado a desactivar");
+            }
+        }
+    }
     // NUEVO: Método modificado para preservar ítems de niveles anteriores
     private void ResetInventoryWithPreservation()
     {
@@ -492,6 +510,20 @@ public class ResetSystem : MonoBehaviour
                 }
             }
         }
+    }
+    private void ResetAllItemSpawners()
+    {
+        NPCItemSpawner[] allSpawners = FindObjectsByType<NPCItemSpawner>(FindObjectsSortMode.None);
+
+        foreach (NPCItemSpawner spawner in allSpawners)
+        {
+            if (spawner != null)
+            {
+                spawner.ResetSpawner();
+            }
+        }
+
+        Debug.Log($"Item spawners reseteados: {allSpawners.Length} spawners encontrados");
     }
 
     private void ResetAllItems()

@@ -45,6 +45,7 @@ public class NPCController : MonoBehaviour
     private NPCInteractionHandler interactionHandler;
     private NPCComponentController componentController;
     private NPCSceneTransition sceneTransition;
+    private NPCItemSpawner itemSpawner;
 
     // Estados principales
     public enum NPCState { NPC, Enemy, PostDefeat }
@@ -62,6 +63,7 @@ public class NPCController : MonoBehaviour
     private void InitializeComponents()
     {
         // Componentes existentes
+        itemSpawner = GetComponent<NPCItemSpawner>() ?? gameObject.AddComponent<NPCItemSpawner>();
         dialogueSystem = GetComponent<NPCDialogueSystem>() ?? gameObject.AddComponent<NPCDialogueSystem>();
         transformation = GetComponent<NPCTransformation>() ?? gameObject.AddComponent<NPCTransformation>();
         effectsManager = GetComponent<NPCEffectsManager>() ?? gameObject.AddComponent<NPCEffectsManager>();
@@ -95,6 +97,19 @@ public class NPCController : MonoBehaviour
         stateManager.SetState(NPCState.Enemy);
         transformation.ExecuteTransformation();
         effectsManager.PlayTransformationEffects();
+        if (itemSpawner != null)
+        {
+            itemSpawner.ActivateCollectibleItems();
+        }
+    }
+    public bool AllRequiredItemsCollected()
+    {
+        return itemSpawner != null ? itemSpawner.AllItemsCollected() : true;
+    }
+
+    public int GetRemainingItemsCount()
+    {
+        return itemSpawner != null ? itemSpawner.GetRemainingItemsCount() : 0;
     }
 
     public void DefeatBoss()
