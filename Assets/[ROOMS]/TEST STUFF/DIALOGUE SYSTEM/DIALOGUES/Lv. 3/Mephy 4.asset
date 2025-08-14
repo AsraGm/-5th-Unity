@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
-  m_Name: ALT P2
+  m_Name: Mephy 4
   m_EditorClassIdentifier: 
-  dialogueText: Before you go, please don't give up in yourself, that the only thing
-    that tournament me in the nights
+  dialogueText: "I\u2019ll take control. I won\u2019t let you go"
   responses: []
   isEndNode: 1
+  customCloseButtonText: Not today
   onNodeStart:
     m_PersistentCalls:
       m_Calls: []

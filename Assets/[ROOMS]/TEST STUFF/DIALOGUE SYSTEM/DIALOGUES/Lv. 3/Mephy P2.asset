@@ -10,11 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
-  m_Name: ALT3
+  m_Name: Mephy P2
   m_EditorClassIdentifier: 
-  dialogueText: Then you must perish by the rock n RoOOooOoLlLLllL!!!!
-  responses: []
-  isEndNode: 1
+  dialogueText: You were lost and left alone come into the promised land with me
+  responses:
+  - responseText: I won't
+    nextNode: {fileID: 11400000, guid: 24d990e045af5c84eafe2adf20f5ff5d, type: 2}
+  - responseText: No
+    nextNode: {fileID: 11400000, guid: 24d990e045af5c84eafe2adf20f5ff5d, type: 2}
+  isEndNode: 0
+  customCloseButtonText: 
   onNodeStart:
     m_PersistentCalls:
       m_Calls: []

@@ -140,7 +140,7 @@ public class DialogueManager : MonoBehaviour
         currentNode = startNode;
         dialoguePanel.SetActive(true);
         panelAnimator.SetTrigger("Appear");
-        UpdateDialogueUI();        
+        UpdateDialogueUI();
     }
 
     private void UpdateDialogueUI()
@@ -189,7 +189,9 @@ public class DialogueManager : MonoBehaviour
 
         if (currentNode.isEndNode)
         {
-            CreateButton("Cerrar", EndDialogue, isCloseButton: true);
+            // CAMBIO PRINCIPAL: Usar el texto personalizable del nodo
+            string closeButtonText = currentNode.GetCloseButtonText();
+            CreateButton(closeButtonText, EndDialogue, isCloseButton: true);
         }
         else
         {
@@ -278,7 +280,7 @@ public class DialogueManager : MonoBehaviour
     public void OnDisappearEnd()
     {
         // OPTIMIZACIÓN: Desactivar flag de diálogo activo
-        isDialogueActive = false;        
+        isDialogueActive = false;
         dialoguePanel.SetActive(false);
         ClearSelection();
 

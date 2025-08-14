@@ -29,6 +29,12 @@ public class NPCController : MonoBehaviour
     [Tooltip("Velocidad de movimiento si no es teleport instantáneo")]
     [SerializeField] private float moveSpeed = 5f;
 
+    [Header("Animation Settings")]
+    [Tooltip("Nombre del state de muerte en el Animator (debe coincidir exactamente)")]
+    [SerializeField] private string deathStateName = "Death";
+    [Tooltip("Tiempo máximo de espera por la animación (seguridad)")]
+    [SerializeField] private float maxAnimationWaitTime = 5f;
+
     // Componentes modulares existentes
     private NPCDialogueSystem dialogueSystem;
     private NPCTransformation transformation;
@@ -97,21 +103,34 @@ public class NPCController : MonoBehaviour
 
         Debug.Log($"{gameObject.name} ha sido salvado/derrotado!");
         stateManager.SetState(NPCState.PostDefeat);
-        transformation.RevertToNPC();
+        // NO llamar transformation.RevertToNPC() aquí - se hará al final
         effectsManager.PlayDefeatEffects();
 
-        GameObject.FindWithTag("NPC").GetComponent<Animator>().SetTrigger("Death");
-
-        // ========== NUEVA SECUENCIA: PARAR + MOVER A POSICIÓN ==========
-        StartCoroutine(DefeatSequence());
+        // ========== NUEVA SECUENCIA MEJORADA ==========
+        StartCoroutine(DefeatSequenceWithAnimation());
     }
 
-    private IEnumerator DefeatSequence()
+    private IEnumerator DefeatSequenceWithAnimation()
     {
-        // Paso 1: Parar todo movimiento inmediatamente
-        StopAllMovement();
+        // Paso 1: Parar movimiento PERO mantener animator activo para la animación
+        StopMovementButKeepAnimation();
 
-        // Paso 2: Mover a la posición de derrota si está configurada
+        // Paso 2: Activar animación de muerte
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+            Debug.Log($"{gameObject.name} - Animación de muerte activada");
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name} - No se encontró Animator!");
+        }
+
+        // Paso 3: Esperar a que termine la animación
+        yield return StartCoroutine(WaitForDeathAnimation());
+
+        // Paso 4: Ahora sí mover a la posición de derrota
         if (defeatPosition != null)
         {
             yield return StartCoroutine(MoveToDefeatPosition());
@@ -121,7 +140,57 @@ public class NPCController : MonoBehaviour
             Debug.LogWarning($"No hay posición de derrota configurada para {gameObject.name}");
         }
 
-        Debug.Log($"{gameObject.name} secuencia de derrota completada");
+        // Paso 5: AHORA SÍ convertir a NPC (después de todo)
+        transformation.RevertToNPC();
+        Debug.Log($"{gameObject.name} - Convertido a NPC después de secuencia completa");
+
+        Debug.Log($"{gameObject.name} - Secuencia de derrota completada");
+    }
+
+    private IEnumerator WaitForDeathAnimation()
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            Debug.LogWarning($"{gameObject.name} - No hay Animator, saltando espera de animación");
+            yield break;
+        }
+
+        float waitStartTime = Time.time;
+
+        // Esperar un frame para que el trigger se procese
+        yield return null;
+
+        // Esperar hasta que entre al state de muerte (con timeout de seguridad)
+        while (!IsInDeathState(animator) && (Time.time - waitStartTime) < maxAnimationWaitTime)
+        {
+            yield return null;
+        }
+
+        if (!IsInDeathState(animator))
+        {
+            Debug.LogWarning($"{gameObject.name} - No se pudo detectar el state de muerte '{deathStateName}'. Continuando...");
+            yield break;
+        }
+
+        Debug.Log($"{gameObject.name} - Entrando en animación de muerte...");
+
+        // Esperar hasta que la animación termine (normalizedTime >= 1.0)
+        while (IsInDeathState(animator) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f
+               && (Time.time - waitStartTime) < maxAnimationWaitTime)
+        {
+            yield return null;
+        }
+
+        Debug.Log($"{gameObject.name} - Animación de muerte completada");
+    }
+
+    private bool IsInDeathState(Animator animator)
+    {
+        if (animator == null) return false;
+
+        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+        return currentState.IsName(deathStateName);
     }
 
     private IEnumerator MoveToDefeatPosition()
@@ -162,7 +231,8 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    private void StopAllMovement()
+    // NUEVO: Método que para el movimiento pero permite que siga la animación
+    private void StopMovementButKeepAnimation()
     {
         // Parar NavMeshAgent
         var navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -170,6 +240,7 @@ public class NPCController : MonoBehaviour
         {
             navAgent.isStopped = true;
             navAgent.velocity = Vector3.zero;
+            navAgent.ResetPath(); // Limpiar path
         }
 
         // Parar Rigidbody
@@ -178,14 +249,46 @@ public class NPCController : MonoBehaviour
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true;
+            // NO ponemos isKinematic = true aquí para que la animación pueda mover el objeto si es necesario
         }
 
-        // Parar Animator (opcional)
+        // Parar scripts de seguimiento enemigo
+        var enemyFollow = GetComponent<EnemyFollow>();
+        if (enemyFollow != null)
+        {
+            enemyFollow.StopFollowing();
+        }
+
+        // Parar combate
+        var enemy = GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            enemy.DisableDamage();
+        }
+
+        // NUEVO: Asegurar que Following esté en false para el Animator
         var animator = GetComponent<Animator>();
         if (animator != null)
         {
-            animator.speed = 0f; // Para animaciones de movimiento
+            animator.SetBool("Following", false);
+            Debug.Log($"{gameObject.name} - Following establecido en false");
+        }
+
+        // MANTENER el Animator activo - NO tocamos animator.speed aquí
+
+        Debug.Log($"{gameObject.name} - Movimiento detenido, animación activa");
+    }
+
+    // Mantener el método original por compatibilidad
+    private void StopAllMovement()
+    {
+        StopMovementButKeepAnimation();
+
+        // Además parar completamente el animator
+        var animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.speed = 0f;
         }
 
         Debug.Log($"{gameObject.name} detenido completamente");
@@ -225,5 +328,11 @@ public class NPCController : MonoBehaviour
         {
             StartCoroutine(MoveToDefeatPosition());
         }
+    }
+
+    [ContextMenu("Test Death Animation Wait")]
+    public void DebugTestDeathAnimation()
+    {
+        StartCoroutine(DefeatSequenceWithAnimation());
     }
 }
