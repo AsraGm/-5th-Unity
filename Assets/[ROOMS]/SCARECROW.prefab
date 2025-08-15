@@ -2841,7 +2841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previewKey: 9
   confirmKey: 323
-  maxDistance: 10
+  maxDistance: 15
   validLayers:
     serializedVersion: 2
     m_Bits: 8
@@ -2850,7 +2850,7 @@ MonoBehaviour:
   slowdownFactor: 0.2
   slowdownTransitionTime: 0.3
   speedupTransitionTime: 0.5
-  decisionTime: 3
+  decisionTime: 5
   isPreviewing: 0
 --- !u!114 &4555370263853530363
 MonoBehaviour:
@@ -2864,7 +2864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbb637ee4289f2f419a5b88ca1eaa941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previewPrefab: {fileID: 608141571459872514, guid: 2406fc7649c3b294389b2c039d4c0aec, type: 3}
+  previewPrefab: {fileID: 2214372685859027250, guid: 6a8ed848a620b944c8c68cc80a19de1e, type: 3}
+  previewMaterial: {fileID: 2100000, guid: 6b3b3fd871523fd4f95a86e0e87af94a, type: 2}
   previewColor: {r: 0, g: 1, b: 1, a: 1}
   showRangeInGame: 1
   validColor: {r: 0, g: 1, b: 0.04313922, a: 1}
@@ -2882,6 +2883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233eb851c09316b43832f3b0520edce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraScript: {fileID: 0}
   animator: {fileID: 5685566491595094570}
   moveSpeed: 7
   groundDrag: 5
@@ -2897,6 +2899,8 @@ MonoBehaviour:
   grounded: 0
   orientation: {fileID: 1531559010876405203}
   rotationSpeed: 5
+  smoothRotationSpeed: 8
+  rotationThreshold: 0.1
   freeLookCam: {fileID: 0}
   controlActivo: 1
 --- !u!114 &8884668637571722939

@@ -31,8 +31,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326153941210652435}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.42906016, y: -0.15969409, z: 0.07736288, w: 0.885675}
-  m_LocalPosition: {x: 0.7307321, y: 1.5155532, z: 34.8353}
+  m_LocalRotation: {x: 0.1362589, y: -0.8212032, z: 0.13164541, w: 0.53826416}
+  m_LocalPosition: {x: 5.9599967, y: 0.7785518, z: -15.975042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -120,6 +120,14 @@ MonoBehaviour:
   dialogueCam: {fileID: 0}
   dialogueVirtualCam: {fileID: 0}
   currentStyle: 0
+  freeLookCam: {fileID: 0}
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 6144
+  cameraRadius: 0.7
+  minDistance: 1
+  occlusionSmoothness: 3
+  occlusionTolerance: 0.2
 --- !u!114 &3899813248064088296
 MonoBehaviour:
   m_ObjectHideFlags: 0

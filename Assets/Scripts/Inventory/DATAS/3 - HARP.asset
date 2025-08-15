@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 3 - HARP
   m_EditorClassIdentifier: 
   itemName: MADMAN
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: c0194ce2da6eadc47ae2a7143e9617b0, type: 3}
   loreImage: {fileID: 21300000, guid: f53dc6b4ebef07f438f79f40d01a674f, type: 3}

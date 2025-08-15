@@ -17,7 +17,7 @@ public class InventorySystem : MonoBehaviour
     [Range(0.1f, 50f)] public float scrollSensitivity = 1f;
 
     public int ItemCount => inventoryItems.Count;
-    private List<ItemData> inventoryItems = new List<ItemData>();
+    [SerializeField] private List<ItemData> inventoryItems = new List<ItemData>();
     private bool isInventoryOpen = false;
 
     public static event Action<ItemData> OnItemAdded;
@@ -36,6 +36,10 @@ public class InventorySystem : MonoBehaviour
         if (inventoryScrollRect != null)
         {
             inventoryScrollRect.scrollSensitivity = scrollSensitivity;
+        }
+        if (inventoryItems.Count > 0)
+        {
+            UpdateInventoryUI();
         }
     }
 

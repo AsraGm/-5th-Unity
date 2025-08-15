@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 3 - BIRD
   m_EditorClassIdentifier: 
   itemName: BENNE
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4973615afca340740974440f60aea9f8, type: 3}
   loreImage: {fileID: 21300000, guid: f3a6cead2ca79cf42a83ad68f6de5c31, type: 3}

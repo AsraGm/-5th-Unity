@@ -5,6 +5,7 @@ public class TeleportVisuals : MonoBehaviour
 {
     [Header("Visual Settings")]
     public GameObject previewPrefab;
+    public Material previewMaterial; // Material que se va a modificar (asignar en Inspector)
     public Color previewColor = Color.cyan;
     public bool showRangeInGame = true;
     public Color validColor = Color.cyan;
@@ -12,34 +13,37 @@ public class TeleportVisuals : MonoBehaviour
     public bool hidePreviewIfInvalid = false; // Cambiado a false para mantener el comportamiento original
 
     private GameObject currentPreview;
+    private Color originalColor; // Para restaurar el color original
 
     public void CreatePreview()
     {
         if (previewPrefab != null)
         {
             currentPreview = Instantiate(previewPrefab);
+
+            // Guardar el color original del material asignado en Inspector
+            if (previewMaterial != null)
+            {
+                originalColor = previewMaterial.color;
+            }
         }
     }
 
     public void UpdatePreviewVisual(Vector3 position, bool isValid)
     {
-        if (currentPreview == null) return;
+        if (currentPreview == null || previewMaterial == null) return;
 
         currentPreview.transform.position = position + Vector3.up * 0.1f;
 
-        Renderer previewRenderer = currentPreview.GetComponent<Renderer>();
-        if (previewRenderer != null)
+        if (isValid)
         {
-            if (isValid)
-            {
-                previewRenderer.material.color = validColor;
-            }
-            else
-            {
-                float blinkSpeed = 5f;
-                float lerpValue = Mathf.PingPong(Time.time * blinkSpeed, 1);
-                previewRenderer.material.color = Color.Lerp(invalidColor, Color.black, lerpValue);
-            }
+            previewMaterial.color = validColor;
+        }
+        else
+        {
+            float blinkSpeed = 5f;
+            float lerpValue = Mathf.PingPong(Time.time * blinkSpeed, 1);
+            previewMaterial.color = Color.Lerp(invalidColor, Color.black, lerpValue);
         }
     }
 
@@ -47,6 +51,12 @@ public class TeleportVisuals : MonoBehaviour
     {
         if (currentPreview != null)
         {
+            // Restaurar color original antes de destruir (opcional)
+            if (previewMaterial != null)
+            {
+                previewMaterial.color = originalColor;
+            }
+
             Destroy(currentPreview);
             currentPreview = null;
         }

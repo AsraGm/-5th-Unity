@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 1 - FEATHER
   m_EditorClassIdentifier: 
   itemName: DIPLOMATIC
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: e4f4f51953e72ce41aabe48f11e64436, type: 3}
   loreImage: {fileID: 21300000, guid: d147b03cf992f8f48baf8bd1647fb507, type: 3}

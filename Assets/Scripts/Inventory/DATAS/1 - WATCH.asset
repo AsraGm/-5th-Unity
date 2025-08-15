@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 1 - WATCH
   m_EditorClassIdentifier: 
   itemName: WATCHMAKER
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 0df08e042a55fae48af5b8c18bfe3f8e, type: 3}
   loreImage: {fileID: 21300000, guid: 9f691bca04e58c84ab938eb352bb2691, type: 3}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 1 - SKULL
   m_EditorClassIdentifier: 
   itemName: WISEMAN
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: eae2b1dcfc44d4e40963964b4247f51b, type: 3}
   loreImage: {fileID: 21300000, guid: bef6f569c4cfd8749a52e4ec299e7062, type: 3}

@@ -46,7 +46,7 @@ public class MAINMenu : MonoBehaviour
 
     public void Exit()
     {
-        SceneManager.LoadScene("CREDITS");
+        Application.Quit();
     }
 
     public void MainMenu()

@@ -16,7 +16,7 @@ public class CAMERA : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Transform playerObj;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float rotationSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 3f; // Reducido para mayor suavidad
 
     [Header("Camera References")]
     [SerializeField] private GameObject thirdPersonCam;
@@ -35,14 +35,31 @@ public class CAMERA : MonoBehaviour
     [Header("Manual Camera Occlusion")]
     [SerializeField] private CinemachineFreeLook freeLookCam; // Arrastra tu FreeLook Camera aquí
     [SerializeField] private LayerMask obstacleLayerMask = -1; // Layers de obstáculos
-    [SerializeField] private float cameraRadius = 0.5f;
+    [SerializeField] private float cameraRadius = 0.3f; // Reducido de 0.5f
     [SerializeField] private float minDistance = 1f;
+    [SerializeField] private float occlusionSmoothness = 3f; // NUEVO: Controla qué tan suave es la transición
+    [SerializeField] private float occlusionTolerance = 0.2f; // NUEVO: Tolerancia antes de activar oclusión
+
+    // NUEVO: Variable para controlar si la rotación está bloqueada
+    private bool isPlayerRotationLocked = false;
+
+    // NUEVO: Variables para suavizar la oclusión y evitar shake
+    private float targetTopRadius, targetMiddleRadius, targetBottomRadius;
+    private bool isOcclusionActive = false;
 
     private void Start()
     {
         SwitchCameraStyle(CameraStyle.Basic);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // NUEVO: Inicializar valores target
+        if (freeLookCam != null)
+        {
+            targetTopRadius = freeLookCam.m_Orbits[0].m_Radius;
+            targetMiddleRadius = freeLookCam.m_Orbits[1].m_Radius;
+            targetBottomRadius = freeLookCam.m_Orbits[2].m_Radius;
+        }
     }
 
     private void Update()
@@ -67,28 +84,49 @@ public class CAMERA : MonoBehaviour
 
     private void HandlePlayerRotation()
     {
-        if (currentStyle == CameraStyle.Dialogue)
+        // Si la rotación está bloqueada, no hacer nada
+        if (isPlayerRotationLocked)
         {
-            Vector3 dirToDialogueLookAt = dialogueLookAt.position - new Vector3(transform.position.x, dialogueLookAt.position.y, transform.position.z);
-            playerObj.forward = dirToDialogueLookAt.normalized;
+            return;
         }
-        else if (currentStyle == CameraStyle.Basic && freeLookCam != null)
+
+        if (currentStyle == CameraStyle.Basic && freeLookCam != null)
         {
-            // NUEVO: Rotar el personaje con la cámara
+            // MEJORADO: Rotación más suave del objeto jugador con la cámara
             float cameraYRotation = freeLookCam.m_XAxis.Value;
             Quaternion targetRotation = Quaternion.Euler(0f, cameraYRotation, 0f);
-            playerObj.rotation = Quaternion.Slerp(playerObj.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+            // Verificar diferencia angular para evitar rotaciones innecesarias
+            float angleDifference = Quaternion.Angle(playerObj.rotation, targetRotation);
+
+            if (angleDifference > 2f) // Solo ajustar si hay diferencia significativa
+            {
+                playerObj.rotation = Quaternion.Slerp(playerObj.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            }
         }
-        else
+        else if (currentStyle == CameraStyle.Basic)
         {
             // Código original para cuando hay input de movimiento
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
-            Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-            if (inputDir != Vector3.zero)
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
-        }   
+            float inputMagnitude = new Vector2(horizontalInput, verticalInput).magnitude;
+
+            if (inputMagnitude > 0.1f) // Threshold para evitar micro-movimientos
+            {
+                Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+                if (inputDir != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(inputDir.normalized);
+                    float angleDifference = Quaternion.Angle(playerObj.rotation, targetRotation);
+
+                    if (angleDifference > 5f)
+                    {
+                        playerObj.rotation = Quaternion.Slerp(playerObj.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                    }
+                }
+            }
+        }
     }
 
     public void SwitchCameraStyle(CameraStyle newStyle)
@@ -100,9 +138,17 @@ public class CAMERA : MonoBehaviour
         {
             case CameraStyle.Basic:
                 thirdPersonCam.SetActive(true);
+                // DESBLOQUEAR rotación al volver a cámara normal
+                isPlayerRotationLocked = false;
+                Debug.Log("Rotación del personaje DESBLOQUEADA");
                 break;
+
             case CameraStyle.Dialogue:
                 dialogueCam.SetActive(true);
+                // BLOQUEAR rotación al entrar en diálogo
+                isPlayerRotationLocked = true;
+                Debug.Log("Rotación del personaje BLOQUEADA");
+
                 // Opcional: Configurar la cámara virtual si existe
                 if (dialogueVirtualCam != null)
                 {
@@ -115,37 +161,70 @@ public class CAMERA : MonoBehaviour
         currentStyle = newStyle;
     }
 
+    // NUEVO: Método público para que otros scripts puedan consultar el estilo de cámara actual
+    public CameraStyle GetCurrentCameraStyle()
+    {
+        return currentStyle;
+    }
+
+    // NUEVO: Método público para consultar si la rotación está bloqueada
+    public bool IsPlayerRotationLocked()
+    {
+        return isPlayerRotationLocked;
+    }
+
     private void HandleFreeLookOcclusion()
     {
         if (currentStyle != CameraStyle.Basic || freeLookCam == null) return;
 
         Vector3 cameraPos = freeLookCam.transform.position;
         Vector3 playerPos = player.position + Vector3.up * 1.5f;
-
         Vector3 direction = cameraPos - playerPos;
         float currentDistance = direction.magnitude;
 
-        // Primer raycast: desde jugador hacia cámara
-        if (Physics.SphereCast(playerPos, cameraRadius, direction.normalized, out RaycastHit hit, currentDistance, obstacleLayerMask))
+        // MEJORADO: Raycast más preciso con menos falsos positivos
+        RaycastHit hit;
+        bool hasObstacle = Physics.SphereCast(
+            playerPos,
+            cameraRadius,
+            direction.normalized,
+            out hit,
+            currentDistance - occlusionTolerance, // Añadir tolerancia
+            obstacleLayerMask,
+            QueryTriggerInteraction.Ignore // Ignorar triggers
+        );
+
+        if (hasObstacle)
         {
-            float newDistance = Mathf.Max(hit.distance - 1.2f, minDistance); // Más margen
+            // Calcular nueva distancia con más margen
+            float newDistance = Mathf.Max(hit.distance - 1.5f, minDistance);
 
-            // Segundo raycast: verificar que la nueva posición no atraviese nada
-            Vector3 newCameraPos = playerPos + direction.normalized * newDistance;
-            if (Physics.SphereCast(newCameraPos, cameraRadius, -direction.normalized, out RaycastHit backHit, 0.5f, obstacleLayerMask))
+            // NUEVO: Solo activar si no está ya activo o si la diferencia es significativa
+            if (!isOcclusionActive || Mathf.Abs(targetMiddleRadius - newDistance) > 0.5f)
             {
-                newDistance = Mathf.Max(newDistance - 0.8f, minDistance);
+                targetTopRadius = newDistance * 0.8f;
+                targetMiddleRadius = newDistance;
+                targetBottomRadius = newDistance * 1.2f;
+                isOcclusionActive = true;
             }
-
-            freeLookCam.m_Orbits[0].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[0].m_Radius, newDistance * 0.8f, Time.deltaTime * 5f);
-            freeLookCam.m_Orbits[1].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[1].m_Radius, newDistance, Time.deltaTime * 5f);
-            freeLookCam.m_Orbits[2].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[2].m_Radius, newDistance * 1.2f, Time.deltaTime * 5f);
         }
         else
         {
-            freeLookCam.m_Orbits[0].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[0].m_Radius, 2.75f, Time.deltaTime * 2f);
-            freeLookCam.m_Orbits[1].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[1].m_Radius, 3.69f, Time.deltaTime * 2f);
-            freeLookCam.m_Orbits[2].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[2].m_Radius, 2.79f, Time.deltaTime * 2f);
+            // NUEVO: Solo desactivar si estaba activo
+            if (isOcclusionActive)
+            {
+                // Volver a valores originales más suavemente
+                targetTopRadius = 2.75f;
+                targetMiddleRadius = 3.69f;
+                targetBottomRadius = 2.79f;
+                isOcclusionActive = false;
+            }
         }
+
+        // MEJORADO: Aplicar cambios de forma más suave
+        float smoothSpeed = occlusionSmoothness;
+        freeLookCam.m_Orbits[0].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[0].m_Radius, targetTopRadius, Time.deltaTime * smoothSpeed);
+        freeLookCam.m_Orbits[1].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[1].m_Radius, targetMiddleRadius, Time.deltaTime * smoothSpeed);
+        freeLookCam.m_Orbits[2].m_Radius = Mathf.Lerp(freeLookCam.m_Orbits[2].m_Radius, targetBottomRadius, Time.deltaTime * smoothSpeed);
     }
 }

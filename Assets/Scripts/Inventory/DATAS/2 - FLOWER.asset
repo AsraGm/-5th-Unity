@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 2 - FLOWER
   m_EditorClassIdentifier: 
   itemName: MUSE
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f6cb8d63e0f64604fae13091a0799800, type: 3}
   loreImage: {fileID: 21300000, guid: 26cb918a91b16fe44a66a25f359db492, type: 3}

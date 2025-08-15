@@ -55,6 +55,7 @@ public class NPCSceneTransition : MonoBehaviour
     private NPCController controller;
     private bool transitionInProgress = false;
     private AsyncOperation loadOperation;
+    private bool buttonInteractable = false;
 
     public void Initialize(NPCController npcController)
     {
@@ -103,6 +104,7 @@ public class NPCSceneTransition : MonoBehaviour
             continueButton.onClick.RemoveAllListeners();
             continueButton.onClick.AddListener(OnContinueButtonPressed);
             continueButton.interactable = false;
+            buttonInteractable = false;
         }
 
         // Configurar panel de fade (inicialmente transparente)
@@ -118,6 +120,15 @@ public class NPCSceneTransition : MonoBehaviour
         {
             loadingBar.value = 0f;
             loadingBar.interactable = false;
+        }
+    }
+
+    private void Update()
+    {
+        // Verificar si se presionó Enter y el botón está interactuable
+        if (buttonInteractable && Input.GetKeyDown(KeyCode.Return))
+        {
+            OnContinueButtonPressed();
         }
     }
 
@@ -307,6 +318,7 @@ public class NPCSceneTransition : MonoBehaviour
         if (continueButton != null)
         {
             continueButton.interactable = true;
+            buttonInteractable = true;
             Debug.Log("✅ Botón de continuar ACTIVADO");
 
             // ========== DEBUG EXTRA ==========
@@ -365,10 +377,11 @@ public class NPCSceneTransition : MonoBehaviour
 
     private void OnContinueButtonPressed()
     {
-        if (loadOperation != null)
+        if (loadOperation != null && buttonInteractable)
         {
-            Debug.Log("Botón continuar presionado - Activando nueva escena");
+            Debug.Log("Botón continuar presionado (por click o Enter) - Activando nueva escena");
             loadOperation.allowSceneActivation = true;
+            buttonInteractable = false; // Prevenir múltiples activaciones
         }
     }
 
@@ -384,6 +397,7 @@ public class NPCSceneTransition : MonoBehaviour
     public void DebugResetTransition()
     {
         transitionInProgress = false;
+        buttonInteractable = false;
         if (comicLoadingScreen != null)
         {
             comicLoadingScreen.SetActive(false);

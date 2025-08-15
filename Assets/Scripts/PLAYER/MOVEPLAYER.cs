@@ -7,7 +7,11 @@ using UnityEngine;
 public class MOVEPLAYER : MonoBehaviour
 {
     GameObject objetoDialogo;
-        
+
+    // NUEVA REFERENCIA: Necesitamos acceso al script de la cámara
+    [Header("Camera Reference")]
+    public CAMERA cameraScript;
+
     public Animator animator;       // Asigna el Animator desde el inspector     
     [Header("Movement")]
     public float moveSpeed = 7f;
@@ -30,6 +34,11 @@ public class MOVEPLAYER : MonoBehaviour
 
     [Header("Rotation")]
     public float rotationSpeed = 5f;
+    [Header("Smooth Rotation Settings")]
+    [Tooltip("Velocidad de rotación más suave para evitar cortes")]
+    public float smoothRotationSpeed = 8f;
+    [Tooltip("Umbral mínimo de movimiento para rotar")]
+    public float rotationThreshold = 0.1f;
     public CinemachineFreeLook freeLookCam;
 
     float horizontalInput;
@@ -63,6 +72,13 @@ public class MOVEPLAYER : MonoBehaviour
         {
             Debug.LogWarning("No se encontró el objeto con ese nombre.");
         }
+
+        // Si no se asignó manualmente, buscar el script de cámara
+        if (cameraScript == null)
+        {
+            cameraScript = FindObjectOfType<CAMERA>();
+        }
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
@@ -78,26 +94,45 @@ public class MOVEPLAYER : MonoBehaviour
             Debug.LogError("Asigna el GroundCheck transform en el inspector.");
         }
     }
+
     private void HandlePlayerRotation()
     {
-        if (freeLookCam != null)
+        // Verificar si la rotación está bloqueada desde el script de cámara
+        if (cameraScript != null && cameraScript.IsPlayerRotationLocked())
         {
-            // Rotar el personaje con la c�mara
-            float cameraYRotation = freeLookCam.m_XAxis.Value;
-            Quaternion targetRotation = Quaternion.Euler(0f, cameraYRotation, 0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            // Rotación BLOQUEADA - no hacer nada
+            return;
         }
-        else
+
+        // MEJORADO: Rotación más suave con threshold
+        float inputMagnitude = new Vector2(horizontalInput, verticalInput).magnitude;
+
+        if (inputMagnitude > rotationThreshold)
         {
-            // C�digo original para cuando hay input de movimiento
-            if (moveDirection != Vector3.zero)
+            // Usar la misma dirección que se usa para mover el personaje
+            Vector3 moveDir = moveDirection.normalized;
+
+            if (moveDir != Vector3.zero)
             {
-                transform.forward = Vector3.Slerp(transform.forward, moveDirection.normalized, Time.deltaTime * rotationSpeed);
+                // Calcular la rotación objetivo
+                Quaternion targetRotation = Quaternion.LookRotation(moveDir);
+
+                // Verificar si la diferencia angular es significativa para evitar micro-rotaciones
+                float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
+
+                if (angleDifference > 5f) // Solo rotar si hay una diferencia significativa
+                {
+                    // Rotación MÁS SUAVE para evitar cortes
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * smoothRotationSpeed);
+                }
             }
         }
+
+        // Si no hay input significativo, mantener la rotación actual (sin micro-ajustes)
     }
+
     private void Update()
-    {        
+    {
         animator.SetBool("Dialogo", objetoDialogo.GetComponent<DialogueManager>().isDialogueActive);
         if (!controlActivo) return;
 
@@ -120,7 +155,7 @@ public class MOVEPLAYER : MonoBehaviour
         // Pasar la velocidad al Animator
         animator.SetFloat("Speed", horizontalSpeed);
         bool isMoving = (horizontalInput != 0 || verticalInput != 0);
-        animator.SetBool("MoveKey", isMoving);        
+        animator.SetBool("MoveKey", isMoving);
     }
 
     private void FixedUpdate()
