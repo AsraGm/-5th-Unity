@@ -132,7 +132,9 @@ public class MOVEPLAYER : MonoBehaviour
 
     private void Update()
     {
-        animator.SetBool("Dialogo", objetoDialogo.GetComponent<DialogueManager>().isDialogueActive);
+        // Obtener el estado del diálogo
+        bool isDialogueActive = objetoDialogo.GetComponent<DialogueManager>().isDialogueActive;
+        animator.SetBool("Dialogo", isDialogueActive);
 
         // *** VERIFICACIÓN GAMEMANAGER AÑADIDA AQUÍ ***
         if (!GameManager.CanPlayerMove)
@@ -141,6 +143,22 @@ public class MOVEPLAYER : MonoBehaviour
             animator.SetFloat("Speed", 0f);
             animator.SetBool("MoveKey", false);
             return;
+        }
+
+        // *** NUEVA LÓGICA: Si está en diálogo, forzar animaciones de idle ***
+        if (isDialogueActive)
+        {
+            // FORZAR valores de idle para que la transición sea inmediata
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("MoveKey", false);
+
+            // Opcional: También detener el rigidbody para evitar deslizamiento
+            if (rb != null)
+            {
+                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0); // Mantener Y para gravedad
+            }
+
+            return; // Salir temprano, no procesar más input ni movimiento
         }
 
         if (!controlActivo) return;
