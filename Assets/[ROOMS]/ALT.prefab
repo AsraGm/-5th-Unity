@@ -4016,6 +4016,37 @@ Transform:
   - {fileID: 1652010313656872626}
   m_Father: {fileID: 8616095645147988019}
   m_LocalEulerAnglesHint: {x: 0, y: 13.817926, z: 0}
+--- !u!1 &7463458300918779106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7537476956097220201}
+  m_Layer: 0
+  m_Name: HitPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7537476956097220201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7463458300918779106}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.034, y: 2.532, z: -0.114}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1747467137110987883}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7487316527484987401
 GameObject:
   m_ObjectHideFlags: 0
@@ -4779,6 +4810,7 @@ Transform:
   - {fileID: 2222772984587702446}
   - {fileID: 313991037352582986}
   - {fileID: 1704451755530881300}
+  - {fileID: 7537476956097220201}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &8107805314598876011
@@ -4821,6 +4853,7 @@ MonoBehaviour:
   damage: 1
   damageCooldown: 2
   canAttack: 1
+  damageParticlesPrefab: {fileID: 1287974223428553137, guid: 4c1dafc66fc3e584195e86b1c1189039, type: 3}
 --- !u!195 &6704359410621243517
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4864,6 +4897,7 @@ MonoBehaviour:
   obstacleTags:
   - Assets
   - Walls
+  enemyDamageParticlesPrefab: {fileID: 3194389705767383857, guid: d8a535df727baa647a374672bf51b872, type: 3}
   isFollowing: 1
   showDebugInfo: 0
   showNavMeshPath: 0

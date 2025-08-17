@@ -24,6 +24,12 @@ public class TeleportCore : MonoBehaviour
     private float decisionTimer;
     private bool isDecisionActive = false;
 
+    [Header("Teleport Particles")]
+    [SerializeField] private GameObject teleportParticlePrefab; // Prefab de partículas
+    [SerializeField] private Transform particleSpawnPoint; // GameObject vacío hijo del jugador
+    [SerializeField] private bool spawnAtOrigin = false; // Si quieres partículas también en el origen
+    [SerializeField] private bool spawnAtDestination = true; // Si quieres partículas en el destino
+
     private float originalFixedDeltaTime;
     private bool isTimeSlowed = false;
     public bool isPreviewing = false;
@@ -116,7 +122,21 @@ public class TeleportCore : MonoBehaviour
 
         if (distanceToTarget <= maxDistance && IsValidPosition(targetPosition))
         {
+            // NUEVO: Spawnear partículas en el origen si está activado
+            if (spawnAtOrigin)
+            {
+                SpawnTeleportParticles(transform.position);
+            }
+
+            // Teleportar al jugador
             transform.position = targetPosition;
+
+            // NUEVO: Spawnear partículas en el destino si está activado
+            if (spawnAtDestination)
+            {
+                SpawnTeleportParticles(targetPosition);
+            }
+
             OnPlayerTeleported?.Invoke(targetPosition); // Notifica a los enemigos
             CancelPreview();
             lastTeleportTime = Time.time;
@@ -124,6 +144,28 @@ public class TeleportCore : MonoBehaviour
         else
         {
             CancelPreview();
+        }
+    }
+
+    // NUEVO: Método para spawnear las partículas de teleport
+    private void SpawnTeleportParticles(Vector3 position)
+    {
+        if (teleportParticlePrefab != null)
+        {
+            // Crear las partículas en la posición especificada
+            GameObject particles = Instantiate(teleportParticlePrefab, position, Quaternion.identity);
+
+            // Si hay un punto de spawn definido, usar su rotación
+            if (particleSpawnPoint != null)
+            {
+                particles.transform.rotation = particleSpawnPoint.rotation;
+            }
+
+            Debug.Log($"Partículas de teleport spawneadas en: {position}");
+        }
+        else
+        {
+            Debug.LogWarning("Teleport Particle Prefab no está asignado en " + gameObject.name);
         }
     }
 

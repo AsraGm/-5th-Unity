@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 31f7a10c9ad72d74fa55bb3f3415d7db
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - damageParticlesPrefab: {fileID: 1287974223428553137, guid: 4c1dafc66fc3e584195e86b1c1189039, type: 3}
+  - playerParticleSpawnPoint: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

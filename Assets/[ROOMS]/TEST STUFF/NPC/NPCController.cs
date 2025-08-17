@@ -105,7 +105,7 @@ public class NPCController : MonoBehaviour
 
         stateManager.SetState(NPCState.Enemy);
         transformation.ExecuteTransformation();
-        effectsManager.PlayTransformationEffects();
+        effectsManager.PlayTransformationEffects(); // ========== AQUÍ SE SPAWEAN LAS PARTÍCULAS ==========
         if (itemSpawner != null)
         {
             itemSpawner.ActivateCollectibleItems();
@@ -173,6 +173,11 @@ public class NPCController : MonoBehaviour
 
         // Paso 5: AHORA SÍ convertir a NPC (después de todo)
         transformation.RevertToNPC();
+        
+        // ========== NUEVO: DESTRUIR PARTÍCULAS AL VOLVER A NPC ==========
+        effectsManager.DestroyParticleSystem();
+        Debug.Log($"{gameObject.name} - Partículas destruidas al volver a NPC");
+        
         Debug.Log($"{gameObject.name} - Convertido a NPC después de secuencia completa");
 
         // ========== NUEVO: Paso 6 - Mostrar mensaje de retorno ==========
@@ -339,6 +344,9 @@ public class NPCController : MonoBehaviour
             Debug.Log($"Forzando {gameObject.name} de vuelta a estado NPC");
             stateManager.SetState(NPCState.NPC);
             transformation.RevertToNPC();
+            
+            // ========== NUEVO: DESTRUIR PARTÍCULAS SI LAS HAY ==========
+            effectsManager.DestroyParticleSystem();
         }
     }
 
@@ -406,4 +414,11 @@ public class NPCController : MonoBehaviour
 
     [ContextMenu("Hide Return Message")]
     public void DebugHideReturnMessage() => HideReturnMessage();
+
+    // ========== NUEVO: Métodos de debug para partículas ==========
+    [ContextMenu("Debug Spawn Particles")]
+    public void DebugSpawnParticles() => effectsManager.PlayTransformationEffects();
+
+    [ContextMenu("Debug Destroy Particles")]
+    public void DebugDestroyParticles() => effectsManager.DestroyParticleSystem();
 }

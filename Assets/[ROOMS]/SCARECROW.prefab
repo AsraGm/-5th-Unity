@@ -738,6 +738,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8439072791556994624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &920687259231635146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097374264479105599}
+  m_Layer: 0
+  m_Name: TPOINT
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1097374264479105599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920687259231635146}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.025523122, y: 0.99869627, z: -0.044207357, w: 1.8431479e-10}
+  m_LocalPosition: {x: 0.0454445, y: 1.6963092, z: -0.02853153}
+  m_LocalScale: {x: 0.07513003, y: 0.07513001, z: 0.07513006}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7344552525883385421}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &925560024062182059
 GameObject:
   m_ObjectHideFlags: 0
@@ -2494,7 +2525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4080955857587860150}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: SPOINT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2857,6 +2888,7 @@ Transform:
   - {fileID: 1531559010876405203}
   - {fileID: 3359491154400616394}
   - {fileID: 5066800587246129286}
+  - {fileID: 1097374264479105599}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 360, z: 0}
 --- !u!114 &4826084511750780183
@@ -2883,6 +2915,10 @@ MonoBehaviour:
   slowdownTransitionTime: 0.3
   speedupTransitionTime: 0.5
   decisionTime: 5
+  teleportParticlePrefab: {fileID: 4870338110643895357, guid: 31db3b66db2f923478c7943e3550883b, type: 3}
+  particleSpawnPoint: {fileID: 1097374264479105599}
+  spawnAtOrigin: 0
+  spawnAtDestination: 1
   isPreviewing: 0
 --- !u!114 &4555370263853530363
 MonoBehaviour:

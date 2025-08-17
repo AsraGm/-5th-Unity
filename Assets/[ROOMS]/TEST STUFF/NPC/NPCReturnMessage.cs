@@ -6,7 +6,7 @@ public class NPCReturnMessage : MonoBehaviour
     [Header("Mensaje de Retorno")]
     [Tooltip("Mensaje que se mostrará cuando el NPC regrese a su posición")]
     [TextArea(2, 4)]
-    [SerializeField] private string returnMessage = "Debo encontrar a {npcName}...";
+    [SerializeField] private string returnMessage = "I have to find {npcName}...";
 
     [Header("Referencias UI")]
     [Tooltip("Canvas donde se mostrará el mensaje (se buscará automáticamente si está vacío)")]

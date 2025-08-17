@@ -7,6 +7,7 @@ public class EnemyFollow : MonoBehaviour
 {
     Rigidbody rb;
     private Animator animator;
+
     [Header("Configuración de Seguimiento")]
     [Tooltip("Velocidad de movimiento del enemigo")]
     public float moveSpeed = 3.5f;
@@ -29,6 +30,11 @@ public class EnemyFollow : MonoBehaviour
     [Tooltip("Tags de objetos que debe esquivar")]
     [SerializeField] private string[] obstacleTags = { "Assets", "Walls" };
 
+    [Header("Enemy Damage Particles")]
+    [SerializeField] private GameObject enemyDamageParticlesPrefab; // Prefab de partículas cuando el enemigo recibe daño
+
+    // AUTOMÁTICO: Se encuentra solo el punto de spawn en el enemigo
+    private Transform enemyParticleSpawnPoint;
 
     // Referencias
     private Transform playerTransform;
@@ -77,6 +83,47 @@ public class EnemyFollow : MonoBehaviour
         {
             Debug.LogError($"{gameObject.name}: NavMeshAgent component requerido!");
         }
+
+        // NUEVO: Buscar automáticamente el punto de spawn de partículas del enemigo
+        FindEnemyParticleSpawnPoint();
+    }
+
+    // NUEVO: Método para encontrar automáticamente el punto de spawn del enemigo
+    private void FindEnemyParticleSpawnPoint()
+    {
+        // Buscar un GameObject hijo llamado "ParticlePoint", "EPOINT", "DamagePoint", etc.
+        string[] possibleNames = { "ParticlePoint", "EPOINT", "DamagePoint", "HitPoint", "ImpactPoint" };
+
+        foreach (string pointName in possibleNames)
+        {
+            Transform point = transform.Find(pointName);
+            if (point != null)
+            {
+                enemyParticleSpawnPoint = point;
+                Debug.Log($"{gameObject.name} encontró automáticamente el punto '{pointName}' para partículas de enemigo");
+                return;
+            }
+        }
+
+        // Si no encuentra ningún punto específico, usar el transform del propio enemigo
+        enemyParticleSpawnPoint = transform;
+        Debug.Log($"{gameObject.name} usando su propio transform como punto de spawn de partículas");
+    }
+
+    // NUEVO: Método para spawnear partículas cuando el enemigo recibe daño
+    private void SpawnEnemyDamageParticles()
+    {
+        if (enemyDamageParticlesPrefab != null && enemyParticleSpawnPoint != null)
+        {
+            // Instanciar las partículas en el punto de spawn del enemigo
+            GameObject particles = Instantiate(enemyDamageParticlesPrefab, enemyParticleSpawnPoint.position, enemyParticleSpawnPoint.rotation);
+
+            Debug.Log($"{gameObject.name} - Partículas de daño del enemigo spawneadas");
+        }
+        else if (enemyDamageParticlesPrefab == null)
+        {
+            Debug.LogWarning($"{gameObject.name} - Enemy Damage Particles Prefab no está asignado");
+        }
     }
 
     private void SetupNavMeshAgent()
@@ -87,9 +134,6 @@ public class EnemyFollow : MonoBehaviour
         navAgent.angularSpeed = angularSpeed;
         navAgent.autoBraking = true;
         navAgent.autoRepath = true;
-
-        // Configurar el área mask para evitar ciertos tags si es necesario
-        // navAgent.areaMask = NavMesh.AllAreas; // Por defecto permite todas las áreas
     }
 
     private void OnEnable()
@@ -185,9 +229,6 @@ public class EnemyFollow : MonoBehaviour
                 Debug.Log($"{gameObject.name}: Evitando obstáculo '{obj.name}' con tag '{obj.tag}'");
             }
         }
-
-        // El NavMeshAgent maneja automáticamente la evasión, 
-        // pero podríamos agregar lógica adicional aquí si fuera necesario
     }
 
     // ========== SISTEMA DE PAUSA POR ITEMS ==========
@@ -208,8 +249,11 @@ public class EnemyFollow : MonoBehaviour
         if (animator != null)
         {
             animator.SetTrigger("Damage");
+
+            // NUEVO: Spawnear partículas cuando el enemigo recibe "daño" (pausa por ítem)
+            SpawnEnemyDamageParticles();
         }
-        isPausedByItem = true;        
+        isPausedByItem = true;
         // Parar NavMeshAgent inmediatamente
         if (navAgent != null && navAgent.isOnNavMesh)
         {
@@ -232,6 +276,17 @@ public class EnemyFollow : MonoBehaviour
         {
             Debug.Log($"{gameObject.name}: Reanudando seguimiento.");
         }
+    }
+
+    // NUEVO: Método público para que otros scripts puedan activar partículas de daño
+    public void TakeDamageWithParticles()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("Damage");
+        }
+
+        SpawnEnemyDamageParticles();
     }
 
     // ========== SISTEMA DE RESET ==========
@@ -321,6 +376,7 @@ public class EnemyFollow : MonoBehaviour
             navAgent.stoppingDistance = stoppingDistance;
         }
     }
+
     public void SetAsClone(bool isCloneValue)
     {
         isClone = isCloneValue;
@@ -360,6 +416,13 @@ public class EnemyFollow : MonoBehaviour
         // Radio de detección de obstáculos
         Gizmos.color = new Color(1, 0.5f, 0, 0.3f);
         Gizmos.DrawWireSphere(transform.position, obstacleDetectionRadius);
+
+        // NUEVO: Mostrar punto de spawn de partículas del enemigo
+        if (enemyParticleSpawnPoint != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(enemyParticleSpawnPoint.position, 0.2f);
+        }
 
         // Mostrar path del NavMesh si está habilitado
         if (showNavMeshPath && navAgent != null && navAgent.hasPath)

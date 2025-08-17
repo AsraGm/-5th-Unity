@@ -11,7 +11,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float damageCooldown = 2f;
     [SerializeField] private bool canAttack = true;
 
-    // NUEVO: Referencias para verificar estado
+    [Header("Damage Particles")]
+    [SerializeField] private GameObject damageParticlesPrefab; // Tu prefab de partículas de impacto
+
+    // AUTOMÁTICO: Se encuentra solo el punto de spawn
+    private Transform playerParticleSpawnPoint;
+
+    // Referencias para verificar estado
     private NPCController npcController;
     private bool isPlayerInContact = false;
     private PlayerHealth currentPlayerHealth;
@@ -25,6 +31,36 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogWarning($"Enemy script en {gameObject.name} no encontró NPCController. Funcionará como enemigo siempre.");
         }
+
+        // NUEVO: Buscar automáticamente el punto de spawn de partículas
+        FindPlayerParticleSpawnPoint();
+    }
+
+    // NUEVO: Método para encontrar automáticamente el TPOINT
+    private void FindPlayerParticleSpawnPoint()
+    {
+        // Buscar el SCARECROW
+        GameObject scarecrow = GameObject.Find("SCARECROW");
+
+        if (scarecrow != null)
+        {
+            // Buscar el TPOINT como hijo del SCARECROW
+            Transform tpoint = scarecrow.transform.Find("TPOINT");
+
+            if (tpoint != null)
+            {
+                playerParticleSpawnPoint = tpoint;
+                Debug.Log($"{gameObject.name} encontró automáticamente el TPOINT para partículas");
+            }
+            else
+            {
+                Debug.LogWarning($"{gameObject.name} no pudo encontrar 'TPOINT' como hijo de SCARECROW");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name} no pudo encontrar el GameObject 'SCARECROW'");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -34,11 +70,14 @@ public class Enemy : MonoBehaviour
             isPlayerInContact = true;
             currentPlayerHealth = collision.collider.GetComponentInParent<PlayerHealth>();
 
-            // NUEVO: Solo hacer daño si está en modo Enemy
             if (ShouldDealDamage())
             {
                 DealDamageToPlayer();
                 GameObject.Find("SCARECROW").GetComponent<Animator>().SetTrigger("Damaged");
+
+                // NUEVO: Spawnear partículas de daño
+                SpawnDamageParticles();
+
                 PushTarget(collision.transform);
             }
         }
@@ -53,19 +92,31 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // NUEVO: Método para verificar si debe hacer daño
+    // NUEVO: Método para spawnear partículas de daño
+    private void SpawnDamageParticles()
+    {
+        if (damageParticlesPrefab != null && playerParticleSpawnPoint != null)
+        {
+            // Instanciar las partículas como hijo del punto de spawn
+            GameObject particles = Instantiate(damageParticlesPrefab, playerParticleSpawnPoint);
+
+            Debug.Log("Partículas de daño spawneadas");
+        }
+        else
+        {
+            Debug.LogWarning("Damage Particles Prefab o Player Particle Spawn Point no están asignados en " + gameObject.name);
+        }
+    }
+
     private bool ShouldDealDamage()
     {
-        // Si no puede atacar por cooldown
         if (!canAttack) return false;
 
-        // Si hay NPCController, verificar que esté en modo Enemy
         if (npcController != null)
         {
             return npcController.CurrentState == NPCController.NPCState.Enemy;
         }
 
-        // Si no hay NPCController, funciona como enemigo normal
         return true;
     }
 
@@ -76,7 +127,6 @@ public class Enemy : MonoBehaviour
             currentPlayerHealth.TakeDamagePlayer(damage);
             Debug.Log($"{gameObject.name} hizo daño al jugador (Estado: {(npcController != null ? npcController.CurrentState.ToString() : "No NPCController")})");
 
-            // Iniciar cooldown
             StartCoroutine(DamageCooldownRoutine());
         }
     }
@@ -115,19 +165,18 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Color según estado
         if (npcController != null)
         {
             switch (npcController.CurrentState)
             {
                 case NPCController.NPCState.NPC:
-                    Gizmos.color = Color.green; // Verde = NPC (no peligroso)
+                    Gizmos.color = Color.green;
                     break;
                 case NPCController.NPCState.Enemy:
-                    Gizmos.color = canAttack ? Color.red : Color.magenta; // Rojo = Enemigo
+                    Gizmos.color = canAttack ? Color.red : Color.magenta;
                     break;
                 case NPCController.NPCState.PostDefeat:
-                    Gizmos.color = Color.blue; // Azul = Derrotado
+                    Gizmos.color = Color.blue;
                     break;
             }
         }
@@ -138,7 +187,6 @@ public class Enemy : MonoBehaviour
 
         Gizmos.DrawWireSphere(transform.position, 1f);
 
-        // Mostrar estado en el editor
         if (Application.isPlaying && npcController != null)
         {
             Gizmos.color = Color.white;
@@ -146,12 +194,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Métodos públicos para control externo
     public void EnableDamage() => canAttack = true;
     public void DisableDamage() => canAttack = false;
     public bool CanDealDamage => ShouldDealDamage();
 
-    // Debug methods
     [ContextMenu("Test Damage Check")]
     public void DebugDamageCheck()
     {
