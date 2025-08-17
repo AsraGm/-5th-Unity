@@ -3527,6 +3527,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5307627408084403416, guid: a1cdd67f1ded59944b78b8bce3f62004, type: 3}
+      propertyPath: saxophoneSpawnPoint
+      value: 
+      objectReference: {fileID: 2083866920}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14850,6 +14854,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 953691649}
     m_Modifications:
+    - target: {fileID: 1633015928066438258, guid: 1cff1c5059d050b4c8214750f146ddbd, type: 3}
+      propertyPath: saxophoneSpawnPoint
+      value: 
+      objectReference: {fileID: 2083866920}
     - target: {fileID: 2054283651093558368, guid: 1cff1c5059d050b4c8214750f146ddbd, type: 3}
       propertyPath: m_Name
       value: FLOWER
@@ -24108,6 +24116,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 953691649}
     m_Modifications:
+    - target: {fileID: 82649204289444088, guid: 629278f35206b4a438d13f0d8d7707ce, type: 3}
+      propertyPath: saxophoneSpawnPoint
+      value: 
+      objectReference: {fileID: 2083866920}
     - target: {fileID: 4059468583212198667, guid: 629278f35206b4a438d13f0d8d7707ce, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21.8
@@ -32030,6 +32042,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b33905fc195a179468d459c2e7bb371d, type: 3}
+--- !u!4 &2083866920 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4080955857587860150, guid: b33905fc195a179468d459c2e7bb371d, type: 3}
+  m_PrefabInstance: {fileID: 2083866919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2092712466
 GameObject:
   m_ObjectHideFlags: 0

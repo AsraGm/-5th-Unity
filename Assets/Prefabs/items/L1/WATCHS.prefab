@@ -102,6 +102,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 262404dc058275f4ebff9ca3d828b9c6, type: 2}
   wasPickedUp: 0
+  animationDuration: 1.5
+  useAnimationDuration: 1
+  particlePrefab: {fileID: 5383717036775221186, guid: 47e1aa5b2e087ee47be3914a650be104, type: 3}
+  saxophoneSpawnPoint: {fileID: 0}
 --- !u!65 &5062528197295528112
 BoxCollider:
   m_ObjectHideFlags: 0

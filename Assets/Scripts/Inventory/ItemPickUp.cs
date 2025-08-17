@@ -11,6 +11,10 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] private float animationDuration = 1.5f; // Duración en segundos (ajústala según tu animación)
     [SerializeField] private bool useAnimationDuration = true; // Si false, detectará automáticamente cuando termine
 
+    [Header("Particle System")]
+    [SerializeField] private GameObject particlePrefab; // Arrastra aquí tu prefab de partículas
+    [SerializeField] private Transform saxophoneSpawnPoint; // El GameObject vacío hijo del saxofón
+
     // Referencias para el reset
     private Vector3 originalPosition;
     private Quaternion originalRotation;
@@ -55,6 +59,9 @@ public class ItemPickup : MonoBehaviour
             // Ejecutar animación
             scarecrowAnimator.SetTrigger("Saxo");
 
+            // NUEVO: Crear y activar el sistema de partículas
+            SpawnParticles();
+
             // Deshabilitar movimiento del jugador usando el GameManager
             if (useAnimationDuration)
             {
@@ -69,6 +76,25 @@ public class ItemPickup : MonoBehaviour
 
             gameObject.SetActive(false);
             Debug.Log($"Item {itemData.name} recogido y desactivado. Movimiento del jugador bloqueado.");
+        }
+    }
+
+    // NUEVO: Método para spawnear las partículas
+    private void SpawnParticles()
+    {
+        if (particlePrefab != null && saxophoneSpawnPoint != null)
+        {
+            // Instanciar las partículas como hijo del punto de spawn
+            GameObject particles = Instantiate(particlePrefab, saxophoneSpawnPoint);
+
+            // Registrar las partículas en el GameManager para que puedan ser destruidas
+            GameManager.SetCurrentParticleSystem(particles);
+
+            Debug.Log("Partículas de saxofón spawneadas");
+        }
+        else
+        {
+            Debug.LogWarning("Particle Prefab o Saxophone Spawn Point no están asignados en " + gameObject.name);
         }
     }
 

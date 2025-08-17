@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     // Referencia estática para acceder desde otros scripts
     public static GameManager Instance { get; private set; }
 
+    // NUEVO: Sistema de partículas
+    private static GameObject currentParticleSystem;
+
     private void Awake()
     {
         // Singleton pattern
@@ -66,13 +69,31 @@ public class GameManager : MonoBehaviour
     {
         CanPlayerMove = true;
 
+        // NUEVO: Destruir partículas si existen
+        DestroyCurrentParticles();
+
         // Detener todas las corrutinas de movimiento activas
         if (Instance != null)
         {
             Instance.StopAllCoroutines();
         }
-
         Debug.Log("Movimiento del jugador FORZADO a habilitarse");
+    }
+
+    // NUEVO: Métodos para manejo de partículas
+    public static void SetCurrentParticleSystem(GameObject particleSystem)
+    {
+        currentParticleSystem = particleSystem;
+    }
+
+    public static void DestroyCurrentParticles()
+    {
+        if (currentParticleSystem != null)
+        {
+            Destroy(currentParticleSystem);
+            currentParticleSystem = null;
+            Debug.Log("Partículas destruidas");
+        }
     }
 
     // Método para deshabilitar movimiento por un tiempo específico
@@ -92,6 +113,9 @@ public class GameManager : MonoBehaviour
         DisablePlayerMovement();
         yield return new WaitForSeconds(duration);
         EnablePlayerMovement();
+
+        // NUEVO: Destruir partículas al terminar
+        DestroyCurrentParticles();
     }
 
     private IEnumerator DisableMovementUntilAnimationCoroutine(Animator animator, string animationName)
@@ -102,16 +126,17 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
             // Verificar si la animación actual es la que esperamos y si ha terminado
             if (stateInfo.IsName(animationName) && stateInfo.normalizedTime >= 1.0f)
             {
                 break;
             }
-
             yield return null; // Esperar un frame
         }
 
         EnablePlayerMovement();
+
+        // NUEVO: Destruir partículas al terminar la animación
+        DestroyCurrentParticles();
     }
 }
