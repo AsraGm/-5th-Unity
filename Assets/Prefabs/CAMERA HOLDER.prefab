@@ -123,11 +123,11 @@ MonoBehaviour:
   freeLookCam: {fileID: 0}
   obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 6144
-  cameraRadius: 0.7
-  minDistance: 1
-  occlusionSmoothness: 3
-  occlusionTolerance: 0.2
+    m_Bits: 22528
+  cameraRadius: 0.2
+  minDistance: 0.8
+  occlusionSmoothness: 5
+  occlusionTolerance: 0.1
 --- !u!114 &3899813248064088296
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,9 +29,11 @@ public class EnemyFollow : MonoBehaviour
     [Tooltip("Tags de objetos que debe esquivar")]
     [SerializeField] private string[] obstacleTags = { "Assets", "Walls" };
 
+
     // Referencias
     private Transform playerTransform;
     private NavMeshAgent navAgent;
+    private bool isClone = false;
 
     // Estados del sistema
     public bool isFollowing = true;
@@ -111,7 +113,10 @@ public class EnemyFollow : MonoBehaviour
         if (playerTransform == null || navAgent == null || !isFollowing || isPausedByItem) return;
 
         FollowPlayer();
-        GameObject.FindWithTag("Enemy").GetComponent<Animator>().SetBool("Following", isFollowing);
+        if (animator != null)
+        {
+            animator.SetBool("Following", isFollowing);
+        }
         // Actualizar velocidad si cambió en runtime
         if (navAgent.speed != moveSpeed)
         {
@@ -200,7 +205,10 @@ public class EnemyFollow : MonoBehaviour
 
     private IEnumerator PauseFollowingCoroutine()
     {
-        GameObject.FindWithTag("Enemy").GetComponent<Animator>().SetTrigger("Damage");
+        if (animator != null)
+        {
+            animator.SetTrigger("Damage");
+        }
         isPausedByItem = true;        
         // Parar NavMeshAgent inmediatamente
         if (navAgent != null && navAgent.isOnNavMesh)
@@ -313,6 +321,14 @@ public class EnemyFollow : MonoBehaviour
             navAgent.stoppingDistance = stoppingDistance;
         }
     }
+    public void SetAsClone(bool isCloneValue)
+    {
+        isClone = isCloneValue;
+        Debug.Log($"{gameObject.name}: Marcado como clon = {isClone}");
+    }
+
+    // NUEVO: Getter para verificar si es clon
+    public bool IsClone => isClone;
 
     // ========== GETTERS PARA DEBUG ==========
     public bool IsFollowing => isFollowing && !isPausedByItem;

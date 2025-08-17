@@ -197,7 +197,7 @@ public class CAMERA : MonoBehaviour
         if (hasObstacle)
         {
             // Calcular nueva distancia con más margen
-            float newDistance = Mathf.Max(hit.distance - 1.5f, minDistance);
+            float newDistance = Mathf.Max(hit.distance - 0.8f, minDistance);
 
             // NUEVO: Solo activar si no está ya activo o si la diferencia es significativa
             if (!isOcclusionActive || Mathf.Abs(targetMiddleRadius - newDistance) > 0.5f)
@@ -214,9 +214,9 @@ public class CAMERA : MonoBehaviour
             if (isOcclusionActive)
             {
                 // Volver a valores originales más suavemente
-                targetTopRadius = 2.75f;
-                targetMiddleRadius = 3.69f;
-                targetBottomRadius = 2.79f;
+                targetTopRadius = 2.5f;
+                targetMiddleRadius = 3.2f;
+                targetBottomRadius = 2.3f;
                 isOcclusionActive = false;
             }
         }

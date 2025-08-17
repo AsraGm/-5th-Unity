@@ -27,6 +27,13 @@ public class NPCDialogueSystem : MonoBehaviour
         isDialogueActive = true;
         currentDialogueNode = node; // Guardar referencia del diálogo actual
 
+        // ========== NUEVO: Ocultar mensaje de retorno al iniciar cualquier diálogo ==========
+        if (controller.ReturnMessage != null && controller.ReturnMessage.IsMessageActive)
+        {
+            controller.HideReturnMessage();
+            Debug.Log($"Mensaje de retorno ocultado al iniciar diálogo en {gameObject.name}");
+        }
+
         // Solo configurar transformación si estamos en estado NPC inicial
         if (controller.IsNPC)
         {
@@ -87,7 +94,6 @@ public class NPCDialogueSystem : MonoBehaviour
     {
         isDialogueActive = false;
 
-        // AQUÍ ES DONDE AGREGAS LA LÍNEA NUEVA
         // Verificar si era un diálogo PostDefeat que terminó
         if (controller.IsPostDefeat && currentDialogueNode == controller.PostDefeatDialogueNode)
         {
@@ -95,9 +101,32 @@ public class NPCDialogueSystem : MonoBehaviour
             GetComponent<NPCSceneTransition>()?.OnPostDefeatDialogueEnd();
         }
 
+        // ========== NUEVO: Si terminó un diálogo pero el NPC sigue en PostDefeat, mostrar mensaje de retorno de nuevo ==========
+        // Esto es por si el jugador cancela el diálogo o si no hay transición de escena
+        else if (controller.IsPostDefeat && currentDialogueNode != controller.PostDefeatDialogueNode)
+        {
+            // Pequeño delay para que el diálogo se cierre completamente antes de mostrar el mensaje
+            StartCoroutine(ShowReturnMessageAfterDelay());
+        }
+
         // Limpiar referencia
         currentDialogueNode = null;
     }
 
+    // ========== NUEVO: Corrutina para mostrar mensaje de retorno con delay ==========
+    private System.Collections.IEnumerator ShowReturnMessageAfterDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        // Verificar que aún esté en PostDefeat y no haya otro diálogo activo
+        if (controller.IsPostDefeat && !isDialogueActive)
+        {
+            controller.ShowReturnMessage();
+            Debug.Log($"Mensaje de retorno reactivado después de cerrar diálogo en {gameObject.name}");
+        }
+    }
+
     public bool IsDialogueActive => isDialogueActive;
 }
+
+    // ========== NUEVO: Méto

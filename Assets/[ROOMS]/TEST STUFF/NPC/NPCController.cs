@@ -47,6 +47,9 @@ public class NPCController : MonoBehaviour
     private NPCSceneTransition sceneTransition;
     private NPCItemSpawner itemSpawner;
 
+    // ========== NUEVO: Componente de mensaje de retorno ==========
+    private NPCReturnMessage returnMessage;
+
     // Estados principales
     public enum NPCState { NPC, Enemy, PostDefeat }
 
@@ -74,6 +77,9 @@ public class NPCController : MonoBehaviour
         componentController = GetComponent<NPCComponentController>() ?? gameObject.AddComponent<NPCComponentController>();
         sceneTransition = GetComponent<NPCSceneTransition>() ?? gameObject.AddComponent<NPCSceneTransition>();
 
+        // ========== NUEVO: Inicializar componente de mensaje de retorno ==========
+        returnMessage = GetComponent<NPCReturnMessage>() ?? gameObject.AddComponent<NPCReturnMessage>();
+
         // Configurar todos los componentes
         dialogueSystem.Initialize(this);
         transformation.Initialize(this);
@@ -82,6 +88,9 @@ public class NPCController : MonoBehaviour
         interactionHandler.Initialize(this, dialogueSystem);
         componentController.Initialize(this, npcScripts, enemyScripts, dialogueTrigger, combatCollider);
         sceneTransition.Initialize(this);
+
+        // ========== NUEVO: Inicializar mensaje de retorno ==========
+        returnMessage.Initialize(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -101,7 +110,14 @@ public class NPCController : MonoBehaviour
         {
             itemSpawner.ActivateCollectibleItems();
         }
+
+        // ========== NUEVO: Ocultar mensaje de retorno si estaba activo ==========
+        if (returnMessage != null)
+        {
+            returnMessage.HideMessage();
+        }
     }
+
     public bool AllRequiredItemsCollected()
     {
         return itemSpawner != null ? itemSpawner.AllItemsCollected() : true;
@@ -158,6 +174,13 @@ public class NPCController : MonoBehaviour
         // Paso 5: AHORA SÍ convertir a NPC (después de todo)
         transformation.RevertToNPC();
         Debug.Log($"{gameObject.name} - Convertido a NPC después de secuencia completa");
+
+        // ========== NUEVO: Paso 6 - Mostrar mensaje de retorno ==========
+        if (returnMessage != null)
+        {
+            returnMessage.ShowReturnMessage();
+            Debug.Log($"{gameObject.name} - Mensaje de retorno activado");
+        }
 
         Debug.Log($"{gameObject.name} - Secuencia de derrota completada");
     }
@@ -319,6 +342,29 @@ public class NPCController : MonoBehaviour
         }
     }
 
+    // ========== NUEVO: Métodos públicos para el mensaje de retorno ==========
+    public void ShowReturnMessage()
+    {
+        // ========== ARREGLO: Solo mostrar en PostDefeat ==========
+        if (returnMessage != null && IsPostDefeat)
+        {
+            returnMessage.ShowReturnMessage();
+            Debug.Log($"Mostrando mensaje de retorno para {gameObject.name} en estado PostDefeat");
+        }
+        else
+        {
+            Debug.Log($"No se muestra mensaje de retorno para {gameObject.name} - Estado: {CurrentState}");
+        }
+    }
+
+    public void HideReturnMessage()
+    {
+        if (returnMessage != null)
+        {
+            returnMessage.HideMessage();
+        }
+    }
+
     // Getters públicos - mantienen la interfaz original
     public NPCState CurrentState => stateManager.CurrentState;
     public bool IsNPC => stateManager.CurrentState == NPCState.NPC;
@@ -328,6 +374,9 @@ public class NPCController : MonoBehaviour
     // Propiedades públicas para acceso de componentes
     public DIALOGUENODE InitialDialogueNode => initialDialogueNode;
     public DIALOGUENODE PostDefeatDialogueNode => postDefeatDialogueNode;
+
+    // ========== NUEVO: Getter para el componente de mensaje ==========
+    public NPCReturnMessage ReturnMessage => returnMessage;
 
     // Debug methods - mantienen funcionalidad original
     [ContextMenu("Transform to Enemy")]
@@ -350,4 +399,11 @@ public class NPCController : MonoBehaviour
     {
         StartCoroutine(DefeatSequenceWithAnimation());
     }
+
+    // ========== NUEVO: Métodos de debug para mensaje de retorno ==========
+    [ContextMenu("Show Return Message")]
+    public void DebugShowReturnMessage() => ShowReturnMessage();
+
+    [ContextMenu("Hide Return Message")]
+    public void DebugHideReturnMessage() => HideReturnMessage();
 }

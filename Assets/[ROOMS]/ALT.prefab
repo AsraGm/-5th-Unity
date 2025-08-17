@@ -4856,7 +4856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  pauseTimeOnItemPickup: 3
+  pauseTimeOnItemPickup: 4
   stoppingDistance: 0
   acceleration: 8
   angularSpeed: 360

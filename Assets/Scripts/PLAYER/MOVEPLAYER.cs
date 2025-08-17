@@ -19,10 +19,6 @@ public class MOVEPLAYER : MonoBehaviour
     public float jumpForce = 12f;
     public float jumpCooldown = 0.25f;
     public float airMultiplier = 0.4f;
-    bool readyToJump;
-
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -81,7 +77,6 @@ public class MOVEPLAYER : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        readyToJump = true;
         rb.mass = 1f;
         rb.linearDamping = 0f;
 
@@ -97,6 +92,10 @@ public class MOVEPLAYER : MonoBehaviour
 
     private void HandlePlayerRotation()
     {
+        // *** VERIFICACIÓN GAMEMANAGER AÑADIDA AQUÍ ***
+        if (!GameManager.CanPlayerMove)
+            return;
+
         // Verificar si la rotación está bloqueada desde el script de cámara
         if (cameraScript != null && cameraScript.IsPlayerRotationLocked())
         {
@@ -134,6 +133,16 @@ public class MOVEPLAYER : MonoBehaviour
     private void Update()
     {
         animator.SetBool("Dialogo", objetoDialogo.GetComponent<DialogueManager>().isDialogueActive);
+
+        // *** VERIFICACIÓN GAMEMANAGER AÑADIDA AQUÍ ***
+        if (!GameManager.CanPlayerMove)
+        {
+            // Detener animaciones de movimiento cuando no se puede mover
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("MoveKey", false);
+            return;
+        }
+
         if (!controlActivo) return;
 
         // Ground check
@@ -160,6 +169,10 @@ public class MOVEPLAYER : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // *** VERIFICACIÓN GAMEMANAGER AÑADIDA AQUÍ ***
+        if (!GameManager.CanPlayerMove)
+            return;
+
         if (controlActivo)
         {
             MovePlayer();
@@ -170,14 +183,6 @@ public class MOVEPLAYER : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        // Jump input
-        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded)
-        {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
     }
 
     private void MovePlayer()
@@ -201,21 +206,6 @@ public class MOVEPLAYER : MonoBehaviour
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
         }
-    }
-
-    private void Jump()
-    {
-        // Reset Y velocity antes de saltar
-        Vector3 vel = rb.linearVelocity;
-        vel.y = 0f;
-        rb.linearVelocity = vel;
-
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-    }
-
-    private void ResetJump()
-    {
-        readyToJump = true;
     }
 
     public void EnableControl()

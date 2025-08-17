@@ -100,7 +100,13 @@ public class DUPLICATE : MonoBehaviour
         // Instanciar el prefab
         GameObject newEnemy = Instantiate(trigger.enemyPre, trigger.spawnPoint.position, trigger.spawnPoint.rotation);
 
-        // ========== AGREGAR EL SCRIPT DE CONTROL AUTOMÁTICAMENTE ==========
+        EnemyFollow cloneEnemyFollow = newEnemy.GetComponent<EnemyFollow>();
+        if (cloneEnemyFollow != null)
+        {
+            // Marcar que es un clon para que use su propio animator
+            cloneEnemyFollow.SetAsClone(true);
+        }
+
         if (newEnemy.GetComponent<SpawnedPrefabController>() == null)
         {
             newEnemy.AddComponent<SpawnedPrefabController>();

@@ -52,12 +52,6 @@ public class LevelsManager : MonoBehaviour
         {
             currentLevelIndex++;
 
-            // NUEVO: Notificar al ResetSystem que el nivel ha cambiado
-            if (ResetSystem.Instance != null)
-            {
-                ResetSystem.Instance.UpdateLevelState();
-            }
-
             Debug.Log($"Avanzando al nivel {levels[currentLevelIndex].levelName}");
         }
         else

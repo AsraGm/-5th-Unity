@@ -2,109 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal; // Para URP
+using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class ResetSystem : MonoBehaviour
 {
     public static ResetSystem Instance;
 
     [Header("Reset Settings")]
-    [Tooltip("Duración del efecto visual de rebobinado")]
-    [SerializeField] private float rewindEffectDuration = 3f;
-    [Tooltip("Velocidad del efecto de rebobinado")]
-    [SerializeField] private float rewindSpeed = 2f;
-
-    [Header("Player References")]
-    [SerializeField] private Transform player;
-    [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private Camera playerCamera;
+    [Tooltip("Duración del fade a negro")]
+    [SerializeField] private float fadeToBlackDuration = 2f;
+    [Tooltip("Tiempo en negro antes de recargar")]
+    [SerializeField] private float blackScreenDuration = 1f;
+    [Tooltip("Duración del fade desde negro")]
+    [SerializeField] private float fadeFromBlackDuration = 1f;
 
     [Header("Audio")]
     [SerializeField] private AudioSource rewindAudioSource;
     [SerializeField] private AudioClip rewindSound;
 
-    // NUEVO: Post Processing para efectos de muerte
     [Header("Death Visual Effects")]
     [SerializeField] private Volume postProcessVolume;
-    [Tooltip("Intensidad máxima de la viñeta durante el parpadeo")]
-    [SerializeField] private float maxVignetteIntensity = 0.8f;
-    [Tooltip("Velocidad del parpadeo de la viñeta")]
-    [SerializeField] private float vignetteFlickerSpeed = 8f;
-    [Tooltip("Duración del fade out final de la viñeta")]
-    [SerializeField] private float vignetteFadeOutDuration = 1.5f;
+    [Tooltip("Velocidad del parpadeo antes del fade")]
+    [SerializeField] private float exposureFlickerSpeed = 8f;
+    [Tooltip("Duración del parpadeo antes del fade")]
+    [SerializeField] private float flickerDuration = 1f;
+    [Tooltip("Valor mínimo de Post Exposure durante el parpadeo")]
+    [SerializeField] private float minExposureFlicker = -2f;
 
-    [Header("Items que se desactivan al morir")]
-    [SerializeField] private List<GameObject> itemsToDeactivateOnDeath = new List<GameObject>();
+    [Header("Level Management")]
+    [SerializeField] private LevelsManager levelsManager;
 
     // Referencias de post processing
-    private Vignette vignette;
-    private float originalVignetteIntensity;
-    private bool hasVignetteEffect = false;
-
-    // NUEVO: Para trackear ítems por nivel
-    [Header("Level Management")]
-    [SerializeField] private LevelsManager levelsManager; // Referencia al LevelsManager
-
-    // Estados iniciales
-    private LevelInitialState initialState;
-    public static System.Action OnLevelReset;
-
-    // Para el efecto visual
-    private Queue<PlayerSnapshot> recentPositions;
-    private int maxSnapshots = 150;
+    private ColorAdjustments colorAdjustments;
+    private float originalPostExposure;
+    private bool hasColorAdjustments = false;
 
     // Control del sistema
-    private bool isRewinding = false;
+    private bool isResetting = false;
 
-    // NUEVO: Variables para preservar progreso
-    private List<ItemData> itemsFromPreviousLevels = new List<ItemData>(); // Ítems específicos que se deben preservar
+    // Para preservar datos entre recargas
+    private PersistentGameData persistentData;
 
-    [System.Serializable]
-    public class LevelInitialState
-    {
-        public Vector3 playerPosition;
-        public Quaternion playerRotation;
-        public Vector3 cameraPosition;
-        public Quaternion cameraRotation;
-        public List<NPCInitialState> npcStates;
-        public List<ItemInitialState> itemStates;
-        public List<ItemData> preservedItems; // NUEVO: ítems específicos que se deben preservar
-    }
-
-    [System.Serializable]
-    public class NPCInitialState
-    {
-        public NPCController npcController;
-        public Vector3 position;
-        public Quaternion rotation;
-        public NPCController.NPCState initialNPCState;
-    }
-
-    [System.Serializable]
-    public class ItemInitialState
-    {
-        public ItemPickup itemPickup;
-        public Vector3 position;
-        public Quaternion rotation;
-        public bool wasActive;
-    }
-
-    [System.Serializable]
-    public class PlayerSnapshot
-    {
-        public Vector3 position;
-        public Quaternion rotation;
-        public Vector3 cameraPosition;
-        public Quaternion cameraRotation;
-        public float timestamp;
-    }
+    public static System.Action OnLevelReset;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            recentPositions = new Queue<PlayerSnapshot>();
+
+            // Buscar datos persistentes existentes
+            persistentData = FindFirstObjectByType<PersistentGameData>();
+            if (persistentData == null)
+            {
+                // Crear objeto persistente si no existe
+                GameObject persistentObj = new GameObject("PersistentGameData");
+                persistentData = persistentObj.AddComponent<PersistentGameData>();
+                DontDestroyOnLoad(persistentObj);
+            }
         }
         else
         {
@@ -114,116 +70,112 @@ public class ResetSystem : MonoBehaviour
 
     private void Start()
     {
-        // NUEVO: Inicializar post processing
         InitializePostProcessing();
 
-        // NUEVO: Obtener referencia al LevelsManager si no está asignada
         if (levelsManager == null)
         {
             levelsManager = FindFirstObjectByType<LevelsManager>();
         }
 
-        SaveInitialLevelState();
-        StartCoroutine(TrackRecentMovement());
+        // Si hay datos persistentes, aplicar el fade desde negro
+        if (persistentData != null && persistentData.ShouldFadeFromBlack)
+        {
+            StartCoroutine(FadeFromBlackAfterReload());
+        }
     }
 
-    // NUEVO: Inicializar efectos de post processing
     private void InitializePostProcessing()
     {
         if (postProcessVolume == null)
         {
-            Debug.LogWarning("No se ha asignado el Volume de Post Processing! Los efectos visuales de muerte no funcionarán.");
+            Debug.LogWarning("No se ha asignado el Volume de Post Processing!");
             return;
         }
 
-        // Obtener referencia al efecto Vignette
-        if (postProcessVolume.profile.TryGet<Vignette>(out vignette))
+        if (postProcessVolume.profile.TryGet<ColorAdjustments>(out colorAdjustments))
         {
-            originalVignetteIntensity = vignette.intensity.value;
-            hasVignetteEffect = true;
-            Debug.Log($"Vignette encontrado. Intensidad original: {originalVignetteIntensity}");
+            originalPostExposure = colorAdjustments.postExposure.value;
+            hasColorAdjustments = true;
+            Debug.Log($"Color Adjustments encontrado. Post Exposure original: {originalPostExposure}");
         }
         else
         {
-            Debug.LogWarning("No se encontró el efecto Vignette en el Volume Profile. Agrega Vignette al Volume Profile para los efectos visuales.");
+            Debug.LogWarning("No se encontró el efecto Color Adjustments en el Volume Profile.");
         }
     }
 
-    // NUEVO: Método público para actualizar el estado cuando se cambia de nivel
-    public void UpdateLevelState()
+    public void OnPlayerDeath()
     {
-        SaveInitialLevelState();
-        Debug.Log("Estado del nivel actualizado - Ítems preservados: " + itemsFromPreviousLevels);
+        if (isResetting) return;
+
+        Debug.Log("¡Jugador ha muerto! Iniciando secuencia de reset con recarga...");
+        StartCoroutine(DeathResetSequence());
     }
 
-    private void SaveInitialLevelState()
+    private IEnumerator DeathResetSequence()
     {
-        initialState = new LevelInitialState();
+        isResetting = true;
 
-        // Guardar estado del jugador
-        if (player != null)
+        // Reproducir sonido de muerte/reset
+        if (rewindAudioSource != null && rewindSound != null)
         {
-            initialState.playerPosition = player.position;
-            initialState.playerRotation = player.rotation;
+            rewindAudioSource.PlayOneShot(rewindSound);
         }
 
-        // Guardar estado de la cámara
-        if (playerCamera != null)
+        // 1. Guardar datos que necesitamos preservar
+        SaveDataForReload();
+
+        // 2. Efecto de parpadeo inicial
+        if (hasColorAdjustments)
         {
-            initialState.cameraPosition = playerCamera.transform.position;
-            initialState.cameraRotation = playerCamera.transform.rotation;
+            yield return StartCoroutine(ExposureFlickerEffect());
         }
 
-        // NUEVO: Calcular ítems de niveles anteriores que se deben preservar
-        CalculatePreservedItems();
-        initialState.preservedItems = new List<ItemData>(itemsFromPreviousLevels);
-
-        // Guardar estado de todos los NPCs
-        initialState.npcStates = new List<NPCInitialState>();
-        NPCController[] allNPCs = FindObjectsByType<NPCController>(FindObjectsSortMode.None);
-
-        foreach (NPCController npc in allNPCs)
+        // 3. Fade completo a negro
+        if (hasColorAdjustments)
         {
-            NPCInitialState npcState = new NPCInitialState
-            {
-                npcController = npc,
-                position = npc.transform.position,
-                rotation = npc.transform.rotation,
-                initialNPCState = npc.CurrentState
-            };
-            initialState.npcStates.Add(npcState);
+            yield return StartCoroutine(FadeToBlack());
         }
 
-        // Guardar estado de todos los items
-        initialState.itemStates = new List<ItemInitialState>();
-        ItemPickup[] allItems = FindObjectsByType<ItemPickup>(FindObjectsSortMode.None);
+        // 4. Esperar un momento en negro
+        yield return new WaitForSeconds(blackScreenDuration);
 
-        foreach (ItemPickup item in allItems)
-        {
-            ItemInitialState itemState = new ItemInitialState
-            {
-                itemPickup = item,
-                position = item.transform.position,
-                rotation = item.transform.rotation,
-                wasActive = item.gameObject.activeInHierarchy
-            };
-            initialState.itemStates.Add(itemState);
-        }
-
-        Debug.Log($"Estado inicial guardado: {allNPCs.Length} NPCs, {allItems.Length} items, {itemsFromPreviousLevels.Count} ítems preservados");
+        // 5. Recargar la escena (esto ya se hace dentro de FadeToBlack())
+        // ReloadCurrentScene(); // Removido de aquí porque ya se hace en FadeToBlack()
     }
 
-    // NUEVO: Método para calcular cuántos ítems se deben preservar de niveles anteriores
-    private void CalculatePreservedItems()
+    private void SaveDataForReload()
     {
-        itemsFromPreviousLevels.Clear();
+        if (persistentData == null) return;
+
+        // Guardar datos del nivel actual
+        if (levelsManager != null)
+        {
+            persistentData.currentLevelIndex = levelsManager.GetCurrentLevelIndex();
+        }
+
+        // Guardar ítems que deben preservarse
+        if (InventorySystem.Instance != null)
+        {
+            persistentData.preservedItems = CalculateItemsToPreserve();
+        }
+
+        // Marcar que necesitamos fade desde negro después de recargar
+        persistentData.ShouldFadeFromBlack = true;
+
+        Debug.Log($"Datos guardados para recarga: Nivel {persistentData.currentLevelIndex}, {persistentData.preservedItems.Count} ítems preservados");
+    }
+
+    private List<ItemData> CalculateItemsToPreserve()
+    {
+        List<ItemData> itemsToPreserve = new List<ItemData>();
 
         if (levelsManager != null && InventorySystem.Instance != null)
         {
             int currentLevel = levelsManager.GetCurrentLevelIndex();
             int totalItemsFromPreviousLevels = 0;
 
-            // Calcular cuántos ítems corresponden a niveles anteriores completados
+            // Calcular ítems de niveles anteriores completados
             for (int i = 0; i < currentLevel; i++)
             {
                 if (i < levelsManager.GetLevelsCount())
@@ -236,342 +188,161 @@ public class ResetSystem : MonoBehaviour
                 }
             }
 
-            // Obtener los primeros X ítems del inventario actual (que corresponden a niveles anteriores)
-            itemsFromPreviousLevels = InventorySystem.Instance.GetItemsToPreserve(totalItemsFromPreviousLevels);
+            itemsToPreserve = InventorySystem.Instance.GetItemsToPreserve(totalItemsFromPreviousLevels);
         }
+
+        return itemsToPreserve;
     }
 
-    private IEnumerator TrackRecentMovement()
+    private IEnumerator ExposureFlickerEffect()
     {
-        while (true)
-        {
-            if (!isRewinding && player != null)
-            {
-                PlayerSnapshot snapshot = new PlayerSnapshot
-                {
-                    position = player.position,
-                    rotation = player.rotation,
-                    cameraPosition = playerCamera != null ? playerCamera.transform.position : Vector3.zero,
-                    cameraRotation = playerCamera != null ? playerCamera.transform.rotation : Quaternion.identity,
-                    timestamp = Time.time
-                };
-
-                recentPositions.Enqueue(snapshot);
-
-                while (recentPositions.Count > maxSnapshots)
-                {
-                    recentPositions.Dequeue();
-                }
-            }
-
-            yield return new WaitForSeconds(1f / 30f);
-        }
-    }
-
-    public void OnPlayerDeath()
-    {
-        if (isRewinding) return;
-
-        Debug.Log("¡Jugador ha muerto! Iniciando secuencia de reset...");
-        StartCoroutine(DeathResetSequence());
-    }
-
-    private IEnumerator DeathResetSequence()
-    {
-        isRewinding = true;
-
-        // NUEVO: Iniciar efecto de viñeta parpadeante
-        Coroutine vignetteEffect = null;
-        if (hasVignetteEffect)
-        {
-            vignetteEffect = StartCoroutine(VignetteFlickerEffect());
-        }
-
-        Time.timeScale = 0.3f;
-
-        if (rewindAudioSource != null && rewindSound != null)
-        {
-            rewindAudioSource.PlayOneShot(rewindSound);
-        }
-
-        yield return PlayRewindEffect();
-
-        ResetLevelToInitial();
-
-        Time.timeScale = 1f;
-
-        // NUEVO: Detener el parpadeo y hacer fade out suave de la viñeta
-        if (vignetteEffect != null)
-        {
-            StopCoroutine(vignetteEffect);
-        }
-
-        if (hasVignetteEffect)
-        {
-            yield return StartCoroutine(VignetteFadeOut());
-        }
-
-        isRewinding = false;
-
-        Debug.Log("¡Reset completo ejecutado!");
-    }
-
-    // NUEVO: Efecto de parpadeo de viñeta durante el reset
-    private IEnumerator VignetteFlickerEffect()
-    {
-        if (!hasVignetteEffect) yield break;
+        if (!hasColorAdjustments) yield break;
 
         float elapsedTime = 0f;
-        float totalDuration = rewindEffectDuration + 1f; // Un poco más que el rewind para que se vea completo
 
-        while (elapsedTime < totalDuration)
+        while (elapsedTime < flickerDuration)
         {
-            // Crear efecto de parpadeo usando una función seno
-            float flickerValue = Mathf.Sin(elapsedTime * vignetteFlickerSpeed) * 0.5f + 0.5f;
-            float currentIntensity = Mathf.Lerp(originalVignetteIntensity, maxVignetteIntensity, flickerValue);
+            // Parpadeo usando función seno
+            float flickerValue = Mathf.Sin(elapsedTime * exposureFlickerSpeed) * 0.5f + 0.5f;
+            float currentExposure = Mathf.Lerp(originalPostExposure, minExposureFlicker, flickerValue);
 
-            vignette.intensity.value = currentIntensity;
+            colorAdjustments.postExposure.value = currentExposure;
 
             elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
     }
 
-    // NUEVO: Fade out suave de la viñeta después del reset
-    private IEnumerator VignetteFadeOut()
+    private IEnumerator FadeToBlack()
     {
-        if (!hasVignetteEffect) yield break;
+        if (!hasColorAdjustments) yield break;
 
         float elapsedTime = 0f;
-        float startIntensity = vignette.intensity.value;
+        float startExposure = colorAdjustments.postExposure.value;
 
-        while (elapsedTime < vignetteFadeOutDuration)
+        while (elapsedTime < fadeToBlackDuration)
         {
-            float progress = elapsedTime / vignetteFadeOutDuration;
-            // Usar una curva suave para el fade out
+            float progress = elapsedTime / fadeToBlackDuration;
+            // Usar SmoothStep para transición más suave
             float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
 
-            vignette.intensity.value = Mathf.Lerp(startIntensity, originalVignetteIntensity, smoothProgress);
+            // Fade suave a -6 (negro completo)
+            colorAdjustments.postExposure.value = Mathf.Lerp(startExposure, -6f, smoothProgress);
+
+            elapsedTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        colorAdjustments.postExposure.value = -6f; // Asegurar negro completo
+
+        // 🎯 AQUÍ EMPIEZA LA RECARGA
+        ReloadCurrentScene();
+    }
+
+    private IEnumerator FadeFromBlackAfterReload()
+    {
+        if (!hasColorAdjustments)
+        {
+            persistentData.ShouldFadeFromBlack = false;
+            RestoreDataAfterReload();
+            yield break;
+        }
+
+        // Empezar en negro completo (-6)
+        colorAdjustments.postExposure.value = -6f;
+
+        // Esperar un frame para que todo se inicialice
+        yield return new WaitForEndOfFrame();
+
+        // Restaurar datos antes del fade
+        RestoreDataAfterReload();
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < fadeFromBlackDuration)
+        {
+            float progress = elapsedTime / fadeFromBlackDuration;
+            // Usar SmoothStep para transición más suave
+            float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
+
+            // Fade desde -6 al valor original (0)
+            colorAdjustments.postExposure.value = Mathf.Lerp(-6f, originalPostExposure, smoothProgress);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // Asegurar que vuelva exactamente al valor original
-        vignette.intensity.value = originalVignetteIntensity;
-        Debug.Log("Efecto de viñeta completado - intensidad restaurada a: " + originalVignetteIntensity);
+        colorAdjustments.postExposure.value = originalPostExposure;
+        persistentData.ShouldFadeFromBlack = false;
+
+        Debug.Log("Reset completo - Escena recargada y datos restaurados");
     }
 
-    private IEnumerator PlayRewindEffect()
+    private void RestoreDataAfterReload()
     {
-        if (recentPositions.Count == 0) yield break;
+        if (persistentData == null) return;
 
-        PlayerSnapshot[] snapshots = recentPositions.ToArray();
-        float effectTime = 0f;
-
-        for (int i = snapshots.Length - 1; i >= 0 && effectTime < rewindEffectDuration; i--)
+        // Restaurar ítems preservados en el inventario
+        if (InventorySystem.Instance != null && persistentData.preservedItems.Count > 0)
         {
-            if (player != null)
-            {
-                player.position = snapshots[i].position;
-                player.rotation = snapshots[i].rotation;
-            }
-
-            if (playerCamera != null)
-            {
-                playerCamera.transform.position = snapshots[i].cameraPosition;
-                playerCamera.transform.rotation = snapshots[i].cameraRotation;
-            }
-
-            effectTime += Time.unscaledDeltaTime;
-            yield return new WaitForSecondsRealtime(1f / (30f * rewindSpeed));
+            InventorySystem.Instance.RestoreItems(persistentData.preservedItems);
+            Debug.Log($"Restaurados {persistentData.preservedItems.Count} ítems preservados");
         }
-    }
 
-    private void ResetLevelToInitial()
-    {
-        // 1. Reset del jugador
-        ResetPlayerState();
-
-        // 2. Reset de todos los NPCs
-        ResetAllNPCs();
-
-        // 3. NUEVO: Reset de todos los NPCItemSpawners PRIMERO (ANTES de los items)
-        ResetAllItemSpawners();
-
-        // 4. Reset de todos los items del mundo (DESPUÉS de los spawners)
-        ResetAllItems();
-
-        ForceDeactivateSpecificItems();
-
-        // 5. MODIFICADO: Limpiar inventario PERO preservar ítems de niveles anteriores
-        ResetInventoryWithPreservation();
-
-        // 6. Reset de diálogos
-        ResetDialogueSystem();
-
-        // 7. Limpiar queue de posiciones
-        recentPositions.Clear();
-
+        // Notificar que el reset ha terminado
         OnLevelReset?.Invoke();
     }
-    private void ForceDeactivateSpecificItems()
+
+    private void ReloadCurrentScene()
     {
-        foreach (GameObject item in itemsToDeactivateOnDeath)
-        {
-            if (item != null)
-            {
-                item.SetActive(false);
-                Debug.Log($"Item {item.name} forzado a desactivar");
-            }
-        }
-    }
-    // NUEVO: Método modificado para preservar ítems de niveles anteriores
-    private void ResetInventoryWithPreservation()
-    {
-        if (InventorySystem.Instance != null)
-        {
-            // Restaurar solo los ítems de niveles anteriores
-            InventorySystem.Instance.RestoreItems(initialState.preservedItems);
-            Debug.Log($"Inventario reseteado con {initialState.preservedItems.Count} ítems preservados de niveles anteriores");
-        }
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        Debug.Log($"Recargando escena: {currentSceneName}");
+        SceneManager.LoadScene(currentSceneName);
     }
 
-    private void ResetPlayerState()
-    {
-        StartCoroutine(CompletePlayerReset());
-    }
-
-    private IEnumerator CompletePlayerReset()
-    {
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-
-        if (player != null)
-        {
-            Rigidbody playerRb = player.GetComponent<Rigidbody>();
-            if (playerRb != null)
-            {
-                playerRb.linearVelocity = Vector3.zero;
-                playerRb.angularVelocity = Vector3.zero;
-                playerRb.isKinematic = false;
-                Debug.Log("Rigidbody principal reseteado");
-            }
-
-            player.position = initialState.playerPosition;
-            player.rotation = initialState.playerRotation;
-            Debug.Log($"Posición restaurada a: {initialState.playerPosition}");
-
-            Animator animator = player.GetComponent<Animator>();
-            if (animator != null)
-            {
-                animator.enabled = true;
-                Debug.Log("Animator reactivado");
-            }
-
-            if (playerHealth != null)
-            {
-                playerHealth.ResetHealth();
-                Debug.Log("Salud restaurada");
-            }
-
-            MOVEPLAYER moveScript = player.GetComponent<MOVEPLAYER>();
-            if (moveScript != null)
-            {
-                moveScript.controlActivo = true;
-                moveScript.EnableControl();
-                Debug.Log("Control del jugador reactivado");
-            }
-        }
-
-        if (playerCamera != null)
-        {
-            playerCamera.transform.position = initialState.cameraPosition;
-            playerCamera.transform.rotation = initialState.cameraRotation;
-            Debug.Log("Cámara restaurada");
-        }
-    }
-
-    private void ResetAllNPCs()
-    {
-        foreach (NPCInitialState npcState in initialState.npcStates)
-        {
-            if (npcState.npcController != null)
-            {
-                npcState.npcController.transform.position = npcState.position;
-                npcState.npcController.transform.rotation = npcState.rotation;
-
-                if (npcState.npcController.CurrentState != npcState.initialNPCState)
-                {
-                    if (npcState.initialNPCState == NPCController.NPCState.NPC)
-                    {
-                        npcState.npcController.RevertToNPC();
-                    }
-                }
-            }
-        }
-    }
-    private void ResetAllItemSpawners()
-    {
-        NPCItemSpawner[] allSpawners = FindObjectsByType<NPCItemSpawner>(FindObjectsSortMode.None);
-
-        foreach (NPCItemSpawner spawner in allSpawners)
-        {
-            if (spawner != null)
-            {
-                spawner.ResetSpawner();
-            }
-        }
-
-        Debug.Log($"Item spawners reseteados: {allSpawners.Length} spawners encontrados");
-    }
-
-    private void ResetAllItems()
-    {
-        foreach (ItemInitialState itemState in initialState.itemStates)
-        {
-            if (itemState.itemPickup != null)
-            {
-                itemState.itemPickup.ResetItem();
-            }
-        }
-
-        ItemPickup[] allItems = FindObjectsByType<ItemPickup>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        foreach (ItemPickup item in allItems)
-        {
-            item.ResetItem();
-        }
-
-        Debug.Log($"Items reseteados: {allItems.Length} items encontrados");
-    }
-
-    private void ResetDialogueSystem()
-    {
-        Debug.Log("Diálogos reseteados");
-    }
-
-    // NUEVO: Método público para resetear manualmente los efectos (útil para debugging)
-    public void ResetPostProcessingEffects()
-    {
-        if (hasVignetteEffect)
-        {
-            vignette.intensity.value = originalVignetteIntensity;
-            Debug.Log("Efectos de post processing reseteados manualmente");
-        }
-    }
-
+    // Métodos de utilidad para debugging
     [ContextMenu("Test Death Reset")]
     public void TestDeathReset()
     {
         OnPlayerDeath();
     }
 
-    [ContextMenu("Test Vignette Effect")]
-    public void TestVignetteEffect()
+    [ContextMenu("Reset Post Processing")]
+    public void ResetPostProcessingEffects()
     {
-        if (hasVignetteEffect)
+        if (hasColorAdjustments)
         {
-            StartCoroutine(VignetteFlickerEffect());
+            colorAdjustments.postExposure.value = originalPostExposure;
+            Debug.Log("Efectos de post processing reseteados manualmente");
         }
+    }
+}
+
+// Clase para mantener datos entre recargas de escena
+public class PersistentGameData : MonoBehaviour
+{
+    [Header("Persistent Data")]
+    public int currentLevelIndex = 0;
+    public List<ItemData> preservedItems = new List<ItemData>();
+    public bool ShouldFadeFromBlack = false;
+
+    private void Awake()
+    {
+        // Asegurar que solo existe una instancia
+        PersistentGameData[] existingData = FindObjectsByType<PersistentGameData>(FindObjectsSortMode.None);
+        if (existingData.Length > 1)
+        {
+            // Si ya existe otra instancia, destruir esta
+            for (int i = 0; i < existingData.Length; i++)
+            {
+                if (existingData[i] != this)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+        }
+
+        DontDestroyOnLoad(gameObject);
     }
 }

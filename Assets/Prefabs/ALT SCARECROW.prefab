@@ -2850,8 +2850,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.6, y: 6.86, z: 2.6}
-  m_Center: {x: 0, y: 0, z: 0.56}
+  m_Size: {x: 4, y: 6.86, z: 3}
+  m_Center: {x: 0, y: 0, z: 1.5}
 --- !u!114 &372298258118096517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2886,7 +2886,7 @@ MonoBehaviour:
   instantTeleport: 1
   moveSpeed: 5
   deathStateName: Death
-  maxAnimationWaitTime: 3
+  maxAnimationWaitTime: 1
 --- !u!136 &1436224348633189790
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2961,8 +2961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffdc034ca5ce0a4689eebed0bbba6b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  pauseTimeOnItemPickup: 3
+  moveSpeed: 6
+  pauseTimeOnItemPickup: 4
   stoppingDistance: 0
   acceleration: 8
   angularSpeed: 360
