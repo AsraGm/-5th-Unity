@@ -76,7 +76,7 @@ public class MOVEPLAYER : MonoBehaviour
         }
 
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        rb.freezeRotation = true; 
         rb.mass = 1f;
         rb.linearDamping = 0f;
 

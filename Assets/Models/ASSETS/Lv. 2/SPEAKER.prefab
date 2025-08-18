@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6240769449680196265}
   - component: {fileID: 5727254578588595944}
   - component: {fileID: 7801702290207013086}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SPEAKER
   m_TagString: Assets
   m_Icon: {fileID: 0}

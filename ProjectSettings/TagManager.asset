@@ -4,12 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Boss
   - NPC
   - Enemy
   - Assets
   - Walls
-  - ragdoll
   layers:
   - Default
   - TransparentFX
@@ -19,13 +17,13 @@ TagManager:
   - UI
   - Player
   - Enemy
-  - Collectable
-  - Door
+  - Assets
+  - ITEMS
   - NPC
   - Wall
   - Ceiling
-  - ITEMS
-  - Assets
+  - 
+  - 
   - 
   - 
   - 

@@ -133,11 +133,8 @@ public class NPCController : MonoBehaviour
         if (stateManager.CurrentState != NPCState.Enemy) return;
 
         Debug.Log($"{gameObject.name} ha sido salvado/derrotado!");
-        stateManager.SetState(NPCState.PostDefeat);
-        // NO llamar transformation.RevertToNPC() aquí - se hará al final
         effectsManager.PlayDefeatEffects();
 
-        // ========== NUEVA SECUENCIA MEJORADA ==========
         StartCoroutine(DefeatSequenceWithAnimation());
     }
 
@@ -170,7 +167,8 @@ public class NPCController : MonoBehaviour
         {
             Debug.LogWarning($"No hay posición de derrota configurada para {gameObject.name}");
         }
-
+        Debug.Log($"{gameObject.name} - Llegó al punto de derrota, cambiando a estado PostDefeat");
+        stateManager.SetState(NPCState.PostDefeat);
         // Paso 5: AHORA SÍ convertir a NPC (después de todo)
         transformation.RevertToNPC();
         

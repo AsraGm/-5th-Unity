@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1455213971751981953}
   - component: {fileID: 5639735395966515810}
   - component: {fileID: 6685229858205474656}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SYNTH
   m_TagString: Assets
   m_Icon: {fileID: 0}

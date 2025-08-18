@@ -64,16 +64,9 @@ public class CAMERA : MonoBehaviour
 
     private void Update()
     {
-        HandleCameraSwitching();
         HandleOrientation();
         HandlePlayerRotation();
         HandleFreeLookOcclusion();
-    }
-
-    private void HandleCameraSwitching()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCameraStyle(CameraStyle.Basic);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchCameraStyle(CameraStyle.Dialogue);
     }
 
     private void HandleOrientation()

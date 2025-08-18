@@ -133,6 +133,10 @@ public class DialogueManager : MonoBehaviour
     {
         // OPTIMIZACIÓN: Activar flag de diálogo activo
         isDialogueActive = true;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.isPlayerControlActive = false;
+        }
         GameObject.FindWithTag("NPC").GetComponent<Animator>().SetBool("Dialogue", true);
         cameraController.SwitchCameraStyle(CAMERA.CameraStyle.Dialogue);
         playerMovement.controlActivo = false;
@@ -299,6 +303,10 @@ public class DialogueManager : MonoBehaviour
     private void EndDialogue()
     {
         cameraController.SwitchCameraStyle(CAMERA.CameraStyle.Basic);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.isPlayerControlActive = true;
+        }
         panelAnimator.SetTrigger("Disappear");
         Invoke(nameof(OnDisappearEnd), 0.5f);
     }

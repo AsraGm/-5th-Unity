@@ -141,10 +141,14 @@ public class Enemy : MonoBehaviour
     private void PushTarget(Transform target)
     {
         Rigidbody playerRb = target.transform.GetComponent<Rigidbody>();
+        if (playerRb == null) return;
+
         Vector3 pushDirection = (target.transform.position - transform.position).normalized;
-        pushDirection.y = 0;
+        pushDirection.y = 0f; // Pequeño componente vertical controlado
         pushDirection = pushDirection.normalized;
-        StartCoroutine(PushTargetSmooth(playerRb, pushDirection, forceImpulsive, pushDuration));
+
+        // Reduce la fuerza y usa ForceMode.Impulse para un empujón más controlado
+        StartCoroutine(PushTargetSmooth(playerRb, pushDirection, forceImpulsive * 0.5f, pushDuration));
     }
 
     IEnumerator PushTargetSmooth(Rigidbody playerRb, Vector3 direction, float totalForce, float duration)

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1939811786146317132}
   - component: {fileID: 5351900798913458534}
   - component: {fileID: 1059558876740610518}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: ESTAMBRE
   m_TagString: Untagged
   m_Icon: {fileID: 0}

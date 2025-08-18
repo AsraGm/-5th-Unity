@@ -9,6 +9,12 @@ public class NPCSceneTransition : MonoBehaviour
     [Tooltip("Nombre de la escena a cargar")]
     [SerializeField] private string targetSceneName;
 
+    [Header("Audio Settings")]
+    [Tooltip("¿Detener música actual con fade al cambiar de escena?")]
+    [SerializeField] private bool stopCurrentMusic = true;
+    [Tooltip("Música nueva para la escena de destino (opcional, déjalo vacío si la nueva escena tiene su propia música)")]
+    [SerializeField] private string newSceneMusic = "";
+
     [Header("Comic Loading Screen")]
     [Tooltip("GameObject que contiene toda la UI de carga con comic")]
     [SerializeField] private GameObject comicLoadingScreen;
@@ -113,6 +119,7 @@ public class NPCSceneTransition : MonoBehaviour
             Color fadeColor = fadePanel.color;
             fadeColor.a = 0f;
             fadePanel.color = fadeColor;
+
         }
 
         // Configurar loading bar
@@ -255,6 +262,13 @@ public class NPCSceneTransition : MonoBehaviour
 
         Debug.Log("Pantalla de comic activada (oculta por fade panel)");
 
+        // ========== DETENER MÚSICA ACTUAL CON FADE ==========
+        if (stopCurrentMusic && AudioManager.Instance != null)
+        {
+            Debug.Log("Deteniendo música actual con fade out...");
+            AudioManager.Instance.StopMusic(true);
+        }
+
         // Paso 2: Pequeña pausa para asegurar que se aplicó el fade
         yield return new WaitForEndOfFrame();
 
@@ -380,6 +394,14 @@ public class NPCSceneTransition : MonoBehaviour
         if (loadOperation != null && buttonInteractable)
         {
             Debug.Log("Botón continuar presionado (por click o Enter) - Activando nueva escena");
+
+            // ========== OPCIONAL: INICIAR MÚSICA DE LA NUEVA ESCENA ==========
+            if (!string.IsNullOrEmpty(newSceneMusic) && AudioManager.Instance != null)
+            {
+                Debug.Log($"Iniciando música para la nueva escena: {newSceneMusic}");
+                AudioManager.Instance.PlayMusic(newSceneMusic, true);
+            }
+
             loadOperation.allowSceneActivation = true;
             buttonInteractable = false; // Prevenir múltiples activaciones
         }

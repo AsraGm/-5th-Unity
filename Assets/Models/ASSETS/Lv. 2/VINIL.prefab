@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8775735927184218506}
   - component: {fileID: 7335688882321514614}
   - component: {fileID: 2997653106718142382}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: VINIL
   m_TagString: Assets
   m_Icon: {fileID: 0}

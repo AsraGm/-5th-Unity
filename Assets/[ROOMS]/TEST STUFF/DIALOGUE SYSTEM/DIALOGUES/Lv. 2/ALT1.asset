@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
   m_Name: ALT1
   m_EditorClassIdentifier: 
-  dialogueText: "I remember the pain the suffering of being so little, \xBFyou wanna
+  dialogueText: "I remember the pain, the suffering of being so little, \xBFyou wanna
     know how to change it?"
   responses:
   - responseText: How?
@@ -20,6 +20,7 @@ MonoBehaviour:
   - responseText: Your voice
     nextNode: {fileID: 11400000, guid: 7a27a838678618348926f7743fa9c075, type: 2}
   isEndNode: 0
+  customCloseButtonText: 
   onNodeStart:
     m_PersistentCalls:
       m_Calls: []

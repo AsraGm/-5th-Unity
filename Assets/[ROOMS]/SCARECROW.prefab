@@ -2860,6 +2860,7 @@ GameObject:
   - component: {fileID: 5806151043909132144}
   - component: {fileID: 3088759285392635938}
   - component: {fileID: 5685566491595094570}
+  - component: {fileID: 6795185905880936328}
   m_Layer: 6
   m_Name: SCARECROW
   m_TagString: Player
@@ -2911,6 +2912,14 @@ MonoBehaviour:
     m_Bits: 8
   cooldownTime: 2
   lastTeleportTime: 0
+  playerRadius: 0.5
+  playerHeight: 2
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 7936
+  safetyMargin: 0.1
+  maxRepositionAttempts: 8
+  repositionRadius: 1
   slowdownFactor: 0.2
   slowdownTransitionTime: 0.3
   speedupTransitionTime: 0.5
@@ -3059,6 +3068,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6795185905880936328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760699553721601342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59da2c043d333a544911e11e873e646b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3773060003142037309
 GameObject:
   m_ObjectHideFlags: 0

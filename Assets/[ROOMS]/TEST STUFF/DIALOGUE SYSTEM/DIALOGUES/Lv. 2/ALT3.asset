@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
   m_Name: ALT3
   m_EditorClassIdentifier: 
-  dialogueText: Then you must perish by the rock n RoOOooOoLlLLllL!!!!
+  dialogueText: Then you must perish by the rock 'n RoOOooOoLlLLllL!!!!
   responses: []
   isEndNode: 1
   customCloseButtonText: WHAT?!
