@@ -262,13 +262,6 @@ public class NPCSceneTransition : MonoBehaviour
 
         Debug.Log("Pantalla de comic activada (oculta por fade panel)");
 
-        // ========== DETENER MÚSICA ACTUAL CON FADE ==========
-        if (stopCurrentMusic && AudioManager.Instance != null)
-        {
-            Debug.Log("Deteniendo música actual con fade out...");
-            AudioManager.Instance.StopMusic(true);
-        }
-
         // Paso 2: Pequeña pausa para asegurar que se aplicó el fade
         yield return new WaitForEndOfFrame();
 
@@ -394,13 +387,6 @@ public class NPCSceneTransition : MonoBehaviour
         if (loadOperation != null && buttonInteractable)
         {
             Debug.Log("Botón continuar presionado (por click o Enter) - Activando nueva escena");
-
-            // ========== OPCIONAL: INICIAR MÚSICA DE LA NUEVA ESCENA ==========
-            if (!string.IsNullOrEmpty(newSceneMusic) && AudioManager.Instance != null)
-            {
-                Debug.Log($"Iniciando música para la nueva escena: {newSceneMusic}");
-                AudioManager.Instance.PlayMusic(newSceneMusic, true);
-            }
 
             loadOperation.allowSceneActivation = true;
             buttonInteractable = false; // Prevenir múltiples activaciones

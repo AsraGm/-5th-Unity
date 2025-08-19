@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 529f2ae2b52084f4dbe446af2c7bd77f, type: 3}
+  m_Name: Sounds SO
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Lv1_NPC
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: b59831f618f83fe40bbed2a7438ad957, type: 3}
+    loop: 1
+    isMusic: 1
+  - name: Lv1_ENEMY
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 90def6599fc14814bb77f9820edc1bab, type: 3}
+    loop: 1
+    isMusic: 1
+  - name: P_Walk
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 55ebf6ac4b4367e41a327750913b9c1a, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: P_Damage
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 70731c6c20aed1d439ff022c92d2341e, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: P_Death
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 7086574472f52c848be1486549f8ff84, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: P_Saxo
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 2061c4dee05762242840c7086c33fd4e, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: P_D1
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: adf54b31c5ea7144e93146e095040469, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: None
+    volume: 1
+    mixer: {fileID: 0}
+    sounds: []
+    loop: 0
+    isMusic: 0
+  - name: Tran
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 7fa91eca288399a48a3e8da1b2716e85, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: Menu
+    volume: 1
+    mixer: {fileID: 0}
+    sounds: []
+    loop: 0
+    isMusic: 0
+  - name: L_Walk
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: aaf5fc1029452f84199259598ed0c538, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: L_Damage
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 6972b49fe8530704eb233653b76a9479, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: L_Death
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 38c66564835344744b7e276c42d3b2d0, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: L_D1
+    volume: 0.5
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 7bbcb0c83a967dc459c59961eb93a3b1, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: Lv2_NPC
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 8e05a29b651a9d1459f967b9b578f14e, type: 3}
+    loop: 1
+    isMusic: 1
+  - name: Lv2_ENEMY
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: da4bbc9414a2d3347a31ad74fbae9e4e, type: 3}
+    loop: 1
+    isMusic: 1
+  - name: Alt_Walk
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 9adc5c377561c0247b9deebdd1ac0f06, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: Alt_Damage
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 75c1933952319e341bccb85eb1143370, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: Alt_Death
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 0bef39a117a04194ea65f6158bf855de, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: Alt_D1
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: adaa168b9e3e1af479f1896dc510523d, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: Lv3_NPC
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 65a4937a43c8f46489697b879ddf9bb7, type: 3}
+    loop: 1
+    isMusic: 1
+  - name: Lv3_ENEMY
+    volume: 0.7
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 2c53146d2792b6748bf5939d069c8334, type: 3}
+    loop: 1
+    isMusic: 1
+  - name: Meph_Walk
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 10d5a4fa562e23d47a1541ef42481d82, type: 3}
+    loop: 1
+    isMusic: 0
+  - name: Meph_Damage
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 57e86c95ff65eb0499d95a0b451dc71a, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: Meph_Death
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: a78eb9975adec1349a81032a41371b81, type: 3}
+    loop: 0
+    isMusic: 0
+  - name: Meph_D1
+    volume: 0.5
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: da3fc00be54c08f45bdaf45d65c841a7, type: 3}
+    loop: 1
+    isMusic: 0

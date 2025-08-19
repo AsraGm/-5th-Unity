@@ -32,7 +32,6 @@ public class MenuPausa : MonoBehaviour
     private void Pausa()
     {
         activo = true;
-        AudioManager.Instance.PauseAll();
         Time.timeScale = 0f;
         menu.SetActive(true);
         camara.enabled = false;
@@ -43,7 +42,6 @@ public class MenuPausa : MonoBehaviour
     public void Continuar()
     {
         activo = false;
-        AudioManager.Instance.ResumeAll();
         Time.timeScale = 1f;
         camara.enabled = true;
         control.controlActivo = true;

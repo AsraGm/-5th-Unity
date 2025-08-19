@@ -1,3 +1,4 @@
+using SmallHedge.SoundManager;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -36,6 +37,11 @@ public class MOVEPLAYER : MonoBehaviour
     [Tooltip("Umbral mínimo de movimiento para rotar")]
     public float rotationThreshold = 0.1f;
     public CinemachineFreeLook freeLookCam;
+
+    [Header("Footstep Sounds")]
+    public SoundType walkSound = SoundType.P_Walk; // Asigna el tipo de sonido en el inspector
+    public float footstepSpacing = 0.4f; // Espacio entre pasos
+    private bool wasMoving = false;
 
     float horizontalInput;
     float verticalInput;
@@ -180,9 +186,41 @@ public class MOVEPLAYER : MonoBehaviour
         float horizontalSpeed = horizontalVelocity.magnitude;
 
         // Pasar la velocidad al Animator
-        animator.SetFloat("Speed", horizontalSpeed);
-        bool isMoving = (horizontalInput != 0 || verticalInput != 0);
+        bool isMoving = (horizontalInput != 0 || verticalInput != 0) && grounded;
         animator.SetBool("MoveKey", isMoving);
+
+        if (isMoving && !wasMoving)
+        {
+            // Empezó a moverse
+            SoundManager.PlayLoopingSound(walkSound, footstepSpacing);
+        }
+        else if (!isMoving && wasMoving)
+        {
+            // Dejó de moverse
+            SoundManager.StopLoopingSound(walkSound);
+        }
+
+        wasMoving = isMoving;
+    }
+
+    public void PlayFootstepSound()
+    {
+        if (grounded && (horizontalInput != 0 || verticalInput != 0))
+        {
+            SoundManager.PlaySound(walkSound, null, 1f);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Limpieza al destruir el objeto
+        SoundManager.StopLoopingSound(walkSound);
+    }
+
+    private void OnDisable()
+    {
+        // Limpieza al desactivar el objeto
+        SoundManager.StopLoopingSound(walkSound);
     }
 
     private void FixedUpdate()

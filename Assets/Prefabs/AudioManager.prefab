@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5380902986117806716}
   - component: {fileID: 2360697485053038715}
+  - component: {fileID: 552139776556141528}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4523196036854649722}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -849.3586, y: -1298.0706, z: 39.42858}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,111 +45,103 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cd0aaa2d588e4143ae2b71e562de288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sonidos:
-    categoryName: 
-    audioClips:
-    - name: LYTA WALK
-      clip: {fileID: 8300000, guid: aaf5fc1029452f84199259598ed0c538, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    - name: LYTA DAMAGE
-      clip: {fileID: 8300000, guid: 6972b49fe8530704eb233653b76a9479, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: LYTA DEATH
-      clip: {fileID: 8300000, guid: 38c66564835344744b7e276c42d3b2d0, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: MEPH WALK
-      clip: {fileID: 8300000, guid: 10d5a4fa562e23d47a1541ef42481d82, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    - name: MEPH DAMAGE
-      clip: {fileID: 8300000, guid: 57e86c95ff65eb0499d95a0b451dc71a, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: MEPH DEATH
-      clip: {fileID: 8300000, guid: a78eb9975adec1349a81032a41371b81, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: ALT WALK
-      clip: {fileID: 8300000, guid: 9adc5c377561c0247b9deebdd1ac0f06, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    - name: ALT DAMAGE
-      clip: {fileID: 8300000, guid: 75c1933952319e341bccb85eb1143370, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: ALT DEATH
-      clip: {fileID: 8300000, guid: 0bef39a117a04194ea65f6158bf855de, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: P WALK
-      clip: {fileID: 8300000, guid: 55ebf6ac4b4367e41a327750913b9c1a, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    - name: P DAMAGE
-      clip: {fileID: 8300000, guid: 70731c6c20aed1d439ff022c92d2341e, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: P SAXO
-      clip: {fileID: 8300000, guid: 2061c4dee05762242840c7086c33fd4e, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    - name: P DEATH
-      clip: {fileID: 8300000, guid: 7086574472f52c848be1486549f8ff84, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 0
-    categoryVolume: 1
-  musica:
-    categoryName: 
-    audioClips:
-    - name: MENU
-      clip: {fileID: 8300000, guid: bc02a3f9e289ace4dbec938ee9176444, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    - name: Lv.1 NPC
-      clip: {fileID: 8300000, guid: b59831f618f83fe40bbed2a7438ad957, type: 3}
-      volume: 1
-      pitch: 0
-      loop: 1
-    - name: Lv.2 NPC
-      clip: {fileID: 8300000, guid: 8e05a29b651a9d1459f967b9b578f14e, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    - name: Lv.3 NPC
-      clip: {fileID: 8300000, guid: 65a4937a43c8f46489697b879ddf9bb7, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    - name: COMICS
-      clip: {fileID: 8300000, guid: 7fa91eca288399a48a3e8da1b2716e85, type: 3}
-      volume: 0
-      pitch: 0
-      loop: 1
-    categoryVolume: 1
-  voces:
-    categoryName: 
-    audioClips: []
-    categoryVolume: 1
-  poolSize: 10
-  fadeTime: 1
-  masterVolume: 1
-  soundsVolume: 1
-  musicVolume: 1
-  voicesVolume: 1
+  SO: {fileID: 11400000, guid: ea281ee15c33556439629208abf1fd9c, type: 2}
+  musicSource: {fileID: 0}
+  sfxSource: {fileID: 552139776556141528}
+--- !u!82 &552139776556141528
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4523196036854649722}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

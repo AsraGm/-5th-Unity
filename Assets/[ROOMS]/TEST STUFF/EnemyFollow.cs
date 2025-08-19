@@ -1,3 +1,4 @@
+using SmallHedge.SoundManager;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -32,6 +33,19 @@ public class EnemyFollow : MonoBehaviour
 
     [Header("Enemy Damage Particles")]
     [SerializeField] private GameObject enemyDamageParticlesPrefab; // Prefab de partículas cuando el enemigo recibe daño
+
+    [Header("Sound Settings")]
+    [Tooltip("Sound to play when moving")]
+    public SoundType moveSound = SoundType.None; // Configura en inspector
+
+    [Tooltip("Time between footstep sounds")]
+    public float footstepSpacing = 0.4f;
+
+    [Tooltip("Animator parameter for movement")]
+    public string moveAnimParameter = "Following";
+
+    private bool isPlayingFootsteps = false;
+    private Coroutine footstepCoroutine;
 
     // AUTOMÁTICO: Se encuentra solo el punto de spawn en el enemigo
     private Transform enemyParticleSpawnPoint;
@@ -147,16 +161,19 @@ public class EnemyFollow : MonoBehaviour
 
     private void OnDisable()
     {
-        // Desuscribirse de eventos
+        StopFootsteps();
         ResetSystem.OnLevelReset -= ResetToInitialState;
         InventorySystem.OnItemAdded -= OnItemPickedUp;
     }
 
     private void Update()
     {
-        if (playerTransform == null || navAgent == null || !isFollowing || isPausedByItem) return;
-
-        FollowPlayer();
+        if (playerTransform == null || navAgent == null || !isFollowing || isPausedByItem)
+        {
+            StopFootsteps();
+            return;
+        }
+        FollowPlayer(); UpdateSoundAndAnimation();
         if (animator != null)
         {
             animator.SetBool("Following", isFollowing);
@@ -172,6 +189,74 @@ public class EnemyFollow : MonoBehaviour
         {
             float distanceToTarget = navAgent.hasPath ? navAgent.remainingDistance : Vector3.Distance(transform.position, playerTransform.position);
             Debug.Log($"{gameObject.name} - Siguiendo: {isFollowing}, Pausado: {isPausedByItem}, Distancia: {distanceToTarget:F2}, HasPath: {navAgent.hasPath}");
+        }
+    }
+    private void UpdateSoundAndAnimation()
+    {
+        // Calcula si debería estar moviéndose basado en velocidad y estados
+        bool shouldBeMoving = isFollowing &&
+                             !isPausedByItem &&
+                             navAgent.velocity.magnitude > 0.1f &&
+                             navAgent.remainingDistance > navAgent.stoppingDistance;
+
+        // Control de animación
+        if (animator != null)
+        {
+            animator.SetBool(moveAnimParameter, shouldBeMoving);
+        }
+
+        // Control de sonido
+        if (shouldBeMoving)
+        {
+            if (!isPlayingFootsteps)
+            {
+                StartFootsteps();
+            }
+        }
+        else
+        {
+            if (isPlayingFootsteps)
+            {
+                StopFootsteps();
+            }
+        }
+    }
+
+    // Asegúrate de que el método PlayFootstepSounds() tenga variación de pitch/volumen
+    private IEnumerator PlayFootstepSounds()
+    {
+        while (true)
+        {
+            if (moveSound != SoundType.None &&
+                isFollowing &&
+                !isPausedByItem &&
+                navAgent.velocity.magnitude > 0.1f)
+            {
+                // Añade variación aleatoria para sonido más natural
+                float randomVolume = UnityEngine.Random.Range(0.8f, 1.2f);
+                float randomPitch = UnityEngine.Random.Range(0.9f, 1.1f);
+
+                SoundManager.PlaySound(moveSound, null, randomVolume);
+            }
+            yield return new WaitForSeconds(footstepSpacing);
+        }
+    }
+
+    private void StartFootsteps()
+    {
+        if (moveSound == SoundType.None) return;
+
+        isPlayingFootsteps = true;
+        footstepCoroutine = StartCoroutine(PlayFootstepSounds());
+    }
+
+    private void StopFootsteps()
+    {
+        isPlayingFootsteps = false;
+        if (footstepCoroutine != null)
+        {
+            StopCoroutine(footstepCoroutine);
+            footstepCoroutine = null;
         }
     }
 
@@ -246,6 +331,7 @@ public class EnemyFollow : MonoBehaviour
 
     private IEnumerator PauseFollowingCoroutine()
     {
+        StopFootsteps();
         if (animator != null)
         {
             animator.SetTrigger("Damage");
@@ -292,7 +378,7 @@ public class EnemyFollow : MonoBehaviour
     // ========== SISTEMA DE RESET ==========
     private void ResetToInitialState()
     {
-        // Parar todas las corrutinas
+        StopFootsteps();
         StopAllCoroutines();
 
         // Parar y resetear NavMeshAgent

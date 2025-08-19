@@ -1,11 +1,23 @@
-using UnityEngine;
+using SmallHedge.SoundManager;
 using System.Collections;
+using UnityEngine;
+using SmallHedge.SoundManager;
 
 public class NPCController : MonoBehaviour
 {
     [Header("Dialogue Settings")]
     public DIALOGUENODE initialDialogueNode;
     public DIALOGUENODE postDefeatDialogueNode;
+
+    [Header("Music Settings")]
+    [Tooltip("Música que sonará cuando el personaje esté en estado 'NPC'.")]
+    public SoundType musicNPCState = SoundType.None;
+
+    [Tooltip("Música que sonará cuando el personaje se transforme en 'Enemigo'.")]
+    public SoundType musicEnemyState = SoundType.None;
+
+    [Tooltip("Música que sonará después de ser derrotado ('PostDefeat').")]
+    public SoundType musicPostDefeatState = SoundType.None;
 
     [Header("NPC Components")]
     [Tooltip("Scripts que se desactivan al convertirse en enemigo")]

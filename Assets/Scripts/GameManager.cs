@@ -15,10 +15,6 @@ public class GameManager : MonoBehaviour
     // NUEVO: Sistema de partículas
     private static GameObject currentParticleSystem;
 
-    [Header("Configuración de Audio")]
-    [Tooltip("Nombre de la música que sonará en este nivel")]
-    public string musicaDelNivel = "musicaNivel1";
-
     [Tooltip("¿Intentar reproducir música automáticamente al iniciar?")]
     public bool reproducirMusicaAlIniciar = true;
     public bool isPlayerControlActive = true;
@@ -38,72 +34,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        // MOVIDO AQUÍ: Reproducir música en Start() para asegurar que AudioManager esté listo
-        if (reproducirMusicaAlIniciar)
-        {
-            StartCoroutine(TryPlayMusic());
-        }
-    }
-
-    // Corrutina para intentar reproducir música con reintentos
-    private IEnumerator TryPlayMusic()
-    {
-        int intentos = 0;
-        int maxIntentos = 10; // Máximo 10 intentos (1 segundo)
-
-        while (intentos < maxIntentos)
-        {
-            // Verificar si AudioManager está disponible
-            if (AudioManager.Instance != null)
-            {
-                Debug.Log($"AudioManager encontrado. Reproduciendo música: {musicaDelNivel}");
-                AudioManager.Instance.PlayMusic(musicaDelNivel, true);
-                yield break; // Salir exitosamente
-            }
-            else
-            {
-                Debug.LogWarning($"AudioManager no encontrado. Intento {intentos + 1}/{maxIntentos}");
-                intentos++;
-                yield return new WaitForSeconds(0.1f); // Esperar 100ms antes del siguiente intento
-            }
-        }
-
-        // Si llegamos aquí, no se encontró AudioManager
-        Debug.LogError($"No se pudo encontrar AudioManager después de {maxIntentos} intentos. Asegúrate de que esté en la escena y configurado correctamente.");
-    }
-
-    // MÉTODO PÚBLICO: Para reproducir música manualmente
-    [ContextMenu("Reproducir Música del Nivel")]
-    public void PlayLevelMusic()
-    {
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayMusic(musicaDelNivel, true);
-            Debug.Log($"Música reproducida manualmente: {musicaDelNivel}");
-        }
-        else
-        {
-            Debug.LogError("AudioManager no encontrado!");
-        }
-    }
-
-    // MÉTODO PÚBLICO: Para detener música
-    [ContextMenu("Detener Música")]
-    public void StopLevelMusic()
-    {
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.StopMusic(true);
-            Debug.Log("Música detenida");
-        }
-        else
-        {
-            Debug.LogError("AudioManager no encontrado!");
-        }
-    }
-
     private void Update()
     {
         // NUEVO: Tecla de emergencia para recuperar control (puedes cambiar la tecla)
@@ -111,46 +41,8 @@ public class GameManager : MonoBehaviour
         {
             ForceEnableMovement();
         }
-
-        // DEBUG: Tecla para probar música (elimina esto después de probar)
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            PlayLevelMusic();
-        }
-
-        // DEBUG: Tecla para detener música (elimina esto después de probar)
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StopLevelMusic();
-        }
     }
 
-    // Métodos de pausa existentes
-    public static void PauseGame()
-    {
-        IsPaused = true;
-        Time.timeScale = 0f;
-
-        // NUEVO: Pausar también el audio
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PauseAll();
-        }
-    }
-
-    public static void ResumeGame()
-    {
-        IsPaused = false;
-        Time.timeScale = 1f;
-
-        // NUEVO: Reanudar también el audio
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.ResumeAll();
-        }
-    }
-
-    // Nuevos métodos para control de movimiento
     public static void DisablePlayerMovement()
     {
         CanPlayerMove = false;
@@ -238,22 +130,4 @@ public class GameManager : MonoBehaviour
         // NUEVO: Destruir partículas al terminar la animación
         DestroyCurrentParticles();
     }
-
-    // MÉTODO DE DEBUG: Para verificar el estado del AudioManager
-    [ContextMenu("Debug Audio Manager")]
-    public void DebugAudioManager()
-    {
-        if (AudioManager.Instance != null)
-        {
-            Debug.Log("✅ AudioManager encontrado!");
-            Debug.Log($"Música actual: {AudioManager.Instance.GetCurrentMusicName()}");
-            Debug.Log($"¿Música reproduciéndose?: {AudioManager.Instance.IsMusicPlaying()}");
-            Debug.Log($"Volumen maestro: {AudioManager.Instance.masterVolume}");
-            Debug.Log($"Volumen música: {AudioManager.Instance.musicVolume}");
-        }
-        else
-        {
-            Debug.LogError("❌ AudioManager NO encontrado!");
-        }
-    }
-} 
+}

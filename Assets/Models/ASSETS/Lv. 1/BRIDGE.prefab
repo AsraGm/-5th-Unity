@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4408881600973280914}
   - component: {fileID: 7087955832570078006}
   - component: {fileID: 7940574584659671329}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: BRIDGE
   m_TagString: Assets
   m_Icon: {fileID: 0}
@@ -3320,7 +3320,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1140
+  m_VersionIndex: 1155
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

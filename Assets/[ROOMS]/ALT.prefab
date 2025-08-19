@@ -4898,6 +4898,9 @@ MonoBehaviour:
   - Assets
   - Walls
   enemyDamageParticlesPrefab: {fileID: 3194389705767383857, guid: d8a535df727baa647a374672bf51b872, type: 3}
+  moveSound: 16
+  footstepSpacing: 0.1
+  moveAnimParameter: Moving
   isFollowing: 1
   showDebugInfo: 0
   showNavMeshPath: 0
