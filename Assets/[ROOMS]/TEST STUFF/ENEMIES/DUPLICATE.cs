@@ -16,6 +16,7 @@ public class DUPLICATE : MonoBehaviour
         [Tooltip("Cantidad de prefabs a instanciar")]
         public int c2Spawn = 1;
         [HideInInspector] public int totalSpawned = 0; // Contador total de instancias
+        [HideInInspector] public int originalC2Spawn; // Para guardar el valor original
     }
 
     [Header("Configuración")]
@@ -29,9 +30,18 @@ public class DUPLICATE : MonoBehaviour
     // ========== LISTA PARA TRACKEAR ENEMIGOS SPAWNEADOS ==========
     private List<GameObject> spawnedEnemies = new List<GameObject>();
 
+    // ========== NUEVA VARIABLE PARA TRACKEAR EL ÚLTIMO OBJETO ==========
+    private SpawnTrigger lastTriggeredSpawn = null;
+
     private void Awake()
     {
         inventorySystem = InventorySystem.Instance;
+
+        // ========== GUARDAR VALORES ORIGINALES ==========
+        foreach (var trigger in spawnTriggers)
+        {
+            trigger.originalC2Spawn = trigger.c2Spawn;
+        }
     }
 
     private void OnEnable()
@@ -63,13 +73,17 @@ public class DUPLICATE : MonoBehaviour
         // Limpiar la lista
         spawnedEnemies.Clear();
 
-        // Resetear contadores
+        // Resetear contadores y restaurar valores originales
         foreach (var trigger in spawnTriggers)
         {
             trigger.totalSpawned = 0;
+            trigger.c2Spawn = trigger.originalC2Spawn; // Restaurar valor original
         }
 
-        Debug.Log($"DUPLICATE: {spawnedEnemies.Count} enemigos duplicados eliminados");
+        // Resetear el último trigger
+        lastTriggeredSpawn = null;
+
+        Debug.Log($"DUPLICATE: {spawnedEnemies.Count} enemigos duplicados eliminados y valores restaurados");
     }
 
     private void OnItemCollected(ItemData newItem)
@@ -78,10 +92,66 @@ public class DUPLICATE : MonoBehaviour
         {
             if (trigger.item == newItem)
             {
+                // ========== NUEVO: VERIFICAR SI ES EL ÚLTIMO OBJETO ==========
+                CheckIfLastItem(trigger);
+
                 StartCoroutine(SpawnMultipleEnemies(trigger)); // Usamos una corrutina para spawnear múltiples enemigos
                 break;
             }
         }
+    }
+
+    // ========== NUEVO MÉTODO PARA VERIFICAR SI ES EL ÚLTIMO OBJETO ==========
+    private void CheckIfLastItem(SpawnTrigger currentTrigger)
+    {
+        // Verificar si este es el último objeto que queda por recolectar
+        if (UIItemCounter.Instance != null)
+        {
+            // Usar las propiedades públicas del UIItemCounter
+            if (UIItemCounter.Instance.IsLastItem)
+            {
+                Debug.Log($"DUPLICATE: Último objeto detectado. Cambiando c2Spawn a 0 para {currentTrigger.item.name}");
+                currentTrigger.c2Spawn = 0;
+                lastTriggeredSpawn = currentTrigger;
+            }
+        }
+        else
+        {
+            // Método alternativo: verificar directamente con ItemManager si UIItemCounter no está disponible
+            CheckLastItemAlternative(currentTrigger);
+        }
+    }
+
+    // ========== MÉTODO ALTERNATIVO PARA DETECTAR EL ÚLTIMO OBJETO ==========
+    private void CheckLastItemAlternative(SpawnTrigger currentTrigger)
+    {
+        ItemManager itemManager = FindObjectOfType<ItemManager>();
+        if (itemManager != null)
+        {
+            int activeItems = 0;
+            foreach (GameObject item in itemManager.allItemsInScene)
+            {
+                if (item != null && item.activeInHierarchy)
+                {
+                    activeItems++;
+                }
+            }
+
+            // Si solo queda 1 objeto activo (el que estamos a punto de recolectar), es el último
+            if (activeItems <= 1)
+            {
+                Debug.Log($"DUPLICATE: Último objeto detectado (método alternativo). Cambiando c2Spawn a 0 para {currentTrigger.item.name}");
+                currentTrigger.c2Spawn = 0;
+                lastTriggeredSpawn = currentTrigger;
+            }
+        }
+    }
+
+    // ========== MÉTODOS AUXILIARES (SIMPLIFICADOS) ==========
+    private int GetTotalItemsCount()
+    {
+        ItemManager itemManager = FindObjectOfType<ItemManager>();
+        return itemManager != null ? itemManager.allItemsInScene.Count : 0;
     }
 
     private IEnumerator SpawnMultipleEnemies(SpawnTrigger trigger)

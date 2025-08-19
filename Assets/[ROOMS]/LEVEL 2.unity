@@ -23,10 +23,10 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.627047, g: 0.6601697, b: 0.7264151, a: 1}
   m_AmbientEquatorColor: {r: 0.44935924, g: 0.48540407, b: 0.509434, a: 1}
   m_AmbientGroundColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
-  m_AmbientIntensity: 1.57
-  m_AmbientMode: 1
+  m_AmbientIntensity: 3.28
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 19226a1865c20924d9f6ca0fa68ef389, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 1468759c9627e5449a6637ff428bcda6, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -34207,6 +34207,10 @@ PrefabInstance:
       propertyPath: defeatPosition
       value: 
       objectReference: {fileID: 1807370059}
+    - target: {fileID: 3843871388277022356, guid: a46bd60a12149ba499659b0f88faeee3, type: 3}
+      propertyPath: spawnTriggers.Array.data[2].c2Spawn
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3843871388277022356, guid: a46bd60a12149ba499659b0f88faeee3, type: 3}
       propertyPath: spawnTriggers.Array.data[0].spawnPoint
       value: 

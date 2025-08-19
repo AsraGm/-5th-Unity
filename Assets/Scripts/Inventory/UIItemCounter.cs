@@ -1,14 +1,20 @@
 using UnityEngine;
-using TMPro; // Asegúrate de tener esta librería para TextMeshPro
+using TMPro;
 
 public class UIItemCounter : MonoBehaviour
 {
     // Singleton
     public static UIItemCounter Instance { get; private set; }
 
-    [SerializeField] private TMP_Text counterText; // Arrastra tu TextMeshPro aquí desde el Inspector
+    [SerializeField] private TMP_Text counterText;
+
     private int itemsCollected = 0;
     private int totalItems = 0;
+
+    // ========== PROPIEDADES PÚBLICAS PARA ACCESO EXTERNO ==========
+    public int ItemsCollected => itemsCollected;
+    public int TotalItems => totalItems;
+    public bool IsLastItem => (itemsCollected + 1) >= totalItems;
 
     private void Awake()
     {
@@ -37,6 +43,12 @@ public class UIItemCounter : MonoBehaviour
     {
         itemsCollected++;
         UpdateUI();
+
+        // ========== EVENTO OPCIONAL PARA NOTIFICAR CUANDO ES EL ÚLTIMO OBJETO ==========
+        if (itemsCollected >= totalItems)
+        {
+            Debug.Log("UIItemCounter: ¡Todos los objetos han sido recolectados!");
+        }
     }
 
     private void UpdateUI()
@@ -45,5 +57,12 @@ public class UIItemCounter : MonoBehaviour
         {
             counterText.text = $"{itemsCollected} / {totalItems}";
         }
+    }
+
+    // ========== MÉTODO PARA RESETEAR EL CONTADOR ==========
+    public void ResetCounter()
+    {
+        itemsCollected = 0;
+        UpdateUI();
     }
 }
