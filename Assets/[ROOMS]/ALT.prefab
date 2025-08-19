@@ -4890,7 +4890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   pauseTimeOnItemPickup: 4
-  stoppingDistance: 0
+  stoppingDistance: -4007
   acceleration: 8
   angularSpeed: 360
   obstacleDetectionRadius: 2
@@ -4899,7 +4899,7 @@ MonoBehaviour:
   - Walls
   enemyDamageParticlesPrefab: {fileID: 3194389705767383857, guid: d8a535df727baa647a374672bf51b872, type: 3}
   moveSound: 16
-  footstepSpacing: 0.1
+  footstepSpacing: 0.6
   moveAnimParameter: Moving
   isFollowing: 1
   showDebugInfo: 0

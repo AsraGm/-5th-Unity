@@ -36,6 +36,8 @@ namespace SmallHedge.SoundManager
         Meph_Damage,
         Meph_Death,
         Meph_D1,
+        ///
+        TELEPORT,
 
     }
 }

@@ -50,6 +50,11 @@ public class ItemPickup : MonoBehaviour
             // Agregar al inventario
             InventorySystem.Instance.AddItem(itemData);
 
+            if (UIItemCounter.Instance != null)
+            {
+                UIItemCounter.Instance.IncrementCollectedItems();
+            }
+
             // Marcar como recogido y desactivar (NO destruir)
             wasPickedUp = true;
 

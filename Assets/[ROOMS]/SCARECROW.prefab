@@ -3000,6 +3000,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  playerMovement: {fileID: 1313202751933772396}
 --- !u!65 &5806151043909132144
 BoxCollider:
   m_ObjectHideFlags: 0

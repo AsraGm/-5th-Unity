@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: Lv1_NPC
-    volume: 0.7
+    volume: 0.5
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: b59831f618f83fe40bbed2a7438ad957, type: 3}
     loop: 1
     isMusic: 1
   - name: Lv1_ENEMY
-    volume: 0.7
+    volume: 0.5
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 90def6599fc14814bb77f9820edc1bab, type: 3}
     loop: 1
     isMusic: 1
   - name: P_Walk
-    volume: 1
+    volume: 0.3
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 55ebf6ac4b4367e41a327750913b9c1a, type: 3}
@@ -82,7 +82,7 @@ MonoBehaviour:
     loop: 0
     isMusic: 0
   - name: L_Walk
-    volume: 1
+    volume: 0.3
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: aaf5fc1029452f84199259598ed0c538, type: 3}
@@ -110,21 +110,21 @@ MonoBehaviour:
     loop: 1
     isMusic: 0
   - name: Lv2_NPC
-    volume: 0.7
+    volume: 0.5
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 8e05a29b651a9d1459f967b9b578f14e, type: 3}
     loop: 1
     isMusic: 1
   - name: Lv2_ENEMY
-    volume: 0.7
+    volume: 0.5
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: da4bbc9414a2d3347a31ad74fbae9e4e, type: 3}
     loop: 1
     isMusic: 1
   - name: Alt_Walk
-    volume: 1
+    volume: 0.3
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 9adc5c377561c0247b9deebdd1ac0f06, type: 3}
@@ -152,21 +152,21 @@ MonoBehaviour:
     loop: 1
     isMusic: 0
   - name: Lv3_NPC
-    volume: 0.7
+    volume: 0.5
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 65a4937a43c8f46489697b879ddf9bb7, type: 3}
     loop: 1
     isMusic: 1
   - name: Lv3_ENEMY
-    volume: 0.7
+    volume: 0.5
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 2c53146d2792b6748bf5939d069c8334, type: 3}
     loop: 1
     isMusic: 1
   - name: Meph_Walk
-    volume: 1
+    volume: 0.5
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 10d5a4fa562e23d47a1541ef42481d82, type: 3}
@@ -192,4 +192,11 @@ MonoBehaviour:
     sounds:
     - {fileID: 8300000, guid: da3fc00be54c08f45bdaf45d65c841a7, type: 3}
     loop: 1
+    isMusic: 0
+  - name: TELEPORT
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 0953789d8889d2b47ac9267cb76ecfc0, type: 3}
+    loop: 0
     isMusic: 0

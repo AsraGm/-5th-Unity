@@ -34,6 +34,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        Time.timeScale = 1f;
+    }
+
     private void Update()
     {
         // NUEVO: Tecla de emergencia para recuperar control (puedes cambiar la tecla)

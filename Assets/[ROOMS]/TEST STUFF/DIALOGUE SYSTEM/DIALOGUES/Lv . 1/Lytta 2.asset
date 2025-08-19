@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
   m_Name: Lytta 2
   m_EditorClassIdentifier: 
-  dialogueText: My dear Scarecrow, what if love leaves your heart an open sore?
+  dialogueText: My dear Scarecrow, we need to find out pieces in this world
   responses:
   - responseText: "I\u2019ll be lost in space"
     nextNode: {fileID: 11400000, guid: 657088086620d7d4e8da631f6dabd69a, type: 2}

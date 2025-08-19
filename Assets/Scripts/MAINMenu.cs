@@ -13,10 +13,49 @@ public class MAINMenu : MonoBehaviour
     [Tooltip("¿Permitir carga directa sin prólogo? (para testing)")]
     [SerializeField] private bool allowDirectPlay = false;
 
+    [Header("Input Settings")]
+    [Tooltip("¿Permitir usar Enter para iniciar el juego?")]
+    [SerializeField] private bool enableEnterKey = true;
+    [Tooltip("¿Qué acción ejecutar con Enter? (Play, Levels, Exit)")]
+    [SerializeField] private MenuAction enterAction = MenuAction.Play;
+
+    // Enum para definir qué acción ejecutar con Enter
+    public enum MenuAction
+    {
+        Play,
+        Levels,
+        Exit
+    }
+
+    void Update()
+    {
+        // Verificar si se presiona Enter y está habilitado
+        if (enableEnterKey && Input.GetKeyDown(KeyCode.Return))
+        {
+            ExecuteEnterAction();
+        }
+    }
+
+    private void ExecuteEnterAction()
+    {
+        switch (enterAction)
+        {
+            case MenuAction.Play:
+                MainMenu();
+                break;
+            case MenuAction.Levels:
+                Levels();
+                break;
+            case MenuAction.Exit:
+                Exit();
+                break;
+
+        }
+    }
+
     public void Play()
     {
         Time.timeScale = 1f;
-
         // Si hay sistema de prólogo y no está configurado para carga directa
         if (prologueSystem != null && !allowDirectPlay)
         {

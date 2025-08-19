@@ -31,8 +31,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326153941210652435}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1362589, y: -0.8212032, z: 0.13164541, w: 0.53826416}
-  m_LocalPosition: {x: 5.9599967, y: 0.7785518, z: -15.975042}
+  m_LocalRotation: {x: 0.4915015, y: -0.1537317, z: 0.08862155, w: 0.8526072}
+  m_LocalPosition: {x: 0.7307321, y: 2.3225534, z: 45.4453}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -114,7 +114,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerObj: {fileID: 0}
   rb: {fileID: 0}
-  rotationSpeed: 50
+  rotationSpeed: 2
   thirdPersonCam: {fileID: 0}
   dialogueLookAt: {fileID: 0}
   dialogueCam: {fileID: 0}
@@ -123,11 +123,16 @@ MonoBehaviour:
   freeLookCam: {fileID: 0}
   obstacleLayerMask:
     serializedVersion: 2
-    m_Bits: 22528
+    m_Bits: 6144
   cameraRadius: 0.2
-  minDistance: 0.8
+  minDistance: 0.7
   occlusionSmoothness: 5
   occlusionTolerance: 0.1
+  smoothTransitionSpeed: 5
+  shakeThreshold: 0.9
+  rotationDeadZone: 0
+  enableTripodMode: 1
+  tripodSmoothness: 0.5
 --- !u!114 &3899813248064088296
 MonoBehaviour:
   m_ObjectHideFlags: 0

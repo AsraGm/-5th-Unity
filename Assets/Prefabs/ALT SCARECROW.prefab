@@ -3027,7 +3027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   pauseTimeOnItemPickup: 4
-  stoppingDistance: 0
+  stoppingDistance: -4007
   acceleration: 8
   angularSpeed: 360
   obstacleDetectionRadius: 2

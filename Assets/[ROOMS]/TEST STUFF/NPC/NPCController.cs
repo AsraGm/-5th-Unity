@@ -173,6 +173,7 @@ public class NPCController : MonoBehaviour
         // Paso 4: Ahora sí mover a la posición de derrota
         if (defeatPosition != null)
         {
+            DisableAllMovementComponents();
             yield return StartCoroutine(MoveToDefeatPosition());
         }
         else
@@ -196,7 +197,7 @@ public class NPCController : MonoBehaviour
             returnMessage.ShowReturnMessage();
             Debug.Log($"{gameObject.name} - Mensaje de retorno activado");
         }
-
+        StartCoroutine(VerifyFinalPosition());
         Debug.Log($"{gameObject.name} - Secuencia de derrota completada");
     }
 
@@ -205,6 +206,7 @@ public class NPCController : MonoBehaviour
         Animator animator = GetComponent<Animator>();
         if (animator == null)
         {
+            animator.applyRootMotion = false;
             Debug.LogWarning($"{gameObject.name} - No hay Animator, saltando espera de animación");
             yield break;
         }
@@ -382,7 +384,165 @@ public class NPCController : MonoBehaviour
             returnMessage.HideMessage();
         }
     }
+    private void DisableAllMovementComponents()
+    {
+        // Desactivar completamente NavMeshAgent
+        var navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (navAgent != null)
+        {
+            navAgent.enabled = false; // Desactivar completamente
+            Debug.Log($"{gameObject.name} - NavMeshAgent desactivado completamente");
+        }
 
+        // Hacer Rigidbody kinematic
+        var rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            Debug.Log($"{gameObject.name} - Rigidbody convertido a kinematic");
+        }
+
+        // Desactivar scripts de enemigo
+        var enemyFollow = GetComponent<EnemyFollow>();
+        if (enemyFollow != null)
+        {
+            enemyFollow.enabled = false;
+            Debug.Log($"{gameObject.name} - EnemyFollow desactivado");
+        }
+
+        var enemy = GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            enemy.enabled = false;
+            Debug.Log($"{gameObject.name} - Enemy desactivado");
+        }
+
+        // Desactivar cualquier script de IA o movimiento en enemyScripts
+        foreach (var script in enemyScripts)
+        {
+            if (script != null)
+            {
+                script.enabled = false;
+                Debug.Log($"{gameObject.name} - Script enemigo {script.GetType().Name} desactivado");
+            }
+        }
+    }
+
+    // ========== NUEVO: MÉTODO QUE FUERZA LA POSICIÓN CON REINTENTOS ==========
+    private IEnumerator ForcePositionWithRetries()
+    {
+        Vector3 targetPos = defeatPosition.position;
+        Quaternion targetRot = defeatPosition.rotation;
+
+        if (instantTeleport)
+        {
+            // Teleport con verificaciones múltiples
+            for (int i = 0; i < 5; i++) // 5 intentos
+            {
+                transform.position = targetPos;
+                transform.rotation = targetRot;
+
+                yield return new WaitForFixedUpdate(); // Esperar physics update
+
+                float distance = Vector3.Distance(transform.position, targetPos);
+                Debug.Log($"{gameObject.name} - Intento {i + 1}: Distancia a objetivo = {distance}");
+
+                if (distance < 0.1f) // Si está suficientemente cerca
+                {
+                    Debug.Log($"{gameObject.name} - Posición correcta alcanzada en intento {i + 1}");
+                    break;
+                }
+
+                if (i == 4) // Último intento
+                {
+                    Debug.LogWarning($"{gameObject.name} - Forzando posición final después de 5 intentos");
+                    transform.position = targetPos;
+                    transform.rotation = targetRot;
+                }
+            }
+        }
+        else
+        {
+            // Movimiento suave pero con verificación constante
+            yield return StartCoroutine(MoveToDefeatPositionForced(targetPos, targetRot));
+        }
+
+        Debug.Log($"{gameObject.name} - Posición final: {transform.position}, Objetivo: {targetPos}");
+    }
+
+    // ========== NUEVO: MOVIMIENTO FORZADO CON VERIFICACIÓN CONSTANTE ==========
+    private IEnumerator MoveToDefeatPositionForced(Vector3 targetPos, Quaternion targetRot)
+    {
+        Debug.Log($"{gameObject.name} moviéndose a posición de derrota con verificación forzada...");
+
+        Vector3 startPos = transform.position;
+        Quaternion startRot = transform.rotation;
+        float elapsedTime = 0f;
+        float duration = Vector3.Distance(startPos, targetPos) / moveSpeed;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+
+            // Forzar posición en cada frame
+            Vector3 newPos = Vector3.Lerp(startPos, targetPos, progress);
+            Quaternion newRot = Quaternion.Lerp(startRot, targetRot, progress);
+
+            transform.position = newPos;
+            transform.rotation = newRot;
+
+            // Verificar que no haya interferencia
+            yield return new WaitForFixedUpdate();
+
+            // Si la posición fue alterada por algo externo, corregir
+            if (Vector3.Distance(transform.position, newPos) > 0.5f)
+            {
+                transform.position = newPos;
+                Debug.LogWarning($"{gameObject.name} - Posición corregida por interferencia externa");
+            }
+
+            yield return null;
+        }
+
+        // Asegurar posición final exacta con múltiples intentos
+        for (int i = 0; i < 3; i++)
+        {
+            transform.position = targetPos;
+            transform.rotation = targetRot;
+            yield return new WaitForFixedUpdate();
+        }
+
+        Debug.Log($"{gameObject.name} llegó a posición de derrota (forzado)");
+    }
+
+    // ========== NUEVO: VERIFICACIÓN FINAL DE POSICIÓN ==========
+    private IEnumerator VerifyFinalPosition()
+    {
+        if (defeatPosition == null) yield break;
+
+        yield return new WaitForSeconds(0.5f); // Esperar un momento
+
+        Vector3 targetPos = defeatPosition.position;
+        float distance = Vector3.Distance(transform.position, targetPos);
+
+        if (distance > 0.2f) // Si está lejos del objetivo
+        {
+            Debug.LogWarning($"{gameObject.name} - Posición incorrecta detectada (distancia: {distance}). Corrigiendo...");
+
+            // Forzar posición final una vez más
+            transform.position = targetPos;
+            transform.rotation = defeatPosition.rotation;
+
+            Debug.Log($"{gameObject.name} - Posición corregida a {transform.position}");
+        }
+        else
+        {
+            Debug.Log($"{gameObject.name} - Posición final verificada correctamente");
+        }
+    }
     // Getters públicos - mantienen la interfaz original
     public NPCState CurrentState => stateManager.CurrentState;
     public bool IsNPC => stateManager.CurrentState == NPCState.NPC;

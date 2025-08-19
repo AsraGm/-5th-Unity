@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using SmallHedge.SoundManager;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 3; // Configurar en Inspector
     private List<Image> originalHearts; // Cache de corazones originales
     [SerializeField] List<Image> hearts = new List<Image>();
+    [SerializeField] private MOVEPLAYER playerMovement;
 
     private bool isDead = false;
 
@@ -25,8 +27,8 @@ public class PlayerHealth : MonoBehaviour
         {
             if (hearts.Count > 0) // Verifica si hay corazones disponibles
             {
-                hearts[0].enabled = false; // Desactiva el primer corazÛn visible
-                hearts.RemoveAt(0);        // Elimina el primer corazÛn de la lista
+                hearts[0].enabled = false; // Desactiva el primer coraz√≥n visible
+                hearts.RemoveAt(0);        // Elimina el primer coraz√≥n de la lista
             }
         }
 
@@ -58,12 +60,19 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        if (isDead) return; // Evitar m˙ltiples llamadas
+        if (isDead) return;
 
         isDead = true;
         Debug.Log("El jugador ha muerto.");
 
-        // Esperar un momento antes de iniciar el reset para que se vea el ragdoll
+        // ‚≠ê NUEVA L√çNEA: Desactiva el control del jugador.
+        if (playerMovement != null)
+        {
+            playerMovement.controlActivo = false;
+            Debug.Log("Control del jugador bloqueado.");
+        }
+
+        SoundManager.PlaySound(SoundType.P_Death);
         StartCoroutine(DelayedReset());
     }
 
@@ -79,19 +88,19 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    // MÈtodo p˙blico para comprobar si est· muerto
+    // M√©todo p√∫blico para comprobar si est√° muerto
     public bool IsDead()
     {
         return isDead;
     }
 
-    // MÈtodo para recibir daÒo con fuerza (˙til para explosiones o golpes)
+    // M√©todo para recibir da√±o con fuerza (√∫til para explosiones o golpes)
     public void TakeDamageWithForce(int damage, Vector3 force, Vector3 hitPoint)
     {
         TakeDamagePlayer(damage);
     }
 
-    // MÈtodos para debug
+    // M√©todos para debug
     [ContextMenu("Test Death")]
     public void TestDeath()
     {

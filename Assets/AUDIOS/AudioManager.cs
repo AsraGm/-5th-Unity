@@ -1,4 +1,4 @@
-// En SoundManager.cs
+ï»¿// En SoundManager.cs
 
 using System;
 using UnityEngine;
@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace SmallHedge.SoundManager
 {
-    // NO necesitas dos [RequireComponent], Awake los manejará.
+    // NO necesitas dos [RequireComponent], Awake los manejarÃ¡.
     public class SoundManager : MonoBehaviour
     {
         [SerializeField] private SoundsSO SO;
@@ -26,11 +26,11 @@ namespace SmallHedge.SoundManager
             {
                 instance = this;
 
-                // CAMBIO: Asegúrate de asignar las AudioSources desde el Inspector.
-                // Es mejor asignarlas manualmente para saber cuál es cuál.
+                // CAMBIO: AsegÃºrate de asignar las AudioSources desde el Inspector.
+                // Es mejor asignarlas manualmente para saber cuÃ¡l es cuÃ¡l.
                 if (musicSource == null || sfxSource == null)
                 {
-                    Debug.LogError("¡Asigna las Audio Sources (Music y SFX) en el Inspector del SoundManager!");
+                    Debug.LogError("Â¡Asigna las Audio Sources (Music y SFX) en el Inspector del SoundManager!");
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace SmallHedge.SoundManager
             AudioClip[] clips = soundList.sounds;
             AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
 
-            if (source) // Si se provee una fuente externa (ej. un enemigo), la lógica no cambia.
+            if (source) // Si se provee una fuente externa (ej. un enemigo), la lÃ³gica no cambia.
             {
                 source.outputAudioMixerGroup = soundList.mixer;
                 source.clip = randomClip;
@@ -51,16 +51,16 @@ namespace SmallHedge.SoundManager
                 source.loop = soundList.loop;
                 source.Play();
             }
-            else // CAMBIO: Lógica para usar las fuentes internas.
+            else // CAMBIO: LÃ³gica para usar las fuentes internas.
             {
                 if (soundList.isMusic)
                 {
-                    // Es MÚSICA: Usa el musicSource.
-                    instance.musicSource.Stop(); // Detiene la música anterior.
+                    // Es MÃšSICA: Usa el musicSource.
+                    instance.musicSource.Stop(); // Detiene la mÃºsica anterior.
                     instance.musicSource.outputAudioMixerGroup = soundList.mixer;
                     instance.musicSource.clip = randomClip;
                     instance.musicSource.volume = volume * soundList.volume;
-                    instance.musicSource.loop = true; // La música siempre debería ser loop.
+                    instance.musicSource.loop = true; // La mÃºsica siempre deberÃ­a ser loop.
                     instance.musicSource.Play();
                 }
                 else
@@ -72,7 +72,7 @@ namespace SmallHedge.SoundManager
             }
         }
 
-        // CAMBIO: Métodos de Stop actualizados.
+        // CAMBIO: MÃ©todos de Stop actualizados.
         public static void StopMusic()
         {
             if (instance != null && instance.musicSource != null)
@@ -81,8 +81,8 @@ namespace SmallHedge.SoundManager
             }
         }
 
-        // Este método ya no es tan necesario, pero lo dejamos por si acaso.
-        // Lo renombramos para ser más claros.
+        // Este mÃ©todo ya no es tan necesario, pero lo dejamos por si acaso.
+        // Lo renombramos para ser mÃ¡s claros.
         public static void StopLoopingExternalSound(AudioSource source)
         {
             if (source != null)
@@ -143,6 +143,6 @@ namespace SmallHedge.SoundManager
         public AudioMixerGroup mixer;
         public AudioClip[] sounds;
         public bool loop;
-        public bool isMusic; // Ya lo añadimos en el paso anterior
+        public bool isMusic; // Ya lo aÃ±adimos en el paso anterior
     }
 }

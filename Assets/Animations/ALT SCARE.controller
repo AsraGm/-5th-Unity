@@ -241,6 +241,21 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-2843785150956401208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47a429892edbaab48933482a976f64b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: 18
+  volume: 1
+  checkForActiveDialogue: 1
 --- !u!1101 &-2520554312306917845
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -334,7 +349,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: 19
-  volume: 1
+  volume: 0.5
+  checkForActiveDialogue: 1
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -470,6 +486,7 @@ AnimatorState:
   - {fileID: 3432777586396858822}
   m_StateMachineBehaviours:
   - {fileID: 7482838579420738684}
+  - {fileID: -2843785150956401208}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -630,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d371bd697d80d428eceff860c2f457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: 18
+  sound: 17
   volume: 1
 --- !u!1101 &7601813025106978732
 AnimatorStateTransition:
@@ -668,3 +685,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: 17
   volume: 1
+  checkForActiveDialogue: 1

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
   m_Name: Lytta 1
   m_EditorClassIdentifier: 
-  dialogueText: "I love your music; it reminds me that we come and alone we go. Where
+  dialogueText: "I love your music; you always trsnsport us to other places. Where
     did you get these ideas?\r"
   responses:
   - responseText: A twisted mind
