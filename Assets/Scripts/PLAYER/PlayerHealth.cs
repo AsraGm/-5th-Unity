@@ -10,7 +10,6 @@ public class PlayerHealth : MonoBehaviour
     private List<Image> originalHearts; // Cache de corazones originales
     [SerializeField] List<Image> hearts = new List<Image>();
     [SerializeField] private MOVEPLAYER playerMovement;
-
     private bool isDead = false;
 
     private void Start()
@@ -41,7 +40,6 @@ public class PlayerHealth : MonoBehaviour
     public void ResetHealth()
     {
         isDead = false;
-
         // Restaurar todos los corazones
         hearts.Clear();
         hearts.AddRange(originalHearts);
@@ -54,22 +52,33 @@ public class PlayerHealth : MonoBehaviour
                 hearts[i].enabled = true;
             }
         }
-
         Debug.Log("Salud restaurada completamente");
     }
 
     void Die()
     {
         if (isDead) return;
-
         isDead = true;
         Debug.Log("El jugador ha muerto.");
 
-        // ⭐ NUEVA LÍNEA: Desactiva el control del jugador.
+        // ⭐ BLOQUEAR CONTROL Y FORZAR ANIMACIÓN IDLE
         if (playerMovement != null)
         {
             playerMovement.controlActivo = false;
             Debug.Log("Control del jugador bloqueado.");
+
+            // ⭐ NUEVA FUNCIONALIDAD: Forzar animación IDLE
+            if (playerMovement.animator != null)
+            {
+                // Resetear todos los parámetros de movimiento
+                playerMovement.animator.SetFloat("Speed", 0f);
+                playerMovement.animator.SetBool("MoveKey", false);
+
+                // Forzar directamente la animación IDLE
+                playerMovement.animator.Play("IDLE");
+
+                Debug.Log("Animación forzada a IDLE.");
+            }
         }
 
         SoundManager.PlaySound(SoundType.P_Death);
