@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ALT P2
   m_EditorClassIdentifier: 
   dialogueText: Before you go, please don't give up in yourself, that the only thing
-    that tournament me in the nights
+    thats tournament me in the nights
   responses: []
   isEndNode: 1
   customCloseButtonText: Thanks

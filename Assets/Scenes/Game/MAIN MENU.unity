@@ -575,6 +575,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prologueSystem: {fileID: 1738762715}
   allowDirectPlay: 0
+  enableEnterKey: 1
+  enterAction: 3
 --- !u!1 &373174756
 GameObject:
   m_ObjectHideFlags: 0

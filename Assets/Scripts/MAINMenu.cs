@@ -17,14 +17,15 @@ public class MAINMenu : MonoBehaviour
     [Tooltip("¿Permitir usar Enter para iniciar el juego?")]
     [SerializeField] private bool enableEnterKey = true;
     [Tooltip("¿Qué acción ejecutar con Enter? (Play, Levels, Exit)")]
-    [SerializeField] private MenuAction enterAction = MenuAction.Play;
+    [SerializeField] private MenuAction enterAction = MenuAction.Menu;
 
     // Enum para definir qué acción ejecutar con Enter
     public enum MenuAction
     {
-        Play,
+        Menu,
         Levels,
-        Exit
+        Exit,
+        Play
     }
 
     void Update()
@@ -40,7 +41,7 @@ public class MAINMenu : MonoBehaviour
     {
         switch (enterAction)
         {
-            case MenuAction.Play:
+            case MenuAction.Menu:
                 MainMenu();
                 break;
             case MenuAction.Levels:
@@ -49,7 +50,9 @@ public class MAINMenu : MonoBehaviour
             case MenuAction.Exit:
                 Exit();
                 break;
-
+            case MenuAction.Play:
+                Play();
+                break;
         }
     }
 

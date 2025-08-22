@@ -166,7 +166,7 @@ MonoBehaviour:
     loop: 1
     isMusic: 1
   - name: Meph_Walk
-    volume: 0.5
+    volume: 0.35
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 10d5a4fa562e23d47a1541ef42481d82, type: 3}
