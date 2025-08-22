@@ -41,12 +41,29 @@ public class MainMenuComicTransition : MonoBehaviour
     [Tooltip("Clip de audio para el prólogo")]
     [SerializeField] private AudioClip prologueMusic;
 
+    [Header("Input Settings")]
+    [Tooltip("Permitir continuar con la tecla Enter")]
+    [SerializeField] private bool allowEnterKey = true;
+
     private bool prologueInProgress = false;
+    private bool canContinue = false; // Nueva variable para controlar cuándo se puede continuar
     private AsyncOperation loadOperation;
 
     private void Start()
     {
         InitializePrologueUI();
+    }
+
+    private void Update()
+    {
+        // Detectar input de Enter solo si el prólogo está en progreso y se puede continuar
+        if (prologueInProgress && canContinue && allowEnterKey)
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                OnContinueButtonPressed();
+            }
+        }
     }
 
     private void InitializePrologueUI()
@@ -111,6 +128,7 @@ public class MainMenuComicTransition : MonoBehaviour
         }
 
         prologueInProgress = true;
+        canContinue = false; // Resetear el flag
         Debug.Log("Iniciando secuencia de prólogo");
 
         StartCoroutine(PrologueSequence());
@@ -185,7 +203,7 @@ public class MainMenuComicTransition : MonoBehaviour
             yield return null;
         }
 
-        // Paso 9: Mostrar botón de continuar
+        // Paso 9: Mostrar botón de continuar y habilitar input
         if (loadingBar != null)
         {
             loadingBar.value = 1f;
@@ -194,9 +212,21 @@ public class MainMenuComicTransition : MonoBehaviour
         if (continueButton != null)
         {
             continueButton.interactable = true;
-            Debug.Log("Botón de continuar habilitado - Prólogo listo para finalizar");
+        }
+
+        // Habilitar la opción de continuar (tanto botón como Enter)
+        canContinue = true;
+
+        if (allowEnterKey)
+        {
+            Debug.Log("Botón de continuar habilitado - Presiona el botón o Enter para continuar");
         }
         else
+        {
+            Debug.Log("Botón de continuar habilitado - Prólogo listo para finalizar");
+        }
+
+        if (continueButton == null)
         {
             // Si no hay botón, continuar automáticamente después de un momento
             yield return new WaitForSeconds(2f);
@@ -248,9 +278,10 @@ public class MainMenuComicTransition : MonoBehaviour
 
     private void OnContinueButtonPressed()
     {
-        if (loadOperation != null)
+        if (loadOperation != null && canContinue)
         {
-            Debug.Log("Botón continuar presionado - Iniciando transición al primer nivel");
+            canContinue = false; // Prevenir múltiples llamadas
+            Debug.Log("Continuando - Iniciando transición al primer nivel");
             StartCoroutine(TransitionToFirstLevel());
         }
     }
@@ -285,10 +316,21 @@ public class MainMenuComicTransition : MonoBehaviour
                 prologueAudioSource.Stop();
             }
 
+            // Resetear flags
+            prologueInProgress = false;
+            canContinue = false;
+
             // Cargar escena directamente
             Time.timeScale = 1f;
             SceneManager.LoadScene(firstLevelScene);
         }
+    }
+
+    // Método para cambiar la configuración de la tecla Enter en runtime
+    public void SetAllowEnterKey(bool allow)
+    {
+        allowEnterKey = allow;
+       
     }
 
     // Métodos de debug
@@ -307,5 +349,7 @@ public class MainMenuComicTransition : MonoBehaviour
 
     // Getters públicos
     public bool PrologueInProgress => prologueInProgress;
+    public bool CanContinue => canContinue;
+    public bool AllowEnterKey => allowEnterKey;
     public string FirstLevelScene => firstLevelScene;
 }
