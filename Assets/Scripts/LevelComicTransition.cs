@@ -53,13 +53,44 @@ public class LevelComicTransition : MonoBehaviour
     [Tooltip("Audio source para música del comic")]
     [SerializeField] private AudioSource comicAudioSource;
 
+    [Header("Input Settings")]
+    [Tooltip("Permitir continuar con la tecla Enter")]
+    [SerializeField] private bool allowEnterKey = true;
+    [Tooltip("¿También permitir Skip con teclas adicionales?")]
+    [SerializeField] private bool allowSkipKeys = true;
+    [Tooltip("Tecla para saltar el comic completamente")]
+    [SerializeField] private KeyCode skipComicKey = KeyCode.Escape;
+
     private bool comicInProgress = false;
+    private bool canContinue = false; // Nueva variable para controlar cuándo se puede continuar
     private AsyncOperation loadOperation;
     private LevelComicData currentLevelData;
 
     private void Start()
     {
         InitializeComicUI();
+    }
+
+    private void Update()
+    {
+        // Detectar input de Enter solo si el comic está en progreso y se puede continuar
+        if (comicInProgress && canContinue && allowEnterKey)
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                OnContinueButtonPressed();
+            }
+        }
+
+        // Detectar input para saltar comic completamente
+        if (comicInProgress && allowSkipKeys)
+        {
+            if (Input.GetKeyDown(skipComicKey))
+            {
+                Debug.Log($"Tecla Skip presionada: {skipComicKey}");
+                SkipComic();
+            }
+        }
     }
 
     private void InitializeComicUI()
@@ -127,6 +158,7 @@ public class LevelComicTransition : MonoBehaviour
         }
 
         comicInProgress = true;
+        canContinue = false; // Resetear el flag
         Debug.Log($"Iniciando secuencia de comic para nivel {levelNumber}");
 
         StartCoroutine(LevelComicSequence(sceneName));
@@ -228,7 +260,7 @@ public class LevelComicTransition : MonoBehaviour
             yield return null;
         }
 
-        // Paso 11: Mostrar botón de continuar
+        // Paso 11: Mostrar botón de continuar y habilitar input
         if (loadingBar != null)
         {
             loadingBar.value = 1f;
@@ -237,9 +269,21 @@ public class LevelComicTransition : MonoBehaviour
         if (continueButton != null)
         {
             continueButton.interactable = true;
-            Debug.Log("Botón de continuar habilitado - Comic listo para finalizar");
+        }
+
+        // Habilitar la opción de continuar (tanto botón como Enter)
+        canContinue = true;
+
+        if (allowEnterKey)
+        {
+            Debug.Log("Botón de continuar habilitado - Presiona el botón o Enter para continuar");
         }
         else
+        {
+            Debug.Log("Botón de continuar habilitado - Comic listo para finalizar");
+        }
+
+        if (continueButton == null)
         {
             // Si no hay botón, continuar automáticamente después de un momento
             yield return new WaitForSeconds(2f);
@@ -291,9 +335,10 @@ public class LevelComicTransition : MonoBehaviour
 
     private void OnContinueButtonPressed()
     {
-        if (loadOperation != null)
+        if (loadOperation != null && canContinue)
         {
-            Debug.Log("Botón continuar presionado - Iniciando transición al nivel");
+            canContinue = false; // Prevenir múltiples llamadas
+            Debug.Log("Continuando - Iniciando transición al nivel");
             StartCoroutine(TransitionToLevel());
         }
     }
@@ -328,6 +373,10 @@ public class LevelComicTransition : MonoBehaviour
                 comicAudioSource.Stop();
             }
 
+            // Resetear flags
+            comicInProgress = false;
+            canContinue = false;
+
             // Cargar escena directamente
             Time.timeScale = 1f;
             if (loadOperation != null)
@@ -337,7 +386,43 @@ public class LevelComicTransition : MonoBehaviour
         }
     }
 
+    // Métodos públicos para configuración en runtime
+    public void SetAllowEnterKey(bool allow)
+    {
+        allowEnterKey = allow;
+      
+    }
+
+    public void SetAllowSkipKeys(bool allow)
+    {
+        allowSkipKeys = allow;
+       
+    }
+
+    public void SetSkipComicKey(KeyCode newKey)
+    {
+        skipComicKey = newKey;
+        Debug.Log($"Tecla para saltar comic cambiada a: {newKey}");
+    }
+
+    // Método de debug para mostrar configuración actual
+    [ContextMenu("Show Input Settings")]
+    public void ShowInputSettings()
+    {
+        Debug.Log("=== INPUT SETTINGS LEVEL COMIC ===");
+        Debug.Log($"Allow Enter Key: {allowEnterKey}");
+        Debug.Log($"Allow Skip Keys: {allowSkipKeys}");
+        Debug.Log($"Skip Comic Key: {skipComicKey}");
+        Debug.Log($"Comic In Progress: {comicInProgress}");
+        Debug.Log($"Can Continue: {canContinue}");
+        Debug.Log("================================");
+    }
+
     // Getters públicos
     public bool ComicInProgress => comicInProgress;
+    public bool CanContinue => canContinue;
+    public bool AllowEnterKey => allowEnterKey;
+    public bool AllowSkipKeys => allowSkipKeys;
+    public KeyCode SkipComicKey => skipComicKey;
     public LevelComicData CurrentLevelData => currentLevelData;
 }

@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077a997608497404ab9e4632b4bf1181, type: 3}
   m_Name: ALT P2
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   dialogueText: Before you go, please don't give up in yourself, thats the only thing
     that torments me in the nights
+=======
+  dialogueText: Before you go, please don't give up in yourself, that the only thing
+    thats tournament me in the nights
+>>>>>>> Unity_5th/master
   responses: []
   isEndNode: 1
   customCloseButtonText: Thanks
