@@ -1,4 +1,3 @@
-// ArtItem.cs - Script para cada item individual de arte
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +8,7 @@ public class ArtItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
 {
     [Header("UI Components")]
     public Image thumbnailImage;          // Imagen del thumbnail
-    public TextMeshProUGUI titleText;     // Texto del título (opcional)
+    public TextMeshProUGUI titleText;     // Texto del título (OCULTO - solo para referencia en Inspector)
     public Button itemButton;             // Botón del item
 
     [Header("Hover Effects")]
@@ -31,6 +30,12 @@ public class ArtItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
         {
             originalColor = thumbnailImage.color;
         }
+
+        // OCULTAR el título completamente si existe
+        if (titleText != null)
+        {
+            titleText.gameObject.SetActive(false);
+        }
     }
 
     public void Setup(ArtPiece artPiece, ArtGallery artGallery, int index)
@@ -45,10 +50,10 @@ public class ArtItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
             thumbnailImage.sprite = artPiece.thumbnail;
         }
 
-        // Configurar el título si existe
+        // NO configurar el título - lo mantenemos oculto para un diseño limpio
         if (titleText != null)
         {
-            titleText.text = artPiece.artName;
+            titleText.gameObject.SetActive(false);
         }
 
         // Configurar el botón
@@ -78,6 +83,7 @@ public class ArtItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
     {
         if (gallery != null && artData != null)
         {
+            // Solo mostrar título en el preview, no en la galería
             gallery.OpenPreview(artData);
         }
     }
