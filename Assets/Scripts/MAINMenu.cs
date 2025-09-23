@@ -158,6 +158,26 @@ public class MAINMenu : MonoBehaviour
         DebugLog("Navegando a selector de niveles");
         SceneManager.LoadScene("LEVELS");
     }
+    public void ArtGallery()
+    {
+        DebugLog("Navegando a selector de niveles");
+        SceneManager.LoadScene("ART GALLERY");
+    }
+    public void Gallery()
+    {
+        DebugLog("Navegando a selector de niveles");
+        SceneManager.LoadScene("GALLERY");
+    }
+    public void Lore()
+    {
+        DebugLog("Navegando a selector de niveles");
+        SceneManager.LoadScene("LORE");
+    }
+    public void MusicGallery()
+    {
+        DebugLog("Navegando a selector de niveles");
+        SceneManager.LoadScene("MUSIC");
+    }
 
     public void Exit()
     {
@@ -197,19 +217,16 @@ public class MAINMenu : MonoBehaviour
     public void SetExitKey(KeyCode newKey)
     {
         exitKey = newKey;
-        DebugLog($"Tecla Exit cambiada a: {newKey}");
     }
 
     public void SetMainMenuKey(KeyCode newKey)
     {
         mainMenuKey = newKey;
-        DebugLog($"Tecla Main Menu cambiada a: {newKey}");
     }
 
     public void SetPlayDirectKey(KeyCode newKey)
     {
         playDirectKey = newKey;
-        DebugLog($"Tecla Play directo cambiada a: {newKey}");
     }
 
     // Método para mostrar las teclas asignadas
@@ -224,13 +241,12 @@ public class MAINMenu : MonoBehaviour
 
         if (alternativePlayKeys.Length > 0)
         {
-            Debug.Log($"Teclas alternativas Play: {string.Join(", ", alternativePlayKeys)}");
+ 
         }
         if (alternativeExitKeys.Length > 0)
         {
-            Debug.Log($"Teclas alternativas Exit: {string.Join(", ", alternativeExitKeys)}");
+
         }
-        Debug.Log("===============================");
     }
 
     // Método de debug mejorado
@@ -250,10 +266,6 @@ public class MAINMenu : MonoBehaviour
         {
             prologueSystem.StartPrologueSequence();
         }
-        else
-        {
-            Debug.LogWarning("Sistema de prólogo no asignado");
-        }
     }
 
     [ContextMenu("Show Key Assignments")]
@@ -265,9 +277,6 @@ public class MAINMenu : MonoBehaviour
     [ContextMenu("Test All Functions")]
     public void TestAllFunctions()
     {
-        Debug.Log("=== TESTING ALL FUNCTIONS ===");
-        Debug.Log("Disponible: Play(), Levels(), Exit(), MainMenu(), PlayWithoutPrologue()");
-        Debug.Log("Teclas configuradas:");
         LogKeyAssignments();
     }
 

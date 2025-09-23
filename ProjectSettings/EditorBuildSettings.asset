@@ -24,8 +24,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Game/Credits.unity
     guid: 5479248805b602b43abbaafdf361b40f
   - enabled: 1
+    path: Assets/Scenes/Game/GALLERY.unity
+    guid: 6e59a8d18c84a3240a0dca68041c1c20
+  - enabled: 1
     path: Assets/Scenes/Game/ART GALLERY.unity
     guid: ee99946edc926ea4ab5dbe02d5b51d46
+  - enabled: 1
+    path: Assets/Scenes/Game/MUSIC.unity
+    guid: b00137dda6c70db4ebf26600f2841916
+  - enabled: 1
+    path: Assets/Scenes/Game/LORE.unity
+    guid: 17420394feee9d94eaa2270b9ab2a003
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: f7f4e2c44cf0e944f88aa52fdcff650f, type: 2}

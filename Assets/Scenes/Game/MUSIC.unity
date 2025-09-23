@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 210982746}
   - component: {fileID: 210982745}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Fondo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,7 +318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 865, y: -570}
+  m_AnchoredPosition: {x: 40, y: -34}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &367877368
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -1035.241, y: 0, z: -29.8659, w: 0}
+  m_margin: {x: -898.3934, y: 0, z: 282.03778, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -432,7 +432,6 @@ GameObject:
   - component: {fileID: 640376128}
   - component: {fileID: 640376127}
   - component: {fileID: 640376126}
-  - component: {fileID: 640376130}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -517,7 +516,6 @@ RectTransform:
   m_Children:
   - {fileID: 1236855519}
   - {fileID: 1244193257}
-  - {fileID: 699957582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -525,144 +523,187 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &640376130
+--- !u!1 &774537516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774537517}
+  - component: {fileID: 774537520}
+  - component: {fileID: 774537519}
+  - component: {fileID: 774537518}
+  m_Layer: 5
+  m_Name: PlayPause
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &774537517
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774537516}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1244193257}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1495, y: -54}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &774537518
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 640376125}
+  m_GameObject: {fileID: 774537516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d22c49cd4f14d741a1309e3fcea0e34, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prologueSystem: {fileID: 0}
-  allowDirectPlay: 0
-  enableKeyboardControls: 1
-  playKey: 13
-  enablePlayKey: 1
-  levelsKey: 108
-  enableLevelsKey: 1
-  exitKey: 27
-  enableExitKey: 1
-  mainMenuKey: 109
-  enableMainMenuKey: 1
-  playDirectKey: 112
-  enablePlayDirectKey: 1
-  alternativePlayKeys: 20000000
-  alternativeExitKeys: 71000000
-  showDebugInfo: 1
---- !u!1001 &699957581
-PrefabInstance:
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 774537519}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &774537519
+MonoBehaviour:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 640376129}
-    m_Modifications:
-    - target: {fileID: 4317002027573289047, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_Name
-      value: MENU
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 160
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 677
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -477
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5804731486369541095, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 640376130}
-    - target: {fileID: 5804731486369541095, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: MainMenu
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
---- !u!224 &699957582 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5634219816087190392, guid: 922f3a8e27459ff43b6a947c07880c91, type: 3}
-  m_PrefabInstance: {fileID: 699957581}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774537516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Play/Pause
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: b8065505d7c332840a14dd532bbce38d, type: 2}
+  m_sharedMaterial: {fileID: 6627395510663238627, guid: b8065505d7c332840a14dd532bbce38d, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 55
+  m_fontSizeBase: 55
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -900.45996, y: 0, z: 278.19504, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &774537520
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774537516}
+  m_CullTransparentMesh: 1
 --- !u!1 &930093836
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +789,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 983780284}
-  - component: {fileID: 983780283}
+  - component: {fileID: 983780285}
+  - component: {fileID: 983780286}
   m_Layer: 0
   m_Name: GALLERY
   m_TagString: Untagged
@@ -756,73 +798,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &983780283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983780282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a92a9fe48f0f041941ca29306b97e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  artItemPrefab: {fileID: 6352610877611676011, guid: b495f89e6a06f87479330595d329b342, type: 3}
-  contentParent: {fileID: 930093837}
-  scrollRect: {fileID: 1236855520}
-  artCollection:
-  - artName: Diplomatic Lore
-    thumbnail: {fileID: 21300000, guid: d147b03cf992f8f48baf8bd1647fb507, type: 3}
-    fullImage: {fileID: 21300000, guid: d147b03cf992f8f48baf8bd1647fb507, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Watchmaker Lore
-    thumbnail: {fileID: 21300000, guid: 9f691bca04e58c84ab938eb352bb2691, type: 3}
-    fullImage: {fileID: 21300000, guid: 9f691bca04e58c84ab938eb352bb2691, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Wiseman Lore
-    thumbnail: {fileID: 21300000, guid: bef6f569c4cfd8749a52e4ec299e7062, type: 3}
-    fullImage: {fileID: 21300000, guid: bef6f569c4cfd8749a52e4ec299e7062, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Dispair Lore
-    thumbnail: {fileID: 21300000, guid: ca21230cf99861d47ae1ddf025289414, type: 3}
-    fullImage: {fileID: 21300000, guid: ca21230cf99861d47ae1ddf025289414, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Watchmaker Lore
-    thumbnail: {fileID: 21300000, guid: 26cb918a91b16fe44a66a25f359db492, type: 3}
-    fullImage: {fileID: 21300000, guid: 26cb918a91b16fe44a66a25f359db492, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Remorse Lore
-    thumbnail: {fileID: 21300000, guid: ca81e146d05cbe141b3910ca3b441d12, type: 3}
-    fullImage: {fileID: 21300000, guid: ca81e146d05cbe141b3910ca3b441d12, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Broken Vicemis Lore
-    thumbnail: {fileID: 21300000, guid: ef66f3bf46fe7604a99ae762e1528145, type: 3}
-    fullImage: {fileID: 21300000, guid: ef66f3bf46fe7604a99ae762e1528145, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Benne Lore
-    thumbnail: {fileID: 21300000, guid: f3a6cead2ca79cf42a83ad68f6de5c31, type: 3}
-    fullImage: {fileID: 21300000, guid: f3a6cead2ca79cf42a83ad68f6de5c31, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Lullaby Lore
-    thumbnail: {fileID: 21300000, guid: c6bd6642c3835aa4792cd7af114c7163, type: 3}
-    fullImage: {fileID: 21300000, guid: c6bd6642c3835aa4792cd7af114c7163, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  - artName: Madman Lore
-    thumbnail: {fileID: 21300000, guid: f53dc6b4ebef07f438f79f40d01a674f, type: 3}
-    fullImage: {fileID: 21300000, guid: f53dc6b4ebef07f438f79f40d01a674f, type: 3}
-    description: "Lore - Israel Gonz\xE1lez   Art - Emilio Ayala"
-  previewPanel: {fileID: 1244193256}
-  previewImage: {fileID: 1061237585}
-  previewTitle: {fileID: 1728715105}
-  previewDescription: {fileID: 367877369}
-  closePreviewButton: {fileID: 1980785048}
-  scrollSensitivity: 30
-  wheelScrollSpeed: 1
-  cellSize: {x: 250, y: 500}
-  spacing: {x: 100, y: -180}
-  previewImageType: 0
-  preserveAspect: 1
 --- !u!4 &983780284
 Transform:
   m_ObjectHideFlags: 0
@@ -838,6 +813,178 @@ Transform:
   m_Children: []
   m_Father: {fileID: 930093837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &983780285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983780282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514f6bafbb8c5d348bd58613da6416b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicItemPrefab: {fileID: 0}
+  contentParent: {fileID: 930093837}
+  scrollRect: {fileID: 1236855520}
+  musicCollection:
+  - songTitle: Main Theme
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: bc02a3f9e289ace4dbec938ee9176444, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 1.09
+  - songTitle: Level 1 "Start"
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: b59831f618f83fe40bbed2a7438ad957, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 2.26
+  - songTitle: Level 1 "Attack"
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: 90def6599fc14814bb77f9820edc1bab, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 2.3
+  - songTitle: Level 2 "Start"
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: 8e05a29b651a9d1459f967b9b578f14e, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 2.25
+  - songTitle: Level 2 "Attack"
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: da4bbc9414a2d3347a31ad74fbae9e4e, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 2.26
+  - songTitle: Level 3 "Start"
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: 65a4937a43c8f46489697b879ddf9bb7, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 2.27
+  - songTitle: Level 3 "Attack"
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: 2c53146d2792b6748bf5939d069c8334, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 2.27
+  - songTitle: Transition
+    artist: Victoria Gaytan
+    audioClip: {fileID: 8300000, guid: 7fa91eca288399a48a3e8da1b2716e85, type: 3}
+    albumCover: {fileID: 21300000, guid: d66e56c2d48175e44a3154d94ebd28fb, type: 3}
+    duration: 0.56
+  previewPanel: {fileID: 1244193256}
+  albumCoverPreview: {fileID: 1061237585}
+  songTitleText: {fileID: 1728715105}
+  artistText: {fileID: 367877369}
+  closePreviewButton: {fileID: 1980785048}
+  audioSource: {fileID: 983780286}
+  playPauseButton: {fileID: 774537518}
+  previousButton: {fileID: 0}
+  nextButton: {fileID: 0}
+  progressSlider: {fileID: 0}
+  volumeSlider: {fileID: 0}
+  currentTimeText: {fileID: 0}
+  totalTimeText: {fileID: 0}
+  playIcon: {fileID: 0}
+  pauseIcon: {fileID: 0}
+  scrollSensitivity: 30
+  wheelScrollSpeed: 100
+  cellSize: {x: 200, y: 250}
+  spacing: {x: 100, y: -180}
+--- !u!82 &983780286
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983780282}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1011488663
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,14 +1048,14 @@ RectTransform:
   m_GameObject: {fileID: 1061237582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.509862, y: 0.84977, z: 0.84977}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1244193257}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 345, y: 52}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1061237584
@@ -1099,7 +1246,7 @@ GameObject:
   - component: {fileID: 1236855521}
   - component: {fileID: 1236855520}
   m_Layer: 5
-  m_Name: ArtGalleryScrollView
+  m_Name: MUSICScrollView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1176,7 +1323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 16db1b4778e5740419f7162134ff1641, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e1caee67c3a005d43bff65a85266c52e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1212,7 +1359,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1244193257
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1228,6 +1375,7 @@ RectTransform:
   - {fileID: 210982744}
   - {fileID: 1061237583}
   - {fileID: 1728715103}
+  - {fileID: 774537517}
   - {fileID: 367877367}
   - {fileID: 1980785051}
   m_Father: {fileID: 640376129}
@@ -1319,7 +1467,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 983780283}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ArtGallery, Assembly-CSharp
         m_MethodName: ClosePreview
         m_Mode: 1
@@ -1570,7 +1718,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -570}
+  m_AnchoredPosition: {x: 40, y: 195.99997}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1728715104
@@ -1628,8 +1776,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1666,7 +1814,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -855.72125, y: 0, z: 386.09412, w: 0}
+  m_margin: {x: -900.45996, y: 0, z: 278.19504, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1810,7 +1958,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 983780283}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ArtGallery, Assembly-CSharp
         m_MethodName: ClosePreview
         m_Mode: 1

@@ -8,14 +8,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Lv.1
-  m_Shader: {fileID: -6465566751694194690, guid: 813662a50c5dec44494958b6cc244206, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: fc4f18f95bfe125448a6b51ca26dc009, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses:
@@ -43,12 +43,16 @@ Material:
     m_Ints: []
     m_Floats:
     - _DegreesPerSecond: 100
-    - _Move_Speed: 0
+    - _INTENSITY: 0
+    - _Move_Speed: 2
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Scale: 0.49
     m_Colors:
-    - _MoveAxis: {r: 0, g: 0.5, b: 0, a: 0}
+    - _Color: {r: 1.4980392, g: 1.2952535, b: 0, a: 0}
+    - _MoveAxis: {r: 0, g: 0.3, b: 0, a: 0}
     - _RotationAxis: {r: 0, g: 1, b: 0, a: 0}
+    - _Vector3: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &441467094963395335
